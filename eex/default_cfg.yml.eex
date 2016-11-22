@@ -1,0 +1,12 @@
+---
+collection: asdf
+docsep:     "---"
+file_types: ["txt", "md", "wlog"]
+field_defs:
+  date:
+    regex: "/(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])/"
+    default: "NA"
+doc_dirs:
+  - test/data/singledoc
+
+

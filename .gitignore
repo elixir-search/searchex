@@ -1,0 +1,10 @@
+/.idea
+/_build
+/_data
+/cover
+/deps
+/docs
+/doc
+erl_crash.dump
+*.ez
+output.txt
