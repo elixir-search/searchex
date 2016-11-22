@@ -16,8 +16,8 @@ defmodule Searchex.Mixfile do
       deps:        deps(),
 
       name: "Searchex",
-      source_url:   "https://github.com/andyl/searchex",
-      homepage_url: "https://github.com/andyl/searchex",
+      source_url:   "https://github.com/elixir-search/searchex",
+      homepage_url: "https://github.com/elixir-search/searchex",
       docs: [
         source_ref: @version,
         cannonical: "https://hexdocs/searchex",
@@ -52,7 +52,7 @@ defmodule Searchex.Mixfile do
       name: :searchex,
       maintainers: ["AndyL"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/andyl/searchex"}
+      links: %{"GitHub" => "https://github.com/elixir-search/searchex"}
     ]
   end
 end
