@@ -94,14 +94,12 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 
 * <http://himmele.blogspot.com/2011/04/build-your-own-internet-search-engine.html>
 
-## System Overview
+## Roadmap
 
-The search engine allows the establishment of one or more document collections.
-The source data from a document collection is a textual file which cataloged
-and indexed by Searchex.
-
-### Documents
-
+- [x] Stemming algorithm
+- [x] Implement BM25 query altorithm
+- [-] Faceted Search
+- [-] Additional document examples
 
 ## GitHub Source
 
