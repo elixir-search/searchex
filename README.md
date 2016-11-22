@@ -98,8 +98,8 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 
 - [x] Stemming algorithm
 - [x] Implement BM25 query altorithm
-- [_] Faceted Search
-- [_] Additional document examples
+- [ ] Faceted Search
+- [ ] Additional document examples
 
 ## GitHub Source
 
