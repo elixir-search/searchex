@@ -96,10 +96,14 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 
 ## Roadmap
 
-- [x] Stemming algorithm
-- [x] Implement BM25 query altorithm
-- [ ] Faceted Search
+- [x] Config management 
+- [x] Porter stemming algorithm
+- [x] BM25 query algorithm
+- [x] Simple CLI
 - [ ] Additional document examples
+- [ ] Faceted Search
+- [ ] Streaming document ingestion
+- [ ] Alerting
 
 ## GitHub Source
 
