@@ -73,7 +73,7 @@ Then run `mix deps.get`
 
 If you have Elixir 1.3+ enter this at the console:
 
-<pre><sub>mix escript.install https://raw.githubusercontent.com/andyl/stemex/master/stemex</sub></pre>
+<pre><sub>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</sub></pre>
 
 ## Tab Completion
 
@@ -107,4 +107,4 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 
 ## GitHub Source
 
-<https://github.com/andyl/searchex> 
+<https://github.com/elixir-search/searchex> 
