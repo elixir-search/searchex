@@ -80,7 +80,7 @@ defmodule Searchex.Cli do
     #{String.upcase(prog)} VERSION #{prog_version} - NOT READY FOR USE
     #{Enum.join(lines, "\n")}
 
-    Visit https://github.com/andyl/searchex for more info...
+    Visit https://github.com/elixir-search/searchex for more info...
     """]
     {:ok, value}
   end

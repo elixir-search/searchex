@@ -8,14 +8,14 @@ defmodule Searchex.Cfg do
 
   alias Searchex.Util.IO, as: DIO
 
-  @base_cfg_dir "~/.searchex"
+  @base_cfg_dir "~/.searchex/cfgs"
   @test_cfg_dir "test/data/configs"
 
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
   @doc "Create a new config"
   # TODIO: CHANGE TO PATH INDEXING...
-  def new(cfg_name) do
+  def cfg_new(cfg_name) do
     make_cfg_dir()
     cond do
       cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
@@ -25,12 +25,13 @@ defmodule Searchex.Cfg do
   end
 
   @doc "Fetch a config from elixir-search/sample_docs"
-  def fetch() do
+  def cfg_fetch(_tmp) do
     DIO.puts "FETCH : UNDER CONSTRUCTION"
+    {:error, "Pending Implementation"}
   end
 
   @doc "Return the contents of a config"
-  def cat(cfg_name) do
+  def cfg_cat(cfg_name) do
     cond do
       cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
       cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)}
@@ -45,7 +46,7 @@ defmodule Searchex.Cfg do
   This needs fixing.  See this thread for more info:
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
-  def edit(cfg_name) do
+  def cfg_edit(cfg_name) do
     make_cfg_dir()
     cond do
       missing_editor?()           -> {:error, missing_editor_msg()}
@@ -58,7 +59,7 @@ defmodule Searchex.Cfg do
   end
 
   @doc "Remove a config"
-  def rm(cfg_name) do
+  def cfg_rm(cfg_name) do
     cond do
       cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
       cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)}
@@ -67,7 +68,7 @@ defmodule Searchex.Cfg do
   end
 
   @doc "List the configs"
-  def ls do
+  def cfg_ls do
     make_cfg_dir()
     {files, _code} = System.cmd("ls", [], cd: cfg_dir())
     output = files
@@ -82,7 +83,7 @@ defmodule Searchex.Cfg do
     YamlElixir.read_from_string yaml_data, atoms: true
   end
   def to_map(cfg_name) do
-    {:ok, yaml_data} = cat(cfg_name)
+    {:ok, yaml_data} = cfg_cat(cfg_name)
     YamlElixir.read_from_string yaml_data
   end
 

@@ -8,7 +8,7 @@ defmodule Searchex.Cmd do
   defp catalog_int(cfg_name) do
     DIO.puts "CATALOG #{cfg_name}"
     cfg_name
-    |> Searchex.Cfg.cat
+    |> Searchex.Cfg.cfg_cat
     |> Searchex.Cfg.to_map
     |> Searchex.Build.Catalog.Params.create_from_cfg
     |> Searchex.Build.Catalog.read_or_generate

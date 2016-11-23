@@ -52,7 +52,7 @@ things like:
 
 ## The Searchex CLI
 
-A `searchex` command-line program can manage config files, build catalogs and
+The `searchex` command-line program can manage config files, build catalogs and
 indexes, and perform searches.
 
 ### Escript Installation
@@ -67,7 +67,7 @@ Make sure `~/.mix/escripts` is on your path!
 
 Get a tab-completion script by typing `searchex completion`
 
-To install: copy this script to `/etc/bash_completion.d` (or equivalent)
+To install: copy the completion script to `/etc/bash_completion.d` (or equivalent)
 
      $ searchex completion > /etc/bash_completion.d/searchex_completion.bash
      $ chmod a+rx /etc/bash_completion.d/searchex_completion.bash
@@ -86,7 +86,7 @@ end
 
 Then run `mix deps.get`
 
-API documentation at https://hexdocs.pm/searchex
+View API documentation at https://hexdocs.pm/searchex
 
 ## Roadmap
 
@@ -103,6 +103,7 @@ API documentation at https://hexdocs.pm/searchex
 - [ ] Configuration GUI
 - [ ] Phoenix integration
 - [ ] Vim and Emacs plugins
+- [ ] Internationalization
 
 ## Links
 
