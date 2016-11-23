@@ -6,12 +6,15 @@ defmodule Searchex.Cfg do
   A configuration is stored in a yaml file under `~/.searchex`.
   """
 
+  alias Searchex.Util.IO, as: DIO
+
   @base_cfg_dir "~/.searchex"
   @test_cfg_dir "test/data/configs"
 
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
   @doc "Create a new config"
+  # TODIO: CHANGE TO PATH INDEXING...
   def new(cfg_name) do
     make_cfg_dir()
     cond do
@@ -19,6 +22,11 @@ defmodule Searchex.Cfg do
       cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
       true                        -> create_cfg(cfg_name)
     end
+  end
+
+  @doc "Fetch a config from elixir-search/sample_docs"
+  def fetch() do
+    DIO.puts "FETCH : UNDER CONSTRUCTION"
   end
 
   @doc "Return the contents of a config"
@@ -47,11 +55,6 @@ defmodule Searchex.Cfg do
       cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)}
       true                        -> edit_cfg(cfg_name)
     end
-  end
-
-  @doc "Test the config file"
-  def test(_cfg_name) do
-    {:error, "UNDER CONSTRUCTION"}
   end
 
   @doc "Remove a config"

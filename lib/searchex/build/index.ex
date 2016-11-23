@@ -2,16 +2,16 @@ defmodule Searchex.Build.Index do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DO
+  alias Searchex.Util.IO, as: DIO
 
   def read_or_generate(catalog) do
     start_supervisor(:index)
     if Searchex.Build.Index.Cache.stale?(catalog) do
-      DO.puts "INDEX IS STALE"
+      DIO.puts "INDEX IS STALE"
       catalog |> create_from_catalog
       Searchex.Build.Index.Cache.write_index(catalog)
     else
-      DO.puts "READ EXISTING INDEX"
+      DIO.puts "READ EXISTING INDEX"
       Searchex.Build.Index.Cache.read_index(catalog)
     end
   end

@@ -2,7 +2,7 @@ defmodule Searchex.KeywordSup do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DO
+  alias Searchex.Util.IO, as: DIO
 
   use Supervisor
 
@@ -34,7 +34,7 @@ defmodule Searchex.KeywordSup do
     case add_child(name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
-      alt                   -> DO.inspect(PODNAME: alt) ; nil
+      alt                   -> DIO.inspect(PODNAME: alt) ; nil
     end
   end
 

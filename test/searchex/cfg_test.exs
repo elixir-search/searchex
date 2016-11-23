@@ -28,20 +28,6 @@ defmodule Searchex.CfgTest do
     end
   end
 
-  describe "#test error conditions" do
-    test "under construction" do
-      {cond, _skip} = Searchex.Cfg.test("under_construction")
-      assert cond == :error 
-    end
-  end
-
-  describe "#rm error conditions" do
-    test "missing file" do
-      {cond, _skip} = Searchex.Cfg.test("does_not_exist")
-      assert cond == :error 
-    end
-  end
-
   describe "#ls" do
     test "returns OK" do
       {cond, _skip} = Searchex.Cfg.ls()

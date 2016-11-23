@@ -3,7 +3,8 @@ defmodule Searchex.CliTest do
 
   doctest Searchex.Cli
 
-  @cmds ~w(new cat edit test rm ls build search version help all_commands cfg_commands completion)
+  # TODO: redo this list with current commands
+  @cmds ~w(new cat edit test rm ls build search version help all_commands cfg_commands)
 
   describe "#main" do
     for cmd <- @cmds do

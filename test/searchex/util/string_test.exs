@@ -28,4 +28,24 @@ defmodule Searchex.Util.StringTest do
       assert wordstems("walked singing") == ~w(walk sing)
     end
   end
+
+  describe "empty?" do
+    test "with chars" do
+      refute empty?("asdf")
+    end
+
+    test "without chars" do
+      assert empty?("")
+    end
+  end
+
+  describe "present?" do
+    test "with chars" do
+      assert present?("asdf")
+    end
+
+    test "without chars" do
+      refute present?("")
+    end
+  end
 end

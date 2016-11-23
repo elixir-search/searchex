@@ -11,7 +11,7 @@ defmodule Searchex.KeywordSer do
 
   We start one KeywordSer for each keyword in the index.  The state looks like:
 
-  %{"DOCID1" => [list of positions], "DOCID2" => [list of positions]}
+  %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
   def start_link(server_name \\ :server) do
     GenServer.start_link(__MODULE__, %{}, name: server_name)
@@ -58,7 +58,7 @@ defmodule Searchex.KeywordSer do
   Gets the list of ID's for a term.
 
   The returned data structure look like:
-  %{"DOCID1" => [list of positions], "DOCID2" => [list of positions]}
+  %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
   def get_ids(term) do
     case find_keyword_server(term) do
@@ -72,7 +72,7 @@ defmodule Searchex.KeywordSer do
   index from a persisted index saved to disk.
 
   The state looks like:
-  %{"DOCID1" => [list of positions], "DOCID2" => [list of positions]}
+  %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
   def set_state(server, new_state) do
     GenServer.cast(server, {:set_state, new_state})

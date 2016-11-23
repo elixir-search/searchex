@@ -14,31 +14,43 @@ defmodule Searchex.Cli do
   end
   
   # List of command options.  The command should be the same as the function
-  # name.  Argument and Description are used to generate help text.
+  # name.  Argument and Description are used to generate help text.  The command
+  # descriptions are all included in the CLI 'help' output.
   cmd_opts = [
-    # Cmd      Arity  Module   Argument                   Description
-    {"new"     ,   1,   "Cfg"  , "COLLECTION"           , "create new config"       },
-    {"cat"     ,   1,   "Cfg"  , "COLLECTION"           , "cat config"              },
-    {"edit"    ,   1,   "Cfg"  , "COLLECTION"           , "edit config"             },
-    {"test"    ,   1,   "Cfg"  , "COLLECTION"           , "test config"             },
-    {"rm"      ,   1,   "Cfg"  , "COLLECTION"           , "remove config"           },
-    {"ls"      ,   0,   "Cfg"  , ""                     , "list configs"            },
-    {"catalog" ,   1,   "Cmd"  , "COLLECTION"           , "catalog the collection"  },
-    {"index"   ,   1,   "Cmd"  , "COLLECTION"           , "index the collection"    },
-    {"build"   ,   1,   "Cmd"  , "COLLECTION"           , "catalog and index"       },
-    {"search"  ,   2,   "Cmd"  , "COLLECTION '<query>'" , "search the collection"   },
-    {"version" ,   0,   "Cli"  , ""                     , "show installed version"  },
-    {"help"    ,   0,   "Cli"  , ""                     , "this command"            },
+    # Cmd        Arity   Module    Argument                 Description
+    {"cfg_new"   ,   1,   "Cfg"  , "PATH"                 , "new config for PATH"                  },
+    {"cfg_fetch" ,   1,   "Cfg"  , "SAMPLE"               , "fetch from elixir-search/sample_docs" },
+    {"cfg_cat"   ,   1,   "Cfg"  , "COLLECTION"           , "cat config"                           },
+    {"cfg_edit"  ,   1,   "Cfg"  , "COLLECTION"           , "edit config"                          },
+    {"cfg_rm"    ,   1,   "Cfg"  , "COLLECTION"           , "remove config"                        },
+    {"cfg_ls"    ,   0,   "Cfg"  , ""                     , "list configs"                         },
+    {"build"     ,   1,   "Cmd"  , "COLLECTION"           , "build the collection"                 },
+    {"search"    ,   2,   "Cmd"  , "COLLECTION '<query>'" , "search the collection"                },
+    {"results"   ,   0,   "Cmd"  , ""                     , "show results from the last search"    },
+    {"show"      ,   1,   "Cmd"  , "DIOC_N"                , "show text of document <N>"            },
+    {"edit"      ,   1,   "Cmd"  , "DIOC_N"                , "edit document <N>"                    },
+    {"version"   ,   0,   ""     , ""                     , "show installed version"               },
+    {"help"      ,   0,   "Cli"  , ""                     , "this command"                         },
   ]
   @cmd_opts cmd_opts
+
+  # These command options are not included in the CLI 'help' output.
+  alt_opts = [
+    # Cmd      Arity   Module    Argument                 Description
+    {"catalog" ,   1,   "Cmd"  , "COLLECTION"           , "catalog the collection"                   },
+    {"index"   ,   1,   "Cmd"  , "COLLECTION"           , "index the collection"                     },
+    {"info"    ,   1,   "Cmd"  , "COLLECTION"           , "show collection status and statistics"    },
+  ]
+  @alt_opts alt_opts
 
   @doc """
   Route command-line input to the appropriate command.
   """
 
   # generate functions for each cmd_opt
-  for {cmd, len, mod, _args, _detail} <- cmd_opts do
-    {efunc, _} = Code.eval_string("&Searchex.#{mod}.#{cmd}/#{len}")
+  for {cmd, len, mod, _args, _detail} <- cmd_opts ++ alt_opts do
+    modfun = Searchex.Util.Enum.join(["Searchex", mod, cmd], ".")
+    {efunc, _} = Code.eval_string("&#{modfun}/#{len}")
     @cmd  cmd
     @func efunc
     case len do
@@ -49,6 +61,7 @@ defmodule Searchex.Cli do
     end
   end
 
+  # These are valid commands, but are not included in the CLI 'help' output.
   def route(["all_commands"]), do: all_commands()   # used for tab-completion...
   def route(["cfg_commands"]), do: cfg_commands()   # used for tab-completion...
   def route(["completion"])  , do: completion()     # used for tab-completion...

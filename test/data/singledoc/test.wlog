@@ -1,8 +1,8 @@
 Title: Week beginning 12-05-14
 # MON 12-05-14
 ## 0215 - RoadMap
-DONE: be able to rebuild everything from scratch
-DONE: add Monit monitoring
+DIONE: be able to rebuild everything from scratch
+DIONE: add Monit monitoring
 []
 ## 1515 - Notes
 Solved:
@@ -35,14 +35,14 @@ Other:
 ---
 # WED 12-05-16
 ## 0800 - Notes
-DONE: fixed split-screen hotkey on ison
-DONE: found google spreadsheet libraries on github
-DONE: found ghost - a replacement for vhost
-DONE: added ad-blockers to dev machines
-DONE: modified tmux - removed screen delete confirmation
-DONE: incorporate ghost into capistrano
+DIONE: fixed split-screen hotkey on ison
+DIONE: found google spreadsheet libraries on github
+DIONE: found ghost - a replacement for vhost
+DIONE: added ad-blockers to dev machines
+DIONE: modified tmux - removed screen delete confirmation
+DIONE: incorporate ghost into capistrano
 
-DONE: make a tmux console
+DIONE: make a tmux console
 mgmt apps: (app-specific vs systemwide)
 - monit
 - collectd/visage
@@ -50,8 +50,8 @@ mgmt apps: (app-specific vs systemwide)
 ---
 # THU 12-05-17
 ## 0500 - Next Steps
-DONE: solve tmux multi-connect
-DONE: make a ssh console (link to monit, visage etc.)
+DIONE: solve tmux multi-connect
+DIONE: make a ssh console (link to monit, visage etc.)
 []
 ## 1545 - Recap
 - got tmux multi-connect working
@@ -59,13 +59,13 @@ DONE: make a ssh console (link to monit, visage etc.)
 - fixed some capistrano bugs
 []
 ## 1815 - Nginx / Console
-DONE: work out the nginx permissions
-DONE: make sure upstart is restarted properly
-DONE: add application logging
-DONE: get flex going end-to-end (port numbers)
+DIONE: work out the nginx permissions
+DIONE: make sure upstart is restarted properly
+DIONE: add application logging
+DIONE: get flex going end-to-end (port numbers)
 []
 ## 2315 - Next steps
-DONE: install postgres
+DIONE: install postgres
 []
 ---
 # FRI 12-05-18
@@ -79,7 +79,7 @@ DONE: install postgres
 - valkyrie
 []
 ## 1445 - Next Steps
-DONE: get flex database working...
+DIONE: get flex database working...
 []
 ## 1500 - Backup Strategy
 - Valkyrie end-to-end
@@ -99,7 +99,7 @@ Question: does  Valkyrie merge or overwrite?
 ---
 # SUN 12-05-20
 ## 1645 - Big Upgrade
-DONE: new vx base box - avb1204
+DIONE: new vx base box - avb1204
 []
 ## 2245 - Tweak tool
 gconftool-2 --set /apps/metacity/general/button_layout --type string "menu:minimize,maximize,close"

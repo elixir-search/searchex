@@ -26,4 +26,12 @@ defmodule Searchex.Util.String do
     |> Base.encode16
     |> String.downcase
   end
+
+  def empty?(string) do
+    String.length(string) == 0
+  end
+
+  def present?(string) do
+    ! empty?(string)
+  end
 end

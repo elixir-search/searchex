@@ -5,13 +5,13 @@
 
 %% These variables are expected for a proper Okapi BM25 implementation,
 %% but for this demo it doesn't matter much if kept constant
--define(TOTAL_DOCUMENTS, 100).
--define(AVERAGE_DOCUMENT_TOKEN_LENGTH, 100).
--define(DOCUMENT_TOKEN_LENGTH, 100).
+-define(TOTAL_DIOCUMENTS, 100).
+-define(AVERAGE_DIOCUMENT_TOKEN_LENGTH, 100).
+-define(DIOCUMENT_TOKEN_LENGTH, 100).
 
 %% See the Zope implementation description for a discussion of these tuning constants.
 -define(TERM_FREQUENCE_TUNING_FACTOR, 1.2).
--define(DOCUMENT_LENGTH_TUNING_PARAM, 0.72).
+-define(DIOCUMENT_LENGTH_TUNING_PARAM, 0.72).
 
 document_scores(Terms, DocumentMatches, MatchesPerTermAndDocument) ->
     lists:reverse(
@@ -19,8 +19,8 @@ document_scores(Terms, DocumentMatches, MatchesPerTermAndDocument) ->
                                                     DocumentId,
                                                     DocumentMatches,
                                                     MatchesPerTermAndDocument,
-                                                    ?AVERAGE_DOCUMENT_TOKEN_LENGTH,
-                                                    ?TOTAL_DOCUMENTS)}
+                                                    ?AVERAGE_DIOCUMENT_TOKEN_LENGTH,
+                                                    ?TOTAL_DIOCUMENTS)}
                         || DocumentId <- unique_document_ids(DocumentMatches)])).
 
 document_score(Terms, DocumentId, DocumentMatches, MatchesPerTermAndDocument, AverageDocumentLength, TotalNumberOfDocuments) ->
@@ -33,7 +33,7 @@ document_score(Terms, DocumentId, DocumentMatches, MatchesPerTermAndDocument, Av
 				    term_document_score(
 				      MatchCount,
 				      number_of_documents_with_term( Term, DocumentMatches),
-				      avarage_document_length( ?DOCUMENT_TOKEN_LENGTH, AverageDocumentLength),
+				      avarage_document_length( ?DIOCUMENT_TOKEN_LENGTH, AverageDocumentLength),
 				      TotalNumberOfDocuments)
 			    end,
 			    Terms
@@ -68,4 +68,4 @@ term_frequency( NumberTimesTermAppearsInDocument, AverageDocumentLength) ->
     (NumberTimesTermAppearsInDocument * ( ?TERM_FREQUENCE_TUNING_FACTOR + 1)) / (NumberTimesTermAppearsInDocument + AverageDocumentLength * ?TERM_FREQUENCE_TUNING_FACTOR ).
 
 avarage_document_length( DocumentLengthInWords, AverageDocumentLenghtInWords) ->
-    (1 - ?DOCUMENT_LENGTH_TUNING_PARAM) + ?DOCUMENT_LENGTH_TUNING_PARAM * DocumentLengthInWords/AverageDocumentLenghtInWords.
+    (1 - ?DIOCUMENT_LENGTH_TUNING_PARAM) + ?DIOCUMENT_LENGTH_TUNING_PARAM * DocumentLengthInWords/AverageDocumentLenghtInWords.

@@ -102,8 +102,12 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 - [x] Simple CLI
 - [ ] Additional document examples
 - [ ] Faceted Search
+- [ ] Server mode
 - [ ] Streaming document ingestion
+- [ ] Filesystem watcher
 - [ ] Alerting
+- [ ] Phoenix integration
+- [ ] Vim and Emacs plugins
 
 ## GitHub Source
 
