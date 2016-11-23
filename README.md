@@ -52,14 +52,16 @@ things like:
 
 ## The Searchex CLI
 
-A `searchex` command-line program can be used to manage config files, catalogs
-and indexes, and to perform searches.
+A `searchex` command-line program can manage config files, build catalogs and
+indexes, and perform searches.
 
 ### Escript Installation
 
 If you have Elixir 1.3+ enter this at the console:
 
 <pre><sub>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</sub></pre>
+
+Make sure `~/.mix/escripts` is on your path!
 
 ### Tab Completion
 
