@@ -2,6 +2,10 @@
 
 A full-text search engine written in pure Elixir.
 
+The goals: a CLI is simple as grep or awk, an API that can reliably handle the
+biggest search problems. BEAM, OTP, GenStage and Flow gives us the best
+possible foundation on which to build. 
+
 This application is UNDER CONSTRUCTION - not yet ready for use.
 
 ## About Searchex
@@ -44,20 +48,29 @@ things like:
 - meta-data fields definitions and extraction regexes
 - document separator regex (for multi-doc files)
 
-## Using Searchex
+## The Searchex CLI
 
 A `searchex` command-line program can be used to manage config files, catalogs
 and indexes, and to perform searches.
 
-There is an API that Elixir developers can use to embed Searchex into their
-applications.
+### Escript Installation
 
-## Why Erlang/Elixir
+If you have Elixir 1.3+ enter this at the console:
 
-Text indexing and search can be incredibly compute intensive, and benefit
-massively from the concurrent/distributed capabilities of the BEAM.
+<pre><sub>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</sub></pre>
 
-# Package Installation
+### Tab Completion
+
+Get a tab-completion script by typing `searchex completion`
+
+To install: copy this script to `/etc/bash_completion.d` (or equivalent)
+
+     $ searchex completion > /etc/bash_completion.d/searchex_completion.bash
+     $ chmod a+rx /etc/bash_completion.d/searchex_completion.bash
+
+## The Searchex API
+
+Elixir developers can embed Searchex into their applications.
 
 Add `searchex` to your list of dependencies in `mix.exs`:
 
@@ -69,20 +82,7 @@ end
 
 Then run `mix deps.get`
 
-## Escript Installation
-
-If you have Elixir 1.3+ enter this at the console:
-
-<pre><sub>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</sub></pre>
-
-## Tab Completion
-
-Get a tab-completion script by typing `searchex completion`
-
-To install: copy this script to `/etc/bash_completion.d` (or equivalent)
-
-     $ searchex completion > /etc/bash_completion.d/searchex_completion.bash
-     $ chmod a+rx /etc/bash_completion.d/searchex_completion.bash
+API documentation at https://hexdocs.pm/searchex
 
 ## Roadmap
 
@@ -90,7 +90,7 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
 - [ ] Simple CLI
-- [ ] Additional document examples
+- [ ] Repository for Sample Docs
 - [ ] Faceted Search
 - [ ] Server mode
 - [ ] Streaming document ingestion
@@ -99,6 +99,6 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
 - [ ] Phoenix integration
 - [ ] Vim and Emacs plugins
 
-## GitHub Source
+## Links
 
-<https://github.com/elixir-search/searchex> 
+GitHub Source: <https://github.com/elixir-search/searchex> 
