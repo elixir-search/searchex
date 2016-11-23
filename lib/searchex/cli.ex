@@ -27,8 +27,8 @@ defmodule Searchex.Cli do
     {"build"     ,   1,   "Cmd"  , "COLLECTION"           , "build the collection"                 },
     {"search"    ,   2,   "Cmd"  , "COLLECTION '<query>'" , "search the collection"                },
     {"results"   ,   0,   "Cmd"  , ""                     , "show results from the last search"    },
-    {"show"      ,   1,   "Cmd"  , "DIOC_N"                , "show text of document <N>"            },
-    {"edit"      ,   1,   "Cmd"  , "DIOC_N"                , "edit document <N>"                    },
+    {"show"      ,   1,   "Cmd"  , "DOC_N"                , "show text of document <N>"            },
+    {"edit"      ,   1,   "Cmd"  , "DOC_N"                , "edit document <N>"                    },
     {"version"   ,   0,   ""     , ""                     , "show installed version"               },
     {"help"      ,   0,   "Cli"  , ""                     , "this command"                         },
   ]
