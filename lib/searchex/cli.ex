@@ -18,7 +18,7 @@ defmodule Searchex.Cli do
   # descriptions are all included in the CLI 'help' output.
   cmd_opts = [
     # Cmd        Arity   Module    Argument                 Description
-    {"cfg_new"   ,   1,   "Cfg"  , "PATH"                 , "new config for PATH"                  },
+    {"cfg_new"   ,   1,   "Cfg"  , "TARGET_PATH"          , "new config for TARGET_PATH"           },
     {"cfg_fetch" ,   1,   "Cfg"  , "SAMPLE"               , "fetch from elixir-search/sample_docs" },
     {"cfg_cat"   ,   1,   "Cfg"  , "COLLECTION"           , "cat config"                           },
     {"cfg_edit"  ,   1,   "Cfg"  , "COLLECTION"           , "edit config"                          },
