@@ -2,13 +2,13 @@
 
 A full-text search engine written in pure Elixir.
 
-The goals: a CLI as simple as grep or awk, an API that can scale to the
-biggest search problems. 
+The goals: a CLI simple as grep, an API that scales to the biggest search
+problems. 
 
 BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
 build. 
 
-This application is UNDER CONSTRUCTION - not yet ready for use.
+Searchex is UNDER CONSTRUCTION - not yet ready for use.
 
 ## About Searchex
 
@@ -40,7 +40,7 @@ two main elements:
 1. the `CATALOG`, a table-like structure that contains the document ID,
 meta-data, and document location.
 
-2. the `INDEX`, an inverted index that is built for fast search and retrieval
+2. the `INDEX`, an inverted index built for fast search and retrieval
 
 Each collection is defined by a `CONFIG` file, a yaml file that specifies
 things like:
