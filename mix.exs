@@ -1,7 +1,7 @@
 defmodule Searchex.Mixfile do
   use Mix.Project
 
-  @version "0.0.1-alpha.1"
+  @version "0.0.1-alpha.2"
 
   def project do
     [
@@ -36,7 +36,7 @@ defmodule Searchex.Mixfile do
     [
       {:yaml_elixir, "~> 1.1"               },
       {:table_rex  , "~> 0.8"               },
-      {:stem_ex    , "~> 0.0.1"             },
+      {:stem_ex    , "~> 0.0.2"             },
       {:ex_guard   , "~> 1.1.1", only: :dev },
       {:ex_doc     , "~> 0.14" , only: :dev },
       {:credo      , "~> 0.4"  , only: :dev }
