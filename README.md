@@ -2,9 +2,11 @@
 
 A full-text search engine written in pure Elixir.
 
-The goals: a CLI is simple as grep or awk, an API that can reliably handle the
-biggest search problems. BEAM, OTP, GenStage and Flow gives us the best
-possible foundation on which to build. 
+The goals: a CLI as simple as grep or awk, an API that can scale to the
+biggest search problems. 
+
+BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
+build. 
 
 This application is UNDER CONSTRUCTION - not yet ready for use.
 
@@ -96,9 +98,15 @@ API documentation at https://hexdocs.pm/searchex
 - [ ] Streaming document ingestion
 - [ ] Filesystem watcher
 - [ ] Alerting
+- [ ] Configuration GUI
 - [ ] Phoenix integration
 - [ ] Vim and Emacs plugins
 
 ## Links
 
+Searchex Website: <https://searchex.org>
 GitHub Source: <https://github.com/elixir-search/searchex> 
+Sample Document Repository: <https://github.com/elixir-search/sample_docs>
+StemEx: <https://github.com/elixir-search/stem_ex>
+Hex Package: <https://hex.pm/packages/searchex>
+API Documentation: <https://hexdocs.pm/searchex>
