@@ -104,9 +104,9 @@ API documentation at https://hexdocs.pm/searchex
 
 ## Links
 
-Searchex Website: <https://searchex.org>
-GitHub Source: <https://github.com/elixir-search/searchex> 
-Sample Document Repository: <https://github.com/elixir-search/sample_docs>
-StemEx: <https://github.com/elixir-search/stem_ex>
-Hex Package: <https://hex.pm/packages/searchex>
-API Documentation: <https://hexdocs.pm/searchex>
+- Searchex Website: <https://searchex.org>
+- GitHub Source: <https://github.com/elixir-search/searchex> 
+- Sample Document Repository: <https://github.com/elixir-search/sample_docs>
+- StemEx: <https://github.com/elixir-search/stem_ex>
+- Hex Package: <https://hex.pm/packages/searchex>
+- API Documentation: <https://hexdocs.pm/searchex>
