@@ -84,16 +84,6 @@ To install: copy this script to `/etc/bash_completion.d` (or equivalent)
      $ searchex completion > /etc/bash_completion.d/searchex_completion.bash
      $ chmod a+rx /etc/bash_completion.d/searchex_completion.bash
 
-## Comparables and Reference Docs
-
-* <http://blog.equanimity.nl/blog/2011/10/07/a-basic-full-text-search-server-in-erlang/>
-
-* <http://stackoverflow.com/questions/195809/is-it-possible-to-develop-a-powerful-web-search-engine-using-erlang-mnesia-ya>
-
-* <https://github.com/tmaciejewski/see>
-
-* <http://himmele.blogspot.com/2011/04/build-your-own-internet-search-engine.html>
-
 ## Roadmap
 
 - [x] Config management 
