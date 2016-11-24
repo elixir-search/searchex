@@ -2,8 +2,8 @@ defmodule Searchex do
 
   @moduledoc "Application metadata"
 
-  @doc "App version"
+  @doc "Return the application version"
   def version do
-    "TBD"
+    {:ok, Searchex.Util.App.version}
   end
 end

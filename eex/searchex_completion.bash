@@ -23,7 +23,7 @@ _searchex() {
       unset words[0]
       local cmd="${words[1]}"
       if [[ " $(searchex cfg_commands) " =~ "$cmd" ]] ; then
-        local completions=$(searchex ls)
+        local completions=$(searchex cfg_ls)
         COMPREPLY=( $(compgen -W "$completions" -- "$word") )
       fi
       ;;

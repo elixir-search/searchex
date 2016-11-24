@@ -104,6 +104,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Phoenix integration
 - [ ] Vim and Emacs plugins
 - [ ] Internationalization
+- [ ] Dockerization
 
 ## Links
 

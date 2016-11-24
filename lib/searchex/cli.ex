@@ -14,12 +14,10 @@ defmodule Searchex.Cli do
   end
   
   # List of command options.  The command should be the same as the function
-  # name.  Argument and Description are used to generate help text.  The command
-  # descriptions are all included in the CLI 'help' output.
+  # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd        Arity   Module    Argument                 Description
     {"cfg_new"   ,   1,   "Cfg"  , "TARGET_PATH"          , "new config for TARGET_PATH"           },
-    {"cfg_fetch" ,   1,   "Cfg"  , "SAMPLE"               , "fetch from elixir-search/sample_docs" },
     {"cfg_cat"   ,   1,   "Cfg"  , "COLLECTION"           , "cat config"                           },
     {"cfg_edit"  ,   1,   "Cfg"  , "COLLECTION"           , "edit config"                          },
     {"cfg_rm"    ,   1,   "Cfg"  , "COLLECTION"           , "remove config"                        },
@@ -36,18 +34,20 @@ defmodule Searchex.Cli do
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd      Arity   Module    Argument                 Description
-    {"catalog" ,   1,   "Cmd"  , "COLLECTION"           , "catalog the collection"                   },
-    {"index"   ,   1,   "Cmd"  , "COLLECTION"           , "index the collection"                     },
-    {"info"    ,   1,   "Cmd"  , "COLLECTION"           , "show collection status and statistics"    },
+    # Cmd          Arity   Module    Argument        Description
+    {"cfg_fetch"   ,   1,   "Cfg"  , "SAMPLE"      , "fetch from elixir-search/sample_docs" },
+    {"catalog"     ,   1,   "Cmd"  , "COLLECTION"  , "catalog the collection"                   },
+    {"index"       ,   1,   "Cmd"  , "COLLECTION"  , "index the collection"                     },
+    {"info"        ,   1,   "Cmd"  , "COLLECTION"  , "show collection status and statistics"    },
+    {"all_commands",   0,   "Cli"  , " "           , "used for tab completion - lists all cmds" },
+    {"cfg_commands",   0,   "Cli"  , " "           , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"  , " "           , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
-  @doc """
-  Route command-line input to the appropriate command.
-  """
+  # ----------------------------------------------------------------------------------------------------
 
-  # generate functions for each cmd_opt
+  # Generate route functions for each command option
   for {cmd, len, mod, _args, _detail} <- cmd_opts ++ alt_opts do
     modfun = Searchex.Util.Enum.join(["Searchex", mod, cmd], ".")
     {efunc, _} = Code.eval_string("&#{modfun}/#{len}")
@@ -55,21 +55,18 @@ defmodule Searchex.Cli do
     @func efunc
     case len do
       0 -> def route([@cmd])               , do: @func.()
-      1 -> def route([@cmd, col_name])     , do: @func.(col_name) 
+      1 -> def route([@cmd, col_name])     , do: @func.(col_name)
       2 -> def route([@cmd, col_name, qry]), do: @func.(col_name, qry)
       _ -> raise("ERROR Bad Option Data (#{cmd}/#{len})")
     end
   end
 
-  # These are valid commands, but are not included in the CLI 'help' output.
-  def route(["all_commands"]), do: all_commands()   # used for tab-completion...
-  def route(["cfg_commands"]), do: cfg_commands()   # used for tab-completion...
-  def route(["completion"])  , do: completion()     # used for tab-completion...
-
-  def route([])  , do: help 
+  def route([])  , do: help
   def route(argv), do: error(argv)
 
-  @doc "Generate a help message"
+  # ----------------------------------------------------------------------------------------------------
+
+  # Generate a help message
   def help() do
     tfunc = fn({cmd, _len, _mod, args, detail}) -> {"#{prog} #{cmd} #{args}", "# #{detail}"} end
     tmp   = Enum.map @cmd_opts, tfunc
@@ -85,18 +82,13 @@ defmodule Searchex.Cli do
     {:ok, value}
   end
 
-  @doc "Write the installed version to stdout"
-  def version, do: {:ok, [prog_version()]}
-
-  @doc "Show the tab-completion script"
+  # Show the tab-completion script
   def completion do
     @completion_script
   end
 
-  # -------------------------------------------------------------------
-
   # List all commands - used for tab-completion
-  defp all_commands do
+  def all_commands do
     cmds = @cmd_opts
     |> Enum.map(fn({cmd, _arity, _module, _arg, _desc}) -> cmd end)
     |> Enum.join("\n")
@@ -104,7 +96,7 @@ defmodule Searchex.Cli do
   end
 
   # List commands that take the name of an existing config - used for tab-completion
-  defp cfg_commands do
+  def cfg_commands do
     cmds = @cmd_opts
     |> Enum.filter(fn({cmd, arity, _module, _arg, _desc}) -> cmd != "new" && arity > 0 end)
     |> Enum.map(fn({cmd, _arity, _module, _arg, _desc}) -> cmd end)
@@ -112,7 +104,13 @@ defmodule Searchex.Cli do
     {:ok, cmds}
   end
 
-  # -----
+  # For testing...
+  def command_list_for_testing do
+    @cmd_opts ++ @alt_opts
+    |> Enum.map(&(elem(&1,0)))
+  end
+
+  # ----------------------------------------------------------------------------------------------------
 
   # Render command output to stdout
   defp render({:ok})       , do: {:ok}
@@ -126,8 +124,8 @@ defmodule Searchex.Cli do
   defp lcl_puts(string) do
     Searchex.Util.IO.puts string
   end
-  
-  # -----
+
+  # ----------------------------------------------------------------------------------------------------
 
   defp prog         , do: Searchex.Util.App.name
 

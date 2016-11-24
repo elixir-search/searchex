@@ -3,7 +3,7 @@ defmodule Searchex.Cfg do
   @moduledoc """
   Manage Searchex configurations.
   
-  A configuration is stored in a yaml file under `~/.searchex`.
+  A configuration is stored in a yaml file under `~/.searchex/cfgs`.
   """
 
   alias Searchex.Util.IO, as: DIO
@@ -14,11 +14,16 @@ defmodule Searchex.Cfg do
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
   @doc "Create a new config"
-  # TODIO: CHANGE TO PATH INDEXING...
-  def cfg_new(cfg_name) do
-    make_cfg_dir()
+  # TODO: CHANGE TO PATH INDEXING...
+
+  # test to see that the path exists
+  # extract the config name
+  # test to see that the config does not exist
+  # create the config
+  def cfg_new(path) do
+    make_active_dirs()
     cond do
-      cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
+      cfg_dir_exists?(path)       -> {:error, cfg_name_invalid_msg(cfg_name)}
       cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
       true                        -> create_cfg(cfg_name)
     end
@@ -47,7 +52,7 @@ defmodule Searchex.Cfg do
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
   def cfg_edit(cfg_name) do
-    make_cfg_dir()
+    make_active_dirs()
     cond do
       missing_editor?()           -> {:error, missing_editor_msg()}
       missing_terminal?()         -> {:error, missing_terminal_msg()}
@@ -69,8 +74,8 @@ defmodule Searchex.Cfg do
 
   @doc "List the configs"
   def cfg_ls do
-    make_cfg_dir()
-    {files, _code} = System.cmd("ls", [], cd: cfg_dir())
+    make_active_dirs()
+    {files, _code} = System.cmd("ls", [], cd: active_dirs.cfgs)
     output = files
              |> String.split("\n")
              |> Enum.filter(&(Regex.match?(~r/yml$/, &1)))
@@ -89,20 +94,39 @@ defmodule Searchex.Cfg do
 
   # ---------------------------------------------------------------
 
-  # Use separate configs for tests...
-  defp cfg_dir do
+  defp base_dirs do
+    %{
+      cfgs: "~/.searchex/cfgs"   ,
+      docs: "~/.searchex/docs"   ,
+      data: "~/.searchex/data"   ,
+      temp: "~/.searchex/temp"
+    }
+  end
+
+  defp test_dirs do
+    %{
+      cfgs: "test/data/configs"   ,
+      docs: "/tmp/searchex_test/docs"    ,
+      data: "/tmp/searchex_test/data"    ,
+      temp: "/tmp/searchex_test/temp"
+    }
+  end
+
+  defp active_dirs do
     case Mix.env do
-      :test -> @test_cfg_dir
-      _     -> @base_cfg_dir
+      :test -> test_dirs
+      _     -> base_dirs
     end
-    |> Path.expand
+    |> Enum.reduce(%{}, fn({k,v}, acc) -> Map.merge(acc, %{k => Path.expand(v)}) end )
   end
 
   defp cfg_file(cfg_name) do
-    cfg_dir() <> "/" <> cfg_name <> ".yml"
+    active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
   end
 
-  defp make_cfg_dir(), do: System.cmd("mkdir", ["-p", cfg_dir()])
+  defp make_active_dirs() do
+    System.cmd("mkdir", ["-p"] ++ Map.values(active_dirs))
+  end
 
   # -----
 
@@ -117,12 +141,19 @@ defmodule Searchex.Cfg do
     {:ok}
   end
 
+#  defp default_settings(col_name, doc_root) do
+#
+#  end
+
   defp edit_cfg(cfg_name) do
     System.cmd(terminal(), ["-x", editor(), cfg_file(cfg_name)])
     {:ok}
   end
 
   # -----
+
+  defp cfg_dir_exists_msg(path), do:
+  "Path does not exist (#{path})"
 
   defp cfg_exists_msg(cfg_name), do:
   "Config already exists (#{cfg_name})"
@@ -149,6 +180,10 @@ defmodule Searchex.Cfg do
   defp terminal(), do: System.get_env("TERMINAL")
 
   # -----
+
+  defp cfg_dir_exists?(path)      , do: File.dir?(path)
+
+  defp cfg_dir_absent?(path)      , do: ! cfg_dir_exists?(path)
 
   defp cfg_name_valid?(cfg_name)  , do: ! Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name) # no punct or ws
 
