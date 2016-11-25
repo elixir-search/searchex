@@ -34,12 +34,13 @@ defmodule Searchex.Mixfile do
 
   defp deps do
     [
-      {:yaml_elixir, "~> 1.1"               },
-      {:table_rex  , "~> 0.8"               },
-      {:stem_ex    , "~> 0.0.1"             },
-      {:ex_guard   , "~> 1.1.1", only: :dev },
-      {:ex_doc     , "~> 0.14" , only: :dev },
-      {:credo      , "~> 0.4"  , only: :dev }
+      {:yaml_elixir, "~> 1.1"                                },
+      {:table_rex  , "~> 0.8"                                },
+      {:stem_ex    , "~> 0.0.1"                              },
+      {:dio        , git: "https://github.com/andyl/dio.git" },
+      {:ex_guard   , "~> 1.1.1", only: :dev                  },
+      {:ex_doc     , "~> 0.14" , only: :dev                  },
+      {:credo      , "~> 0.4"  , only: :dev                  }
     ]
   end
 

@@ -38,4 +38,11 @@ defmodule Searchex.CmdTest do
       assert result != nil
     end
   end
+
+  describe "#query" do
+    test "single word search" do
+      result = Searchex.Cmd.search("test", "monit")
+      assert result != nil
+    end
+  end
 end

@@ -35,13 +35,14 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity   Module    Argument        Description
-    {"cfg_fetch"   ,   1,   "Cfg"  , "SAMPLE"      , "fetch from elixir-search/sample_docs" },
-    {"catalog"     ,   1,   "Cmd"  , "COLLECTION"  , "catalog the collection"                   },
-    {"index"       ,   1,   "Cmd"  , "COLLECTION"  , "index the collection"                     },
-    {"info"        ,   1,   "Cmd"  , "COLLECTION"  , "show collection status and statistics"    },
-    {"all_commands",   0,   "Cli"  , " "           , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"  , " "           , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"  , " "           , "renders the completion script"            },
+    {"query"       ,   2,   "Cmd"  , "COLLECTION '<query>'", "alias for search"                         },
+    {"cfg_fetch"   ,   1,   "Cfg"  , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
+    {"catalog"     ,   1,   "Cmd"  , "COLLECTION"          , "catalog the collection"                   },
+    {"index"       ,   1,   "Cmd"  , "COLLECTION"          , "index the collection"                     },
+    {"info"        ,   1,   "Cmd"  , "COLLECTION"          , "show collection status and statistics"    },
+    {"all_commands",   0,   "Cli"  , " "                   , "used for tab completion - lists all cmds" },
+    {"cfg_commands",   0,   "Cli"  , " "                   , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"  , " "                   , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 

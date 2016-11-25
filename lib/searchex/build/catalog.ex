@@ -2,7 +2,7 @@ defmodule Searchex.Build.Catalog do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DIO
+#  alias Searchex.Util.IO, as: DIO
   
   @scan %Searchex.Build.Catalog.Scan{}
 
@@ -22,7 +22,6 @@ defmodule Searchex.Build.Catalog do
   end
 
   def read_or_generate(params) do
-    DIO.inspect ROG: params
     if Searchex.Build.Catalog.Cache.stale?(params) do
       # generate from scratch
       params

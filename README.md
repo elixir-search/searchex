@@ -63,15 +63,6 @@ If you have Elixir 1.3+ enter this at the console:
 
 Make sure `~/.mix/escripts` is on your path!
 
-### Tab Completion
-
-Get a tab-completion script by typing `searchex completion`
-
-To install: copy the completion script to `/etc/bash_completion.d` (or equivalent)
-
-     $ searchex completion > /etc/bash_completion.d/searchex_completion.bash
-     $ chmod a+rx /etc/bash_completion.d/searchex_completion.bash
-
 ## The Searchex API
 
 Elixir developers can embed Searchex into their applications.
@@ -96,6 +87,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Simple CLI
 - [ ] Repository for Sample Docs
 - [ ] Faceted Search
+- [ ] CLI Tab Completion
 - [ ] Server mode
 - [ ] Streaming document ingestion
 - [ ] Filesystem watcher

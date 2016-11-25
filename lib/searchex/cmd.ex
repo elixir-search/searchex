@@ -8,17 +8,11 @@ defmodule Searchex.Cmd do
   defp catalog_int(cfg_name) do
     DIO.puts "CATALOG #{cfg_name}"
     cfg_name
-    |> DIO.label(:A)
     |> Searchex.Cfg.cfg_cat
-    |> DIO.label(:B)
     |> Searchex.Cfg.to_map
-    |> DIO.inspect(label: :C)
     |> Searchex.Util.Map.atomify_keys
-    |> DIO.inspect(label: :D)
     |> Searchex.Build.Catalog.Params.create_from_cfg
-    |> DIO.inspect(label: :E)
     |> Searchex.Build.Catalog.read_or_generate
-    |> DIO.label(:F)
   end
 
   def catalog(cfg_name) do
@@ -51,6 +45,10 @@ defmodule Searchex.Cmd do
     String.split(query)
     |> Searchex.KeywordSer.do_query
     {:ok}
+  end
+
+  def query(cfg_name, query) do
+    search(cfg_name, query)
   end
 
   def results do
