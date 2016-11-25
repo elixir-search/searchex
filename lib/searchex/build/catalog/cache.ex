@@ -2,8 +2,6 @@ defmodule Searchex.Build.Catalog.Cache do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DIO
-
   @compile_time System.cmd("date", ["+%Y %m %d %H %M %S"])
 
   @doc "Write catalog to output file"
@@ -23,8 +21,6 @@ defmodule Searchex.Build.Catalog.Cache do
 
   def stale?(params) do
     path = cache_file(params)
-    DIO.inspect params: params
-    DIO.inspect path: path
     if File.exists?(path) do
       {time, _} = @compile_time
       ctime = time |> String.split |> Enum.map(&String.to_integer/1)

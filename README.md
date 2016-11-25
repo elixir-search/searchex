@@ -98,6 +98,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Vim and Emacs plugins
 - [ ] Internationalization
 - [ ] Dockerization
+- [ ] Baysean/ML Classifiers
 
 ## Links
 

@@ -3,8 +3,6 @@ defmodule Searchex.Cmd do
   Run Searchex commands
   """
  
-  alias Searchex.Util.IO, as: DIO
-
   defp catalog_int(cfg_name) do
     DIO.puts "CATALOG #{cfg_name}"
     cfg_name

@@ -4,8 +4,6 @@ defmodule Searchex.KeywordSer do
 
   use GenServer
 
-  alias Searchex.Util.IO, as: DIO
-
   @doc """
   Start KeywordSer
 

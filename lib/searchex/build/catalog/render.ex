@@ -2,8 +2,6 @@
 
     @moduledoc false
 
-#    alias Searchex.Util.IO, as: DIO
-
     def to_console(scan) do
       case Mix.env do
         :test -> scan

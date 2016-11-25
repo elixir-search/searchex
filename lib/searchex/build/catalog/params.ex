@@ -2,8 +2,6 @@ defmodule Searchex.Build.Catalog.Params do
 
   @moduledoc false
 
-#  alias Searchex.Util.IO, as: DIO
-
   @date_reg ~r/(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])/
 
   defstruct collection:  ""                               ,

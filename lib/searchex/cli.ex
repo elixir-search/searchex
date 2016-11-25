@@ -123,7 +123,7 @@ defmodule Searchex.Cli do
   defp render(_val), do: lcl_puts "ERROR: RENDER FAILURE"
 
   defp lcl_puts(string) do
-    Searchex.Util.IO.puts string
+    DIO.puts string
   end
 
   # ----------------------------------------------------------------------------------------------------

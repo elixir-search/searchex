@@ -2,11 +2,8 @@ defmodule Searchex.Util.Map do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DIO
-
   def atomify_keys(map) do
     Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{atomify(k) => v}) end)
-    |> DIO.inspect
   end
 
   defp atomify(ele) do

@@ -2,8 +2,6 @@ defmodule Searchex.Build.Catalog do
 
   @moduledoc false
 
-#  alias Searchex.Util.IO, as: DIO
-  
   @scan %Searchex.Build.Catalog.Scan{}
 
   def create_from_scan(scan) do

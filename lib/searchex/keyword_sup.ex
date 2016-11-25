@@ -2,8 +2,6 @@ defmodule Searchex.KeywordSup do
 
   @moduledoc false
 
-  alias Searchex.Util.IO, as: DIO
-
   use Supervisor
 
   @doc """

@@ -6,8 +6,6 @@ defmodule Searchex.Cfg do
   A configuration is stored in a yaml file under `~/.searchex/cfgs`.
   """
 
-  alias Searchex.Util.IO, as: DIO
-
   @base_cfg_dir "~/.searchex/cfgs"
   @test_cfg_dir "test/data/configs"
 
