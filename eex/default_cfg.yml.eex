@@ -1,12 +1,9 @@
 ---
-collection: <%= col_name %>
-docsep:     <%= docsep %>
-file_types: <%= file_types %>
-field_defs:
-  date:
-    regex: "/(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])/"
-    default: "NA"
-doc_dirs:
-  - <%= docroot %>
-
-
+collection:  "<%= cfg_name %>"
+file_types:  [<%= file_types %>]
+max_numdocs: <%= max_numdocs %>
+max_doc_kb:  <%= max_doc_kb  %>
+cli_style:   "<%= cli_style %>"
+docsep:      "<%= docsep %>"
+field_defs:  
+doc_dirs:    [<%= docroot %>]

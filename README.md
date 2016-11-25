@@ -99,6 +99,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Server mode
 - [ ] Streaming document ingestion
 - [ ] Filesystem watcher
+- [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
 - [ ] Alerting
 - [ ] Configuration GUI
 - [ ] Phoenix integration

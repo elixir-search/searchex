@@ -14,18 +14,14 @@ defmodule Searchex.Cfg do
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
   @doc "Create a new config"
-  # TODO: CHANGE TO PATH INDEXING...
-
-  # test to see that the path exists
-  # extract the config name
-  # test to see that the config does not exist
-  # create the config
   def cfg_new(path) do
+    full_path = Path.expand(path)
+    cfg_name  = String.split(full_path, "/") |> List.last
     make_active_dirs()
     cond do
-      cfg_dir_exists?(path)       -> {:error, cfg_name_invalid_msg(cfg_name)}
+      cfg_dir_absent?(full_path)  -> {:error, cfg_dir_missing_msg(path)}
       cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
-      true                        -> create_cfg(cfg_name)
+      true                        -> create_cfg(cfg_name, full_path)
     end
   end
 
@@ -135,15 +131,35 @@ defmodule Searchex.Cfg do
     {:ok, str}
   end
 
-  defp create_cfg(cfg_name) do
-    {:ok, text} = @default_cfg
-    File.write(cfg_file(cfg_name), text)
+  defp create_cfg(cfg_name, root_path) do
+    File.write(cfg_file(cfg_name), default_cfg_text(cfg_name, root_path))
     {:ok}
   end
 
-#  defp default_settings(col_name, doc_root) do
-#
-#  end
+  defp default_cfg_text(cfg_name, docroot) do
+    {:ok, text} = @default_cfg
+    EEx.eval_string(text, cfg_options(docroot: docroot, cfg_name: cfg_name))
+  end
+
+  defp cfg_options(new_opts) do
+    types = ~w(txt md json xml js rb java ex exs cfg toml)
+    default_opts = [
+      cfg_name:        "TBD"            ,   # the name of the config (collection?)
+      file_types:      quotify(types)   ,   # file types
+      docroot:         Path.expand("~") ,
+      max_numdocs:     1000             ,
+      max_doc_kb:      100              ,
+      docsep:          "NNNN"           ,
+      cli_style:       "TBD"            ,
+    ]
+    Keyword.merge(default_opts, new_opts)
+  end
+  
+  defp quotify(array_of_string) do
+    array_of_string
+    |> Enum.map(&("\"#{&1}\""))
+    |> Enum.join(", ")
+  end
 
   defp edit_cfg(cfg_name) do
     System.cmd(terminal(), ["-x", editor(), cfg_file(cfg_name)])
@@ -152,7 +168,7 @@ defmodule Searchex.Cfg do
 
   # -----
 
-  defp cfg_dir_exists_msg(path), do:
+  defp cfg_dir_missing_msg(path), do:
   "Path does not exist (#{path})"
 
   defp cfg_exists_msg(cfg_name), do:

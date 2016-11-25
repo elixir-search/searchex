@@ -4,7 +4,7 @@ defmodule Searchex.Build.Index.Cache do
 
   @compile_time System.cmd("date", ["+%Y %m %d %H %M %S"])
 
-#  alias Searchex.Util.IO, as: DIO
+ alias Searchex.Util.IO, as: DIO
 
   @doc "Write index to output file"
   def write_index(scan) do
