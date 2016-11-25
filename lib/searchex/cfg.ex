@@ -42,7 +42,7 @@ defmodule Searchex.Cfg do
 
   @doc """
   Launch an editor to update a config.  NOTE: you must define environment
-  variables `EDITOR` and `TERMINAL`.  This will not work over SSH.
+  variables `EDITOR`.  This will only work with TMUX.
 
   This needs fixing.  See this thread for more info:
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
@@ -51,8 +51,7 @@ defmodule Searchex.Cfg do
     make_active_dirs()
     cond do
       missing_editor?()           -> {:error, missing_editor_msg()}
-      missing_terminal?()         -> {:error, missing_terminal_msg()}
-      connected_via_ssh?()        -> {:error, connected_via_ssh_msg(cfg_name)}
+      connected_without_tmux?()   -> {:error, connected_without_tmux_msg(cfg_name)}
       cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
       cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)}
       true                        -> edit_cfg(cfg_name)
@@ -162,7 +161,7 @@ defmodule Searchex.Cfg do
   end
 
   defp edit_cfg(cfg_name) do
-    System.cmd(terminal(), ["-x", editor(), cfg_file(cfg_name)])
+    System.cmd "tmux", ["split-window", "vim", cfg_file(cfg_name)]
     {:ok}
   end
 
@@ -182,6 +181,9 @@ defmodule Searchex.Cfg do
 
   defp connected_via_ssh_msg(cfg_name), do:
   "Can't launch editor over SSH.  Run `#{editor()} #{cfg_file(cfg_name)}`"
+
+  defp connected_without_tmux_msg(cfg_name), do:
+  "Can't launch editor without TMUX.  Run `#{editor()} #{cfg_file(cfg_name)}`"
 
   defp missing_editor_msg(), do:
   "No EDITOR defined - put `export EDITOR=<editor>` in your `.bashrc`"
@@ -210,6 +212,10 @@ defmodule Searchex.Cfg do
   defp cfg_missing?(cfg_name)     , do: ! cfg_exists?(cfg_name)
 
   defp connected_via_ssh?()       , do: System.get_env("SSH_CLIENT") != nil
+
+  defp connected_using_tmux?()    , do: System.get_env("TMUX") != nil
+
+  defp connected_without_tmux?()  , do: ! connected_using_tmux?
 
   defp has_editor?()              , do: editor() != nil
 
