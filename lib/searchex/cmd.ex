@@ -37,7 +37,8 @@ defmodule Searchex.Cmd do
   end
 
   def results do
-    {:ok, "RESULTS : UNDER CONSTRUCTION"}
+    Searchex.Search.Cache.read_results
+    |> Searchex.Search.Results.render
   end
 
   def show(_docnum) do

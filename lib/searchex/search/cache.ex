@@ -6,7 +6,7 @@ defmodule Searchex.Search.Cache do
   def write_results({catalog, results}) do
     DIO.inspect :SAVE
     path   = cache_file
-    string = :erlang.term_to_binary(results)
+    string = :erlang.term_to_binary({catalog, results})
     File.write(path, string)
     {catalog, results}
   end
@@ -38,10 +38,10 @@ defmodule Searchex.Search.Cache do
     base_dir <> "/results.dat"
   end
 
-  defp path_time(path) do
-    epath = Path.expand(path)
-    {:ok, info} = File.stat(epath, time: :local)
-    {{a,b,c},{d,e,f}} = Map.get(info, :mtime)
-    [a,b,c,d,e,f]
-  end
+#  defp path_time(path) do
+#    epath = Path.expand(path)
+#    {:ok, info} = File.stat(epath, time: :local)
+#    {{a,b,c},{d,e,f}} = Map.get(info, :mtime)
+#    [a,b,c,d,e,f]
+#  end
 end
