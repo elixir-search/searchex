@@ -28,7 +28,7 @@ defmodule Searchex.Build.Catalog.Scan do
     rows    = docs
               |> Enum.with_index(1)
               |> Enum.map(&row_data(&1, fields))
-    {opts[:title], ["Setid"] ++ headers, rows}
+    {opts[:title], ["ID"] ++ headers, rows}
   end
 
   # ---------------------------------------------------------------------------------------------
@@ -40,9 +40,6 @@ defmodule Searchex.Build.Catalog.Scan do
   end
 
   defp row_data({doc, idx}, headers) do
-    DIO.inspect IDXX: idx
-    DIO.inspect DOCX: doc
-    DIO.inspect HDRX: headers
     [idx] ++ Enum.map headers, &row_item(doc, &1)
   end
 
