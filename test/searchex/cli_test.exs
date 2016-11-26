@@ -10,7 +10,6 @@ defmodule Searchex.CliTest do
       @cmd cmd
       test "with '#{@cmd}'" do
         var = is_tuple(Searchex.Cli.main([@cmd]))
-        IO.inspect {@cmd, var, Searchex.Cli.main([@cmd])}
         refute var == true
       end
     end  
