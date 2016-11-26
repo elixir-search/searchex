@@ -36,18 +36,18 @@ defmodule Searchex.Cmd do
   end
 
   def info(_cfg_name) do
-    DIO.puts "INFO : UNDER CONSTRUCTION"
+    {:ok, "INFO: UNDER CONSTRUCTION"}
   end
 
   defp search_int(cfg_name, query) do
     DIO.puts "SEARCH #{cfg_name} #{query}"
     {index_int(cfg_name), query}
     |> Searchex.Search.do_query
-    |> Searchex.Search.Cache.write_results 
+    |> Searchex.Search.Cache.write_results
     |> Searchex.Search.Results.render
   end
 
-  defp search(cfg_name, query) do
+  def search(cfg_name, query) do
     search_int(cfg_name, query)
     {:ok}
   end
@@ -57,15 +57,15 @@ defmodule Searchex.Cmd do
   end
 
   def results do
-    DIO.puts "RESULTS : UNDER CONSTRUCTION"
+    {:ok, "RESULTS : UNDER CONSTRUCTION"}
   end
 
   def show(_docnum) do
-    DIO.puts "SHOW : UNDER CONSTRUCTION"
+    {:ok, "SHOW : UNDER CONSTRUCTION"}
   end
 
   def edit(_docnum) do
-    DIO.puts "EDIT : UNDER CONSTRUCTION"
+    {:ok, "EDIT : UNDER CONSTRUCTION"}
   end
 end
 

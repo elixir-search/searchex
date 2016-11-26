@@ -9,7 +9,9 @@ defmodule Searchex.CliTest do
     for cmd <- @cmd_list do
       @cmd cmd
       test "with '#{@cmd}'" do
-        assert is_tuple(Searchex.Cli.main([@cmd])) != true
+        var = is_tuple(Searchex.Cli.main([@cmd]))
+        IO.inspect {@cmd, var, Searchex.Cli.main([@cmd])}
+        refute var == true
       end
     end  
 
