@@ -114,13 +114,11 @@ defmodule Searchex.Cli do
   # ----------------------------------------------------------------------------------------------------
 
   # Render command output to stdout
-  defp render({:ok})       , do: {:ok}
-  defp render({:ok   , []}), do: {:ok}
   defp render({:ok   , str}) when is_binary(str), do: lcl_puts str
   defp render({:error, str}) when is_binary(str), do: lcl_puts str
   defp render({:ok   , list}), do: lcl_puts Enum.join(list, "\n")
   defp render({:error, list}), do: lcl_puts Enum.join(list, "\n")
-  defp render(_val), do: lcl_puts "ERROR: RENDER FAILURE"
+  defp render(_val), do: {:ok}
 
   defp lcl_puts(string) do
     DIO.puts string
