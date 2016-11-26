@@ -34,9 +34,7 @@ defmodule Searchex.KeywordSer do
   def do_query(terms) when is_list(terms) do
     doc_matches = gen_doc_matches(terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
-    res = Searchex.Search.Query.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
-    DIO.inspect :RESULTS
-    DIO.inspect res
+    Searchex.Search.Query.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
   end
 
   def gen_doc_matches(terms) do

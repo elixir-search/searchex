@@ -8,7 +8,8 @@ defmodule Searchex.Build.Catalog.Params do
             docsep:      ~r/---/                          ,
             doc_dirs:    [ ]                              ,
             file_types:  [ ]                              ,
-            field_defs:  %{}
+            field_defs:  %{}                              ,
+            cli_format:  %{}
 
   def create_from_cfg(config) do
     new_config = %{config | docsep: ~r/(\n---\n)|(\n\*\*\n)/}

@@ -22,10 +22,13 @@ defmodule Searchex.Build.Catalog.Scan do
   end
 
   @doc "Generate table data from the scan"
-  def table_data(scan, opts \\ [title: "Collection", headers: ~w(filename doclength docstart body)]) do
-    headers = Enum.map opts[:headers], &clean_header(&1)
-    rows    = Enum.map scan.docs, &row_data(&1, opts[:headers])
-    {opts[:title], headers, rows}
+  def table_data(docs, opts \\ [title: "Collection", fields: ~w(filename doclength docstart body)]) do
+    fields  = ~w(docid) ++ opts[:fields]
+    headers = Enum.map fields, &clean_header(&1)
+    rows    = docs
+              |> Enum.with_index(1)
+              |> Enum.map(&row_data(&1, fields))
+    {opts[:title], ["Setid"] ++ headers, rows}
   end
 
   # ---------------------------------------------------------------------------------------------
@@ -36,8 +39,11 @@ defmodule Searchex.Build.Catalog.Scan do
     |> String.capitalize
   end
 
-  defp row_data(doc, headers) do
-    Enum.map headers, &row_item(doc, &1)
+  defp row_data({doc, idx}, headers) do
+    DIO.inspect IDXX: idx
+    DIO.inspect DOCX: doc
+    DIO.inspect HDRX: headers
+    [idx] ++ Enum.map headers, &row_item(doc, &1)
   end
 
   defp row_item(doc, <<"f:" , field_name::binary>>) do

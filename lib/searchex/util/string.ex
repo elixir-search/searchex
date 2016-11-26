@@ -24,6 +24,7 @@ defmodule Searchex.Util.String do
   def signature(string) do
     :crypto.hash(:sha, string)
     |> Base.encode16
+    |> String.slice(0,5)
     |> String.downcase
   end
 

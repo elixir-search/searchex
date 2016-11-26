@@ -4,6 +4,15 @@ defmodule Searchex.Build.Catalog do
 
   @scan %Searchex.Build.Catalog.Scan{}
 
+  def assemble(cfg_name) do
+    cfg_name
+    |> Searchex.Cfg.cfg_cat
+    |> Searchex.Cfg.to_map
+    |> Searchex.Util.Map.atomify_keys
+    |> Searchex.Build.Catalog.Params.create_from_cfg
+    |> Searchex.Build.Catalog.read_or_generate
+  end
+
   def create_from_scan(scan) do
     Searchex.Util.File.ls_r(scan.params.doc_dirs, scan.params.file_types)
     |> Enum.reduce(scan, fn(file, acc) -> create_from_scan(acc, file) end)
@@ -21,13 +30,11 @@ defmodule Searchex.Build.Catalog do
 
   def read_or_generate(params) do
     if Searchex.Build.Catalog.Cache.stale?(params) do
-      # generate from scratch
       params
       |> Searchex.Build.Catalog.Scan.create_from_params
       |> Searchex.Build.Catalog.create_from_scan
       |> Searchex.Build.Catalog.Cache.write_catalog
     else
-      # read from cache
       Searchex.Build.Catalog.Cache.read_catalog(params)
     end
   end
