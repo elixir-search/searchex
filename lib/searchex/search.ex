@@ -1,5 +1,6 @@
 defmodule Searchex.Search do
   def do_query({catalog, query}) do
-    {catalog, String.split(query) |> Searchex.KeywordSer.do_query}
+    new_catalog = Map.merge(catalog, %{query: query})
+    {new_catalog, String.split(query) |> Searchex.KeywordSer.do_query}
   end
 end

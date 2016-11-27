@@ -28,6 +28,7 @@ defmodule Searchex.Cmd do
     DIO.puts "SEARCH #{cfg_name} #{query}"
     {index(cfg_name), query}
     |> Searchex.Search.do_query
+    |> Searchex.Search.Results.filter
     |> Searchex.Search.Cache.write_results
     |> Searchex.Search.Results.render
   end
@@ -41,12 +42,15 @@ defmodule Searchex.Cmd do
     |> Searchex.Search.Results.render
   end
 
-  def show(_docnum) do
-    {:ok, "SHOW : UNDER CONSTRUCTION"}
+  def show(idnum) do
+    results = elem(Searchex.Search.Cache.read_results,0)
+    DIO.inspect results, color: "blue"
+    DIO.inspect DIO.type(results), color: "yellow"
+    {:ok, "SHOW : UNDER CONSTRUCTION #{idnum}"}
   end
 
-  def edit(_docnum) do
-    {:ok, "EDIT : UNDER CONSTRUCTION"}
+  def edit(idnum) do
+    {:ok, "EDIT : UNDER CONSTRUCTION #{idnum}"}
   end
 end
 

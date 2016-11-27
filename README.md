@@ -89,12 +89,17 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] Server mode
-- [ ] Streaming document ingestion
+- [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Filesystem watcher
-- [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
+- [ ] Typeahead support
 - [ ] Alerting
 - [ ] Configuration GUI
+- [ ] Firestorm integration
 - [ ] Phoenix integration
+- [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
+- [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
+- [ ] Community Integration (Elixir Slack, Elixir Forum)
+- [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
 - [ ] Vim and Emacs plugins
 - [ ] Internationalization
 - [ ] Dockerization

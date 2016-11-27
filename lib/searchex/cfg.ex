@@ -177,23 +177,15 @@ defmodule Searchex.Cfg do
   defp cfg_name_invalid_msg(cfg_name), do:
   "Invalid config name (#{cfg_name})"
 
-  defp connected_via_ssh_msg(cfg_name), do:
-  "Can't launch editor over SSH.  Run `#{editor()} #{cfg_file(cfg_name)}`"
-
   defp connected_without_tmux_msg(cfg_name), do:
   "Can't launch editor without TMUX.  Run `#{editor()} #{cfg_file(cfg_name)}`"
 
   defp missing_editor_msg(), do:
   "No EDITOR defined - put `export EDITOR=<editor>` in your `.bashrc`"
 
-  defp missing_terminal_msg(), do:
-  "No TERMINAL defined - put `export TERMINAL=<terminal>` in your `.bashrc`"
-
   # -----
 
   defp editor()  , do: System.get_env("EDITOR")
-
-  defp terminal(), do: System.get_env("TERMINAL")
 
   # -----
 
@@ -209,8 +201,6 @@ defmodule Searchex.Cfg do
 
   defp cfg_missing?(cfg_name)     , do: ! cfg_exists?(cfg_name)
 
-  defp connected_via_ssh?()       , do: System.get_env("SSH_CLIENT") != nil
-
   defp connected_using_tmux?()    , do: System.get_env("TMUX") != nil
 
   defp connected_without_tmux?()  , do: ! connected_using_tmux?
@@ -218,9 +208,5 @@ defmodule Searchex.Cfg do
   defp has_editor?()              , do: editor() != nil
 
   defp missing_editor?()          , do: ! has_editor?()
-
-  defp has_terminal?()            , do: terminal() != nil
-
-  defp missing_terminal?()        , do: ! has_terminal?()
 
 end
