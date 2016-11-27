@@ -2,6 +2,8 @@ defmodule Searchex.Util.App do
 
   @moduledoc false
 
+  use ExMake
+
   @doc """
   Return the application version
 
@@ -43,6 +45,12 @@ defmodule Searchex.Util.App do
   """
   def name do
     Atom.to_string(symbol)
+  end
+
+  # --- ExMake Callbacks -----------------------------------------------------------------
+
+  def handle_chain({:compile_timestamp}) do
+    {:ok, compile_timestamp}
   end
 end
 

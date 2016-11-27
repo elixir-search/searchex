@@ -18,18 +18,6 @@ defmodule Searchex.Search.Cache do
     :erlang.binary_to_term(string)
   end
 
-#  def stale?(params) do
-#    idx_path  = cache_file(params, "idx")
-#    cat_path  = cache_file(params, "cat")
-#    {time, _} = "TBD"
-#    ctime     = time |> String.split |> Enum.map(&String.to_integer/1)
-#    if File.exists?(idx_path) do
-#      path_time(idx_path) < Enum.max([path_time(cat_path), ctime])
-#    else
-#      true
-#    end
-#  end
-
   # ----------------------------------------------------
 
   defp cache_file do
@@ -37,11 +25,4 @@ defmodule Searchex.Search.Cache do
     File.mkdir_p!(base_dir)
     base_dir <> "/results.dat"
   end
-
-#  defp path_time(path) do
-#    epath = Path.expand(path)
-#    {:ok, info} = File.stat(epath, time: :local)
-#    {{a,b,c},{d,e,f}} = Map.get(info, :mtime)
-#    [a,b,c,d,e,f]
-#  end
 end
