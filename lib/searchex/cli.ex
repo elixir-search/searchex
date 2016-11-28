@@ -69,17 +69,13 @@ defmodule Searchex.Cli do
 
   # Generate a help message
   def help() do
-    tfunc = fn({cmd, _len, _mod, args, detail}) -> {"#{prog} #{cmd} #{args}", "# #{detail}"} end
-    tmp   = Enum.map @cmd_opts, tfunc
-    maxln = Enum.reduce tmp, 0, fn({first, _last}, acc) -> max(String.length(first), acc) end
-    lines = Enum.map tmp, fn({first, last}) -> "  #{String.pad_trailing(first, maxln)} #{last}" end
-    value = ["""
-
-    #{String.upcase(prog)} VERSION #{prog_version} - NOT READY FOR USE
-    #{Enum.join(lines, "\n")}
-
-    Visit https://github.com/elixir-search/searchex for more info...
-    """]
+    lines = 
+      Enum.map(@cmd_opts, fn({cmd,_,_,args,detail}) -> 
+        [rpad(cmd,10), rpad("|",2), rpad(args,20), "|", detail <> "\n" ] 
+        |> Enum.join(" ") 
+      end)
+    headers = [rpad("Command", 14), rpad("Arguments", 25), "Descriptionn"]
+    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE", <<10>>,headers,<<10>>, lines]
     {:ok, value}
   end
 
@@ -125,6 +121,9 @@ defmodule Searchex.Cli do
   end
 
   # ----------------------------------------------------------------------------------------------------
+
+  def rpad(string, val), do: String.pad_trailing(string, val)
+  def lpad(string, val), do: String.pad_leading(string, val)
 
   defp prog         , do: Searchex.Util.App.name
 
