@@ -97,7 +97,9 @@ defmodule Searchex.Cmd do
     extname  = Path.expand(basename)
     docstart = doc_params.docstart
 #    active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
-     "#{extname}:#{docstart}"
+    # TODO: make the editor start at the right line.
+    # TODO: record line number in 
+     "#{extname}"
   end
 
     defp editor()  , do: System.get_env("EDITOR")

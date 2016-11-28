@@ -8,8 +8,8 @@ defmodule ExMake do
   - processess can create intermediate products which are combined together
   - the goal is to prevent re-generation of intermediate products unless necessary
 
-  Works by comparing timestamps - which are always an array of six integers:
-  `[year, month, day, hour, min, sec]`
+  Works by comparing timestamps - which are always a tuple of six integers:
+  `{{year, month, day}, {hour, min, sec}}`
 
   Example:
 
@@ -76,15 +76,15 @@ defmodule ExMake do
   @doc "Return the current timestamp"
   def timestamp_now do
     {time, _} = System.cmd("date", ["+%Y %m %d %H %M %S"])
-    time |> String.split |> Enum.map(&String.to_integer/1)
+    [y,m,d,hh,mm,ss] = time |> String.split |> Enum.map(&String.to_integer/1)
+    {{y,m,d},{hh,mm,ss}}
   end
 
   @doc "Return a timestamp for a specific filepath"
   def filepath_timestamp(path) do
     epath = Path.expand(path)
     {:ok, info} = File.stat(epath, time: :local)
-    {{a,b,c},{d,e,f}} = Map.get(info, :mtime)
-    [a,b,c,d,e,f]
+    Map.get(info, :mtime)
   end
 
   @doc """
@@ -102,7 +102,7 @@ defmodule ExMake do
   @doc """
   Return a timestamp for a list of directories
 
-  Timestamp is the most recently modified file for all directories.
+  Timestamp is the most recently modified file for all sub-directories.
   """
   def dirlist_timestamp(dirlist) do
     dirlist
@@ -114,7 +114,8 @@ defmodule ExMake do
   @doc "Return a timestamp with the compile time"
   def compile_timestamp do
     {time, _} = @compile_time
-    time |> String.split |> Enum.map(&String.to_integer/1)
+    [y,m,d,hh,mm,ss] = time |> String.split |> Enum.map(&String.to_integer/1)
+    {{y,m,d},{hh,mm,ss}}
   end
 
   defmacro __using__(_opts) do
