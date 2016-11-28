@@ -1,7 +1,7 @@
-defmodule Searchex.Search.Bm25Test do
+defmodule Searchex.Command.Search.Bm25Test do
 
   use ExUnit.Case, async: true
 
-  doctest Searchex.Search.Bm25
+  doctest Searchex.Command.Search.Bm25
 
 end
