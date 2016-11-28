@@ -10,7 +10,11 @@ defmodule Searchex.CliTest do
       @cmd cmd
       test "with '#{@cmd}'" do
         var = is_tuple(Searchex.Cli.main([@cmd]))
-        refute var == true
+        unless Enum.member?(~w(results), @cmd) do
+          refute var == true
+        else
+          assert var == true
+        end
       end
     end  
 
