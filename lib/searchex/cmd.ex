@@ -44,13 +44,85 @@ defmodule Searchex.Cmd do
 
   def show(idnum) do
     results = elem(Searchex.Search.Cache.read_results,0)
-    DIO.inspect results, color: "blue"
-    DIO.inspect DIO.type(results), color: "yellow"
-    {:ok, "SHOW : UNDER CONSTRUCTION #{idnum}"}
+    docs    = results.docs
+    doc     = Enum.at(docs, String.to_integer(idnum))
+    body = doc.body
+    DIO.puts body
+    {:ok}
   end
 
-  def edit(idnum) do
-    {:ok, "EDIT : UNDER CONSTRUCTION #{idnum}"}
+    def edit(idnum) do
+        results = elem(Searchex.Search.Cache.read_results,0)
+        docs    = results.docs
+        doc     = Enum.at(docs, String.to_integer(idnum))
+        DIO.inspect doc, color: "green"
+      cond do
+        missing_editor?()           -> {:error, missing_editor_msg()}
+        connected_without_tmux?()   -> {:error, connected_without_tmux_msg(doc)}
+        true                        -> edit_doc(doc)
+      end
+    end
+
+    defp edit_doc(doc_params) do
+      System.cmd "tmux", ["split-window", "vim", doc_file(doc_params)]
+      {:ok}
+    end
+
+    # -----
+
+#    defp cfg_dir_missing_msg(path), do:
+#    "Path does not exist (#{path})"
+
+#    defp cfg_exists_msg(cfg_name), do:
+#    "Config already exists (#{cfg_name})"
+
+#    defp cfg_missing_msg(cfg_name), do:
+#    "Config not found (#{cfg_name})"
+
+#    defp cfg_name_invalid_msg(cfg_name), do:
+#    "Invalid config name (#{cfg_name})"
+
+    defp connected_without_tmux_msg(doc_params), do:
+    "Can't launch editor without TMUX.  Run `#{editor()} #{doc_file(doc_params)}`"
+
+    defp missing_editor_msg(), do:
+    "No EDITOR defined - put `export EDITOR=<editor>` in your `.bashrc`"
+
+    # -----
+
+
+
+  defp doc_file(doc_params) do
+    basename = doc_params.filename
+    extname  = Path.expand(basename)
+    docstart = doc_params.docstart
+#    active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
+     "#{extname}:#{docstart}"
   end
+
+    defp editor()  , do: System.get_env("EDITOR")
+
+    # -----
+
+#    defp cfg_dir_exists?(path)      , do: File.dir?(path)
+
+#    defp cfg_dir_absent?(path)      , do: ! cfg_dir_exists?(path)
+
+#    defp cfg_name_valid?(cfg_name)  , do: ! Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name) # no punct or ws
+
+#    defp cfg_name_invalid?(cfg_name), do: ! cfg_name_valid?(cfg_name)
+
+#    defp cfg_exists?(cfg_name)      , do: File.exists?(cfg_file(cfg_name))
+
+#    defp cfg_missing?(cfg_name)     , do: ! cfg_exists?(cfg_name)
+
+    defp connected_using_tmux?()    , do: System.get_env("TMUX") != nil
+
+    defp connected_without_tmux?()  , do: ! connected_using_tmux?
+
+    defp has_editor?()              , do: editor() != nil
+
+    defp missing_editor?()          , do: ! has_editor?()
+
 end
 
