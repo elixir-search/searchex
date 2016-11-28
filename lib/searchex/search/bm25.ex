@@ -1,4 +1,4 @@
-defmodule Searchex.Search.Query.Bm25 do
+defmodule Searchex.Search.Bm25 do
 
   @moduledoc false
 
@@ -51,7 +51,7 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Examples
 
-      iex> Searchex.Search.Query.Bm25.term_doc_score(2, 10, 150, 200)
+      iex> Searchex.Search.Bm25.term_doc_score(2, 10, 150, 200)
       0.07362
 
   """
@@ -68,7 +68,7 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Example
 
-      iex> Searchex.Search.Query.Bm25.uniq_doc_ids([{"term1", %{"docid1" => [2,4,5]}}])
+      iex> Searchex.Search.Bm25.uniq_doc_ids([{"term1", %{"docid1" => [2,4,5]}}])
       ["docid1"]
 
   """
@@ -84,7 +84,7 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Examples
 
-      iex> Searchex.Search.Query.Bm25.inverse_doc_freq_of_term(:NA, 0)
+      iex> Searchex.Search.Bm25.inverse_doc_freq_of_term(:NA, 0)
       0
 
   """
@@ -100,10 +100,10 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Examples
 
-      iex> Searchex.Search.Query.Bm25.inverse_doc_freq_of_term(:NA, 0)
+      iex> Searchex.Search.Bm25.inverse_doc_freq_of_term(:NA, 0)
       0
 
-      iex> Searchex.Search.Query.Bm25.inverse_doc_freq_of_term(100, 5)
+      iex> Searchex.Search.Bm25.inverse_doc_freq_of_term(100, 5)
       3.04452
   """
   def inverse_doc_freq_of_term(_, 0) do
@@ -120,10 +120,10 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Examples
 
-      iex> Searchex.Search.Query.Bm25.term_freq(0, :NA)
+      iex> Searchex.Search.Bm25.term_freq(0, :NA)
       0
 
-      iex> Searchex.Search.Query.Bm25.term_freq(5, 20)
+      iex> Searchex.Search.Bm25.term_freq(5, 20)
       0.37931
 
 """
@@ -141,7 +141,7 @@ defmodule Searchex.Search.Query.Bm25 do
 
   ## Example
 
-      iex> Searchex.Search.Query.Bm25.avg_doc_len(20, 40)
+      iex> Searchex.Search.Bm25.avg_doc_len(20, 40)
       0.64
 
   """

@@ -1,4 +1,7 @@
 defmodule Searchex.Search.Results do
+
+  @moduledoc false
+
   def render({catalog, results}) do
     docs   = catalog.docs
     title  = catalog_title(catalog)

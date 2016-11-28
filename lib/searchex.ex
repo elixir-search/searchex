@@ -1,6 +1,6 @@
 defmodule Searchex do
 
-  @moduledoc "Application metadata"
+  @moduledoc "App settings and metadata"
 
   @doc "Return the application version"
   def version do

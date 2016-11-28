@@ -1,6 +1,27 @@
 defmodule Searchex.Cmd do
   @moduledoc """
-  Run Searchex commands
+  Main Searchex workflow
+
+  1. Read Configuration
+  2. Build Catalog
+  3. Build Index
+  4. Perform Query
+
+  This workflow establishes a dependency chain, with higher level steps
+  depending on the outputs of lower level steps.  Each step generates an intermediate
+  output which can be cached to minimize re-execution of compute-intensive steps.
+
+  - Read Configuration generates in-memory state
+  - Build Catalog generates an on-disk cache file (~/.searchex/data/<collection>_cat.dat)
+  - Build Index generates an on-disk cache file (~/.searchex/data/<collection>_idx.dat)
+  - Perform Query generates a results file (~/.searchex/temp/results.dat)
+
+  The overall dependency tree starts with on-disk assets:
+
+  [config file | document directories | executable compile date ] < Read Configuration
+  < Build Index < Perform Query
+
+  The `Cmd` system uses the Elixir behavior `ExMake` to manage the dependency chain.
   """
 
   def catalog(cfg_name) do
