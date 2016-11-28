@@ -98,7 +98,7 @@ defmodule Searchex.Cmd do
     docstart = doc_params.docstart
 #    active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
     # TODO: make the editor start at the right line.
-    # TODO: record line number in 
+    # TODO: record line number in
      "#{extname}"
   end
 
