@@ -22,7 +22,7 @@ defmodule Searchex do
 
   defp base_settings do
     %{
-      cfgs: "~/.Searchex.Configs"   ,
+      cfgs: "~/.searchex/cfgs"   ,
       docs: "~/.searchex/docs"   ,
       data: "~/.searchex/data"   ,
       temp: "~/.searchex/temp"

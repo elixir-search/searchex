@@ -68,14 +68,14 @@ defmodule Searchex.Cli do
   # ----------------------------------------------------------------------------------------------------
 
   # Generate a help message
-  def help() do
+  def help do
     lines = 
       Enum.map(@cmd_opts, fn({cmd,_,_,args,detail}) -> 
-        [rpad(cmd,10), rpad("|",2), rpad(args,20), "|", detail <> "\n" ] 
+        [rpad(cmd,8), rpad("|",1), rpad(args,20), "|", detail <> "\n" ]
         |> Enum.join(" ") 
       end)
-    headers = [rpad("Command", 14), rpad("Arguments", 25), "Descriptionn"]
-    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE", <<10>>,headers,<<10>>, lines]
+    headers = [rpad("Command", 11), rpad("Arguments", 23), "Description"]
+    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines]
     {:ok, value}
   end
 
@@ -117,7 +117,7 @@ defmodule Searchex.Cli do
   defp render(_val), do: {:ok}
 
   defp lcl_puts(string) do
-    DIO.puts string
+    unless Searchex.Util.String.empty?(string), do: DIO.puts string
   end
 
   # ----------------------------------------------------------------------------------------------------
