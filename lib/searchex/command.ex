@@ -76,7 +76,7 @@ defmodule Searchex.Command do
   Search the collection
   """
   def search(cfg_name, query) do
-    Searchex.Command.Search.exec(cfg_name, query)
+    {:ok, Searchex.Command.Search.exec(cfg_name, query)}
   end
 
   @doc """

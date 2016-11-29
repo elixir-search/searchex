@@ -15,6 +15,14 @@ defmodule Searchex.Config.Helpers do
     active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
   end
 
+  def cat_file(cfg_name) do
+    active_dirs.data <> "/" <> cfg_name <> "_cat.yml"
+  end
+
+  def idx_file(cfg_name) do
+    active_dirs.data <> "/" <> cfg_name <> "_idx.yml"
+  end
+
   def make_active_dirs() do
     System.cmd("mkdir", ["-p"] ++ Map.values(active_dirs))
   end
@@ -34,6 +42,8 @@ defmodule Searchex.Config.Helpers do
   "Invalid config name (#{cfg_name})"
 
   # -----
+
+  def cfg
 
   def cfg_dir_exists?(path)      , do: File.dir?(path)
 

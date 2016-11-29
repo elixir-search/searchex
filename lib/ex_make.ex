@@ -7,9 +7,16 @@ defmodule ExMake do
   - multiple processes are joined together in a dependency chain
   - processess can create intermediate products which are combined together
   - the goal is to prevent re-generation of intermediate products unless necessary
+  - maintain compatibility with Elixir's concurrent / distributed features
 
-  Works by comparing timestamps - which are always a tuple of six integers:
+  ExMake works by comparing timestamps - which are always a tuple of six integers:
   `{{year, month, day}, {hour, min, sec}}`
+
+  For more precision, add milliseconds (thousandths of a second)
+  to your timestamp, like this:
+  `{{year, month, day}, {hour, min, sec, msec}}`
+
+  Important: `year` should always be four digits!!
 
   Example:
 

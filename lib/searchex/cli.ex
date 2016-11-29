@@ -23,7 +23,7 @@ defmodule Searchex.Cli do
     {"search"    ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                },
     {"results"   ,   0,   "Render"   , ""                     , "show results from the last search"    },
     {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                      },
-    {"edit"      ,   1,   "Display"  , "ID"                   , "edit ID"                              },
+    {"edit"      ,   1,   "Render"   , "ID"                   , "edit ID"                              },
     {"version"   ,   0,   ""         , ""                     , "show installed version"               },
     {"help"      ,   0,   "Cli"      , ""                     , "this command"                         },
   ]
@@ -32,7 +32,7 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity      Module       Argument               Description
-    {"query"       ,   2,   "Display"  , "COLLECTION '<query>'", "alias for search"                         },
+    {"query"       ,   2,   "Render"   , "COLLECTION '<query>'", "alias for search"                         },
     {"cfg_fetch"   ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
     {"catalog"     ,   1,   "Command"  , "COLLECTION"          , "catalog the collection"                   },
     {"index"       ,   1,   "Command"  , "COLLECTION"          , "index the collection"                     },

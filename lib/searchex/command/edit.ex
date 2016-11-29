@@ -9,7 +9,6 @@ defmodule Searchex.Command.Edit do
     results = elem(Searchex.Command.Search.Cache.read_results,0)
     docs    = results.docs
     doc     = Enum.at(docs, String.to_integer(idnum))
-    DIO.inspect doc, color: "green"
     cond do
       missing_editor?()           -> {:error, missing_editor_msg()}
       connected_without_tmux?()   -> {:error, connected_without_tmux_msg(doc)}

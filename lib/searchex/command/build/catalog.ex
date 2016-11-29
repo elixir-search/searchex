@@ -7,7 +7,7 @@ defmodule Searchex.Command.Build.Catalog do
   def assemble(cfg_name) do
     cfg_name
     |> Searchex.Config.cfg_cat
-    |> Searchex.Config.Util.to_map
+    |> Searchex.Config.Load.to_map
     |> Searchex.Util.Map.atomify_keys
     |> Searchex.Command.Build.Catalog.Params.create_from_cfg
     |> Searchex.Command.Build.Catalog.read_or_generate
