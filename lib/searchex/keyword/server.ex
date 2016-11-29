@@ -1,11 +1,11 @@
-defmodule Searchex.KeywordSer do
+defmodule Searchex.Keyword.Server do
 
   @moduledoc false
 
   use GenServer
 
   @doc """
-  Start KeywordSer
+  Keyword Server
 
   We start one KeywordSer for each keyword in the index.  The state looks like:
 
@@ -101,7 +101,7 @@ defmodule Searchex.KeywordSer do
       is_atom(keyword) -> keyword
       true             -> keyword_server_name(keyword)
     end
-    Process.whereis(name) || Searchex.KeywordSup.add_child_and_return_pid(name)
+    Process.whereis(name) || Searchex.Keyword.Supervisor.add_child_and_return_pid(name)
   end
 
   def find_keyword_server(keyword) do

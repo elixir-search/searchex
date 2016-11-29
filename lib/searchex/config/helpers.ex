@@ -4,7 +4,7 @@ defmodule Searchex.Config.Helpers do
 
   def name_from_path(path) do
       full_path = Path.expand(path)
-      cfg_name  = String.split(full_path, "/") |> List.last
+      _cfg_name  = String.split(full_path, "/") |> List.last
     end
 
     def active_dirs do

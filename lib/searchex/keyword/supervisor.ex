@@ -1,14 +1,14 @@
-defmodule Searchex.KeywordSup do
+defmodule Searchex.Keyword.Supervisor do
 
   @moduledoc false
 
   use Supervisor
 
   @doc """
-  Start KeywordSup
+  Keyword Supervisor
 
   The keyword process tree is used to manage an inverted index for full-text
-  searching.  The application has a single supervisor `Searchex.KeywordSup` and
+  searching.  The application has a single supervisor `Searchex.Keyword.Supervisor` and
   a one worker process for each keyword.
   """
   def start_link do
@@ -22,7 +22,7 @@ defmodule Searchex.KeywordSup do
   is returned if the child already exists.
   """
   def add_child(name) do
-    Supervisor.start_child(__MODULE__, worker(Searchex.KeywordSer, [name], id: name))
+    Supervisor.start_child(__MODULE__, worker(Searchex.Keyword.Server, [name], id: name))
   end
 
   @doc """

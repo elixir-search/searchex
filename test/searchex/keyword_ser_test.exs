@@ -1,8 +1,8 @@
-defmodule Searchex.KeywordSerTest do
+defmodule Searchex.Keyword.ServerTest do
 
   use ExUnit.Case, async: true
 
-  import Searchex.KeywordSer
+  import Searchex.Keyword.Server
 
   describe "#start_link" do
     test "using default name" do
@@ -41,24 +41,24 @@ defmodule Searchex.KeywordSerTest do
     setup :start_supervisor
 
     test "with no words" do
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 0
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 0
     end
 
     test "with one word" do
       get_keyword_server("first")
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
 
     test "with two words" do
       get_keyword_server("first")
       get_keyword_server("second")
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 2
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
     end
 
     test "with a repeat word" do
       get_keyword_server("first")
       get_keyword_server("first")
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
   end
   
@@ -67,31 +67,31 @@ defmodule Searchex.KeywordSerTest do
 
     test "with one word" do
       add_keyword_position("word", 99, 22)
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
 
     test "with words in one document" do
       add_keyword_position("word", 99, 22)
       add_keyword_position("word", 99, 33)
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
 
     test "with different words in one document" do
       add_keyword_position("word", 99, 22)
       add_keyword_position("prole", 99, 33)
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 2
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
     end
 
     test "with words in two documents" do
       add_keyword_position("word", 99, 22)
       add_keyword_position("word", 44, 33)
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
 
     test "with different words in two documents" do
       add_keyword_position("word", 99, 22)
       add_keyword_position("prole", 44, 33)
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 2
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
     end
   end
 
@@ -128,7 +128,7 @@ defmodule Searchex.KeywordSerTest do
   # -----
 
   defp start_supervisor(_) do
-    case Searchex.KeywordSup.start_link do
+    case Searchex.Keyword.Supervisor.start_link do
       {:ok, pid}      -> pid
       {:error, _elem} ->
         #IO.inspect(START_SUP_ERROR_A: elem)

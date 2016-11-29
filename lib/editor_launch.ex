@@ -26,7 +26,7 @@ defmodule EditorLaunch do
   - {:error, "TMUX Not Installed"}
   - {:error, "Unsupported Platform"} - only runs on Linux and Mac
   """
-  def exec(file_path, opts \\ []) do
+  def exec(_file_path, _opts \\ []) do
     "OK"
   end
 end

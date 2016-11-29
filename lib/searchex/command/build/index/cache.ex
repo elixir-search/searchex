@@ -35,7 +35,7 @@ defmodule Searchex.Command.Build.Index.Cache do
   # ----------------------------------------------------
 
   defp otp_to_map do
-    list = Supervisor.which_children(Searchex.KeywordSup)
+    list = Supervisor.which_children(Searchex.Keyword.Supervisor)
     Enum.reduce list, %{}, fn({child, _, _, _}, acc) ->
       vals = GenServer.call(child, :get_ids)
       Map.merge acc, %{child => vals}
@@ -46,15 +46,15 @@ defmodule Searchex.Command.Build.Index.Cache do
     remove_all_otp_children
     Map.keys(map)
     |> Enum.each(fn(key) ->
-          srv = Searchex.KeywordSer.get_keyword_server(key)
-          Searchex.KeywordSer.set_state srv, map[key]
+          srv = Searchex.Keyword.Server.get_keyword_server(key)
+          Searchex.Keyword.Server.set_state srv, map[key]
        end)
   end
 
   defp remove_all_otp_children do
-    list = Supervisor.which_children(Searchex.KeywordSup)
+    list = Supervisor.which_children(Searchex.Keyword.Supervisor)
     Enum.each list, fn({child, _, _, _}) ->
-      Supervisor.delete_child(Searchex.KeywordSup, child)
+      Supervisor.delete_child(Searchex.Keyword.Supervisor, child)
     end
   end
 

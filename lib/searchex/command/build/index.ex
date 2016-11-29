@@ -34,12 +34,12 @@ defmodule Searchex.Command.Build.Index do
 
   def process_word({docid, word, position}) do
     Task.async fn() ->
-      Searchex.KeywordSer.add_keyword_position(word, docid, position)
+      Searchex.Keyword.Server.add_keyword_position(word, docid, position)
     end
   end
 
   defp start_supervisor(_) do
-    case Searchex.KeywordSup.start_link do
+    case Searchex.Keyword.Supervisor.start_link do
       {:ok, pid}      -> pid
       {:error, _elem} ->
         #IO.inspect(START_SUP_ERROR_C: elem)

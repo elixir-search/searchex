@@ -1,15 +1,15 @@
-defmodule Searchex.KeywordSupTest do
+defmodule Searchex.Keyword.SupervisorTest do
 
   use ExUnit.Case, async: true
 
-  import Searchex.KeywordSup
+  import Searchex.Keyword.Supervisor
 
   describe "#start_link" do
     test "using default name" do
       start_supervisor(:init)
-      pid = Process.whereis(Searchex.KeywordSup)
+      pid = Process.whereis(Searchex.Keyword.Supervisor)
       assert is_pid(pid)
-      assert Process.whereis(Searchex.KeywordSup)  == pid
+      assert Process.whereis(Searchex.Keyword.Supervisor)  == pid
       assert Supervisor.count_children(pid).active == 0
     end
 
@@ -24,7 +24,7 @@ defmodule Searchex.KeywordSupTest do
     test "with one child" do
       add_child :asdf
       assert is_pid(Process.whereis(:asdf))
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 1
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
     end
 
     test "with two children" do
@@ -32,12 +32,12 @@ defmodule Searchex.KeywordSupTest do
       add_child :qwer
       assert is_pid(Process.whereis(:asdf))
       assert is_pid(Process.whereis(:qwer))
-      assert Supervisor.count_children(Searchex.KeywordSup).active == 2
+      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
     end
   end
 
   defp start_supervisor(_) do
-    case Searchex.KeywordSup.start_link do
+    case Searchex.Keyword.Supervisor.start_link do
       {:ok, pid}      -> pid
       {:error, _elem} ->
         #IO.inspect(START_SUP_ERROR_B: elem)
