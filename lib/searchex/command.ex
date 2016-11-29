@@ -76,12 +76,7 @@ defmodule Searchex.Command do
   Search the collection
   """
   def search(cfg_name, query) do
-    DIO.puts "SEARCH #{cfg_name} #{query}"
-    {index(cfg_name), query}
-    |> Searchex.Command.Search.do_query
-    |> Searchex.Command.Search.Results.filter
-    |> Searchex.Command.Search.Cache.write_results
-    |> Searchex.Command.Search.Results.render
+    Searchex.Command.Search.exec(cfg_name, query)
   end
 
   @doc """

@@ -8,11 +8,8 @@ defmodule Searchex.Cli do
   Entry point for the `searchex` executable.  Takes a single argument `argv` which
   is a list of command-line options.
   """
-  def main(argv) do
-    route(argv) 
-    |> render
-  end
-  
+  def main(argv), do: route(argv) |> render
+
   # List of command options.  The command should be the same as the function
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
@@ -27,8 +24,8 @@ defmodule Searchex.Cli do
     {"results"   ,   0,   "Render"   , ""                     , "show results from the last search"    },
     {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                      },
     {"edit"      ,   1,   "Display"  , "ID"                   , "edit ID"                              },
-    {"version"   ,   0,   ""     , ""                         , "show installed version"               },
-    {"help"      ,   0,   "Cli"  , ""                         , "this command"                         },
+    {"version"   ,   0,   ""         , ""                     , "show installed version"               },
+    {"help"      ,   0,   "Cli"      , ""                     , "this command"                         },
   ]
   @cmd_opts cmd_opts
 
@@ -133,7 +130,7 @@ defmodule Searchex.Cli do
 
   defp error(argv) do
     str = """
-    ERROR unrecognized command (#{prog} #{Enum.join(argv, " ")})"
+    ERROR unrecognized command (#{prog} #{Enum.join(argv, " ")})
     #{usage_message}
     """
     {:error, str}

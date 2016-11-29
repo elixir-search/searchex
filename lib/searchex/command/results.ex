@@ -7,7 +7,6 @@ defmodule Searchex.Command.Results do
   # - valid cfg
   def exec do
     Searchex.Command.Search.Cache.read_results
-    |> Searchex.Command.Search.Results.render
   end
 
   def handle_chain(_cfg_name) do

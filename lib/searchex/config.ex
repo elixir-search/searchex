@@ -22,13 +22,7 @@ defmodule Searchex.Config do
     Searchex.Config.Cat.exec(cfg_name)
   end
 
-  @doc """
-  Launch an editor to update a config.  NOTE: you must define environment
-  variables `EDITOR`.  This will only work with TMUX.
-
-  This needs fixing.  See this thread for more info:
-  https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
-  """
+  @doc "Return information needed to edit the config"
   def cfg_edit(cfg_name) do
     Searchex.Config.Edit.exec(cfg_name)
   end
