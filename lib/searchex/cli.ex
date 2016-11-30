@@ -8,41 +8,38 @@ defmodule Searchex.Cli do
   Entry point for the `searchex` executable.  Takes a single argument `argv` which
   is a list of command-line options.
   """
-  def main(argv) do
-    route(argv) 
-    |> render
-  end
-  
+  def main(argv), do: route(argv) |> render
+
   # List of command options.  The command should be the same as the function
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
-    # Cmd        Arity   Module    Argument                 Description
-    {"cfg_new"   ,   1,   "Cfg"  , "TARGET_PATH"          , "new config for TARGET_PATH"           },
-    {"cfg_cat"   ,   1,   "Cfg"  , "COLLECTION"           , "cat config"                           },
-    {"cfg_edit"  ,   1,   "Cfg"  , "COLLECTION"           , "edit config"                          },
-    {"cfg_rm"    ,   1,   "Cfg"  , "COLLECTION"           , "remove config"                        },
-    {"cfg_ls"    ,   0,   "Cfg"  , ""                     , "list configs"                         },
-    {"build"     ,   1,   "Cmd"  , "COLLECTION"           , "build the collection"                 },
-    {"search"    ,   2,   "Cmd"  , "COLLECTION '<query>'" , "search the collection"                },
-    {"results"   ,   0,   "Cmd"  , ""                     , "show results from the last search"    },
-    {"show"      ,   1,   "Cmd"  , "ID"                   , "show text of ID"                      },
-    {"edit"      ,   1,   "Cmd"  , "ID"                   , "edit ID"                              },
-    {"version"   ,   0,   ""     , ""                     , "show installed version"               },
-    {"help"      ,   0,   "Cli"  , ""                     , "this command"                         },
+    # Cmd        Arity     Module       Argument                 Description
+    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"           },
+    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                           },
+    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                          },
+    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                        },
+    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                         },
+    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"                 },
+    {"search"    ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                },
+    {"results"   ,   0,   "Render"   , ""                     , "show results from the last search"    },
+    {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                      },
+    {"edit"      ,   1,   "Render"   , "ID"                   , "edit ID"                              },
+    {"version"   ,   0,   ""         , ""                     , "show installed version"               },
+    {"help"      ,   0,   "Cli"      , ""                     , "this command"                         },
   ]
   @cmd_opts cmd_opts
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd          Arity   Module    Argument        Description
-    {"query"       ,   2,   "Cmd"  , "COLLECTION '<query>'", "alias for search"                         },
-    {"cfg_fetch"   ,   1,   "Cfg"  , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Cmd"  , "COLLECTION"          , "catalog the collection"                   },
-    {"index"       ,   1,   "Cmd"  , "COLLECTION"          , "index the collection"                     },
-    {"info"        ,   1,   "Cmd"  , "COLLECTION"          , "show collection status and statistics"    },
-    {"all_commands",   0,   "Cli"  , " "                   , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"  , " "                   , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"  , " "                   , "renders the completion script"            },
+    # Cmd          Arity      Module       Argument               Description
+    {"query"       ,   2,   "Render"   , "COLLECTION '<query>'", "alias for search"                         },
+    {"cfg_fetch"   ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
+    {"catalog"     ,   1,   "Command"  , "COLLECTION"          , "catalog the collection"                   },
+    {"index"       ,   1,   "Command"  , "COLLECTION"          , "index the collection"                     },
+    {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
+    {"all_commands",   0,   "Cli"      , " "                   , "used for tab completion - lists all cmds" },
+    {"cfg_commands",   0,   "Cli"      , " "                   , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"      , " "                   , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
@@ -68,14 +65,14 @@ defmodule Searchex.Cli do
   # ----------------------------------------------------------------------------------------------------
 
   # Generate a help message
-  def help() do
+  def help do
     lines = 
       Enum.map(@cmd_opts, fn({cmd,_,_,args,detail}) -> 
-        [rpad(cmd,10), rpad("|",2), rpad(args,20), "|", detail <> "\n" ] 
+        [rpad(cmd,8), rpad("|",1), rpad(args,20), "|", detail <> "\n" ]
         |> Enum.join(" ") 
       end)
-    headers = [rpad("Command", 14), rpad("Arguments", 25), "Descriptionn"]
-    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE", <<10>>,headers,<<10>>, lines]
+    headers = [rpad("Command", 11), rpad("Arguments", 23), "Description"]
+    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines]
     {:ok, value}
   end
 
@@ -117,7 +114,7 @@ defmodule Searchex.Cli do
   defp render(_val), do: {:ok}
 
   defp lcl_puts(string) do
-    DIO.puts string
+    unless Searchex.Util.String.empty?(string), do: DIO.puts string
   end
 
   # ----------------------------------------------------------------------------------------------------
@@ -133,7 +130,7 @@ defmodule Searchex.Cli do
 
   defp error(argv) do
     str = """
-    ERROR unrecognized command (#{prog} #{Enum.join(argv, " ")})"
+    ERROR unrecognized command (#{prog} #{Enum.join(argv, " ")})
     #{usage_message}
     """
     {:error, str}
