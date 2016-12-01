@@ -46,7 +46,7 @@ defmodule Searchex.Config.Helpers do
   def cfg_name_invalid?(cfg_name) do
     test = Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name)
     err  = {:error, "Invalid config name (#{cfg_name})"}
-    if test, do: {:ok}, else: err
+    unless test, do: {:ok}, else: err
   end
 
   def cfg_exists?(cfg_name) do

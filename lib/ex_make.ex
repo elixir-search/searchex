@@ -209,10 +209,10 @@ defmodule ExMake do
     DIO.inspect [VAL1: validations], color: "GREEN"
     DIO.inspect [VAL2: args], color: "GREEN"
     Enum.reduce validations, {:ok}, fn
-      ({:error, _msg}, {:ok}        ) -> {:error, [:msg]      }
-      ({:error, msg }, {:error, lst}) -> {:error, lst ++ [msg]}
-      ({:ok}         , {:error, lst}) -> {:error, lst         }
-      ({:ok}         , {:ok}        ) -> {:ok}
+      ({:error, msg}, {:ok}        ) -> {:error, [msg]       }
+      ({:error, msg}, {:error, lst}) -> {:error, lst ++ [msg]}
+      ({:ok}        , {:error, lst}) -> {:error, lst         }
+      ({:ok}        , {:ok}        ) -> {:ok}
     end
   end
 
@@ -229,25 +229,33 @@ defmodule ExMake do
   # The `:stale` atom is returned unless all parents are `:fresh`
   # Return vals are in order of `chained parents`.
   defp chain_and_check(children, lcl_ts) when is_list(children) do
-    Enum.reduce children, {:noop, []}, fn
-      ({:error, msg}  , {:error, _tmp}) -> {:error, msg ++ [msg]}
-      ({:error, msg}  , _acc          ) -> {:error, [msg]}
-      ({:ok, _ts}     , {:stale, vlst}) -> {:stale, vlst ++ [nil]}
-      ({:ok, _ts, val}, {:stale, vlst}) -> {:stale, vlst ++ [val]}
-      ({:ok, ts}      , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [nil]}
-      ({:ok, ts, val} , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [val]}
+    DIO.inspect [CHILD: children], color: "BLUE"
+    DIO.inspect [LCLTS: lcl_ts], color: "BLUE"
+    Enum.reduce children, {:fresh, []}, fn
+      ({:error, msg}  , {:error, _tmp}) -> DIO.inspect {:error, msg ++ [msg]}             , color: "RED"
+      ({:error, msg}  , _acc          ) -> DIO.inspect {:error, [msg]}                    , color: "RED"
+      ({:ok, _ts}     , {:stale, vlst}) -> DIO.inspect {:stale, vlst ++ [nil]}            , color: "RED"
+      ({:ok, _ts, val}, {:stale, vlst}) -> DIO.inspect {:stale, vlst ++ [val]}            , color: "RED"
+      ({:ok, ts}      , {:fresh, vlst}) -> DIO.inspect {check(ts, lcl_ts), vlst ++ [nil]} , color: "RED"
+      ({:ok, ts, val} , {:fresh, vlst}) -> DIO.inspect {check(ts, lcl_ts), vlst ++ [val]} , color: "RED"
     end
   end
 
+  defp chain_and_check(child, lcl_timestamp) when is_function(child),
+  do: chain_and_check(child.(), lcl_timestamp)
+
   defp chain_and_check(child, lcl_timestamp),
-    do: chain_and_check([child], lcl_timestamp)
+  do: chain_and_check([child], lcl_timestamp)
 
   @doc false
   # If `child_timestamp` is newer than `lcl_timestamp,
   # return `:stale`, otherwise `:fresh`.
-  defp check(child_timestamp, lcl_timestamp) do
+  defp check(child_timestamp, lcl_timestamp) when is_tuple(lcl_timestamp) do
     if is?(child_timestamp, newer_than: lcl_timestamp),do: :stale, else: :fresh
   end
+
+  defp check(child_timestamp, lcl_timestamp) when is_function(lcl_timestamp),
+  do: check(child_timestamp, lcl_timestamp.())
 
   @doc false
   # Run all chained children.
@@ -257,8 +265,8 @@ defmodule ExMake do
   def perform_action(params, _arg) do
     case chain_and_check(params.children, params.lcl_timestamp) do
       {:error , msg  }  -> {:error, msg}
-      {:fresh , values} -> params.action_when_fresh(values)
-      {:stale , values} -> params.action_when_stale(values)
+      {:fresh , values} -> params.action_when_fresh.(values)
+      {:stale , values} -> params.action_when_stale.(values)
     end
   end
 

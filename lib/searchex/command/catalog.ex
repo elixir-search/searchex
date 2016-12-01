@@ -16,8 +16,8 @@ defmodule Searchex.Command.Catalog do
       validations:       fn -> validations(cfg_name)                   end  ,
       children:          fn -> [newest_child_timestamp(cfg_name)]      end  ,
       lcl_timestamp:     fn -> lcl_timestamp(cfg_name)                 end  ,
-      action_when_fresh: fn -> generate_catalog_from_scratch(cfg_name) end  ,
-      action_when_stale: fn -> load_catalog_from_cache(cfg_name)       end  ,
+      action_when_fresh: fn(vals) -> generate_catalog_from_scratch(cfg_name, vals) end  ,
+      action_when_stale: fn(vals) -> load_catalog_from_cache(cfg_name, vals)       end  ,
     }
   end
 
@@ -32,19 +32,20 @@ defmodule Searchex.Command.Catalog do
 
   defp newest_child_timestamp(cfg_name) do
     params  = gen_params(cfg_name)
-    [
+    stamp = [
       filepath_timestamp(cfg_file(cfg_name))  ,      # timestamp of the cfg file
       dirlist_timestamp(params.doc_dirs)             # newest timestamp of all doc_dirs
     ]
     |> newest
+    {:ok, stamp}
   end
 
-  defp load_catalog_from_cache(cfg_name) do
+  defp load_catalog_from_cache(cfg_name, _vals) do
     gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Cache.read_catalog
   end
 
-  defp generate_catalog_from_scratch(cfg_name) do
+  defp generate_catalog_from_scratch(cfg_name, _vals) do
     gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Scan.create_from_params
     |> Searchex.Command.Build.Catalog.create_from_scan
