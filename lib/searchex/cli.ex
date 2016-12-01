@@ -37,9 +37,10 @@ defmodule Searchex.Cli do
     {"catalog"     ,   1,   "Command"  , "COLLECTION"          , "catalog the collection"                   },
     {"index"       ,   1,   "Command"  , "COLLECTION"          , "index the collection"                     },
     {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
-    {"all_commands",   0,   "Cli"      , " "                   , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"      , " "                   , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"      , " "                   , "renders the completion script"            },
+    {"clean"       ,   0,   "Cli"      , ""                    , "remove all cached assets"                 },
+    {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
+    {"cfg_commands",   0,   "Cli"      , ""                    , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"      , ""                    , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
@@ -102,6 +103,12 @@ defmodule Searchex.Cli do
   def command_list_for_testing do
     @cmd_opts ++ @alt_opts
     |> Enum.map(&(elem(&1,0)))
+  end
+
+  # ----------------------------------------------------------------------------------------------------
+
+  def clean do
+    Searchex.Config.Helpers.clean
   end
 
   # ----------------------------------------------------------------------------------------------------

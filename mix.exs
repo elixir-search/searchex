@@ -9,7 +9,7 @@ defmodule Searchex.Mixfile do
       version: @version,
       elixir:  "~> 1.3",
       escript: [main_module: Searchex.Cli],
-      build_embedded: Mix.env == :prod,
+      build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: description(),
       package:     package(),

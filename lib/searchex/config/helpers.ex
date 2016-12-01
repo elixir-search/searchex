@@ -27,34 +27,35 @@ defmodule Searchex.Config.Helpers do
     System.cmd("mkdir", ["-p"] ++ Map.values(active_dirs))
   end
 
-  # -----
-
-  def cfg_dir_missing_msg(path), do:
-  "Path does not exist (#{path})"
-
-  def cfg_exists_msg(cfg_name), do:
-  "Config already exists (#{cfg_name})"
-
-  def cfg_missing_msg(cfg_name), do:
-  "Config not found (#{cfg_name})"
-
-  def cfg_name_invalid_msg(cfg_name), do:
-  "Invalid config name (#{cfg_name})"
+  def clean do
+    Enum.each [active_dirs.data, active_dirs.temp], fn(x) ->
+      {:ok, files} = File.ls(x)
+      Enum.each files, fn(y) -> IO.puts "#{x}/#{y}" ; File.rm("#{x}/#{y}") end
+    end
+  end
 
   # -----
 
-  def cfg
+  def cfg_invalid?(_cfg_name), do: {:ok}
 
-  def cfg_dir_exists?(path)      , do: File.dir?(path)
+  def cfg_dir_absent?(path) do
+    err = {:error, "Dir does not exist (#{path})"}
+    unless File.dir?(path), do: err, else: {:ok}
+  end
 
-  def cfg_dir_absent?(path)      , do: ! cfg_dir_exists?(path)
+  def cfg_name_invalid?(cfg_name) do
+    test = Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name)
+    err  = {:error, "Invalid config name (#{cfg_name})"}
+    if test, do: {:ok}, else: err
+  end
 
-  def cfg_name_valid?(cfg_name)  , do: ! Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name)
+  def cfg_exists?(cfg_name) do
+    err = {:error, "Config already exists (#{cfg_name})"}
+    if File.exists?(cfg_file(cfg_name)), do: err, else: {:ok}
+  end
 
-  def cfg_name_invalid?(cfg_name), do: ! cfg_name_valid?(cfg_name)
-
-  def cfg_exists?(cfg_name)      , do: File.exists?(cfg_file(cfg_name))
-
-  def cfg_missing?(cfg_name)     , do: ! cfg_exists?(cfg_name)
-
+  def cfg_missing?(cfg_name) do
+    err = {:error, "Config does not exist (#{cfg_name})"}
+    unless File.exists?(cfg_file(cfg_name)), do: err, else: {:ok}
+  end
 end
