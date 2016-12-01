@@ -1,5 +1,5 @@
 defmodule Searchex.Command.Edit do
-  use ExMake
+#  use ExMake
 
   # error checks:
   # - valid cfg_name

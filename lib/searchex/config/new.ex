@@ -10,8 +10,8 @@ defmodule Searchex.Config.New do
       cfg_name = name_from_path(path)
       make_active_dirs()
       cond do
-        cfg_dir_absent?(full_path)  -> {:error, cfg_dir_absent_msg(path)}
-        cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
+#        cfg_dir_absent?(full_path)  -> {:error, cfg_dir_absent_msg(path)}
+#        cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
         true                        -> create_cfg(cfg_name, full_path)
       end
   end

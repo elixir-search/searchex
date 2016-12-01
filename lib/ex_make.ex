@@ -114,8 +114,6 @@ defmodule ExMake do
      %{children: [{:ok, {{2014, 05, 33}}, {{00,00,00}}}]}
    end
    ```
-
-  
   """
 
   @callback handle_chain(tuple) :: map
@@ -189,74 +187,94 @@ defmodule ExMake do
   """
   def oldest(enum), do: Enum.min(enum)
 
+  # -----------------------------------------------------
+  
+  @doc false
+  # default params for `handle_chain`
+  def default_params do
+    %{
+      validations:       []                       ,
+      children:          []                       ,
+      lcl_timestamp:     &timestamp_now/0         ,
+      action_when_fresh: {:ok, &timestamp_now/0}  ,
+      action_when_stale: {:ok, &timestamp_now/0}
+    }
+  end
+
+  @doc false
+  # NOTE: validation functions returns one of:
+  # {:ok}
+  # {:error, msg}
+  def check_validations(validations, args) when is_list(validations) do
+    DIO.inspect [VAL1: validations], color: "GREEN"
+    DIO.inspect [VAL2: args], color: "GREEN"
+    Enum.reduce validations, {:ok}, fn
+      ({:error, _msg}, {:ok}        ) -> {:error, [:msg]      }
+      ({:error, msg }, {:error, lst}) -> {:error, lst ++ [msg]}
+      ({:ok}         , {:error, lst}) -> {:error, lst         }
+      ({:ok}         , {:ok}        ) -> {:ok}
+    end
+  end
+
+  def check_validations(validations, args) when is_function(validations) do
+    DIO.inspect [VAL0: validations], color: "CYAN"
+    check_validations(validations.(), args)
+  end
+
+  @doc false
+  # Takes an array of `chained children`
+  # Returns a tuple
+  # `{:error, [msg]}`, `{:stale, [val]}`, or `{:fresh, [val]}`
+  # An `:error` is returned if only one parent has an error.
+  # The `:stale` atom is returned unless all parents are `:fresh`
+  # Return vals are in order of `chained parents`.
+  defp chain_and_check(children, lcl_ts) when is_list(children) do
+    Enum.reduce children, {:noop, []}, fn
+      ({:error, msg}  , {:error, _tmp}) -> {:error, msg ++ [msg]}
+      ({:error, msg}  , _acc          ) -> {:error, [msg]}
+      ({:ok, _ts}     , {:stale, vlst}) -> {:stale, vlst ++ [nil]}
+      ({:ok, _ts, val}, {:stale, vlst}) -> {:stale, vlst ++ [val]}
+      ({:ok, ts}      , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [nil]}
+      ({:ok, ts, val} , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [val]}
+    end
+  end
+
+  defp chain_and_check(child, lcl_timestamp),
+    do: chain_and_check([child], lcl_timestamp)
+
+  @doc false
+  # If `child_timestamp` is newer than `lcl_timestamp,
+  # return `:stale`, otherwise `:fresh`.
+  defp check(child_timestamp, lcl_timestamp) do
+    if is?(child_timestamp, newer_than: lcl_timestamp),do: :stale, else: :fresh
+  end
+
+  @doc false
+  # Run all chained children.
+  # If there are any errors, return them.
+  # When fresh, perform action (return a cached value)
+  # When stale, perform action (generate a new returned value)
+  def perform_action(params, _arg) do
+    case chain_and_check(params.children, params.lcl_timestamp) do
+      {:error , msg  }  -> {:error, msg}
+      {:fresh , values} -> params.action_when_fresh(values)
+      {:stale , values} -> params.action_when_stale(values)
+    end
+  end
+
   defmacro __using__(_opts) do
     quote do
-      # default params for `handle_chain`
-      defp default_params do
-        %{
-          validations:       []                      ,
-          children:          []                      ,
-          lcl_timestamp:   &(timestamp_now)          ,
-          action_when_fresh: &({:ok, timestamp_now}) ,
-          action_when_stale: &({:ok, timestamp_now})
-        }
-      end
 
-      # NOTE: validation functions returns one of:
-      # {:ok}
-      # {:error, msg}
-      defp check_validations(validations, args) do
-        Enum.reduce validations, {:ok}, fn
-          ({:error, msg}, {:ok}        ) -> {:error, [:msg]      }
-          ({:error, msg}, {:error, lst}) -> {:error, lst ++ [msg]}
-          ({:ok}        , {:error, lst}) -> {:error, lst         }
-          ({:ok}        , {:ok}        ) -> {:ok}
-        end
-      end
-
-      # Takes an array of `chained children`
-      # Returns a tuple
-      # `{:error, [msg]}`, `{:stale, [val]}`, or `{:fresh, [val]}`
-      # An `:error` is returned if only one parent has an error.
-      # The `:stale` atom is returned unless all parents are `:fresh`
-      # Return vals are in order of `chained parents`.
-      defp chain_and_check(children, lcl_ts) when is_list(children) do
-        Enum.reduce children, {:noop, []}, fn
-          ({:error, msg} , {:error, mlst}) -> {:error, msg ++ [msg]}
-          ({:error, msg} , _acc          ) -> {:error, [msg]}
-          ({:ok, ts}     , {:stale, vlst}) -> {:stale, vlst ++ [nil]}
-          ({:ok, ts, val}, {:stale, vlst}) -> {:stale, vlst ++ [val]}
-          ({:ok, ts}     , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [nil]}
-          ({:ok, ts, val}, {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [val]}
-        end
-      end
-
-      defp chain_and_check(child, lcl_timestamp), 
-        do: chain_and_check([child], lcl_timestamp)
-
-      # If `child_timestamp` is newer than `lcl_timestamp,
-      # return `:stale`, otherwise `:fresh`.
-      defp check(child_tstamp, lcl_tstamp) do
-        if is?(child_tstamp, newer_than: lcl_tstamp),do: :stale, else: :fresh
-      end
-
-      # Run all chained children.
-      # If there are any errors, return them.
-      # When fresh, perform action (return a cached value)
-      # When stale, perform action (generate a new returned value)
-      defp perform_action(params, arg) do
-        case chain_and_check(parents, lcl_timestamp) do
-          {:error , msg  }  -> {:error, msg}
-          {:fresh , values} -> params.action_when_fresh(values)
-          {:stale , values} -> params.action_when_stale(values)
-        end
-      end
-
+      @doc false
+      # why is this function defined in the macro?
+      # because it does a callback to `handle_chain`
+      # which is defined in the host method.
       def chain(args) do
-        params = Map.merge(default_params, handle_chain(args))
-        case check_validations(params.validations) do
+        params = Map.merge(ExMake.default_params, handle_chain(args))
+        DIO.inspect [BING: params], color: "BLUE"
+        case DIO.inspect(ExMake.check_validations(params.validations, args), color: "MAGENTA") do
           {:error, msgs} -> {:error, msgs}
-          _              -> perform_action(params, args)
+          _              -> ExMake.perform_action(params, args)
         end
       end
 
