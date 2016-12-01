@@ -128,8 +128,11 @@ defmodule ExMake do
   @doc "Return a timestamp for a specific filepath"
   def filepath_timestamp(path) do
     epath = Path.expand(path)
-    {:ok, info} = File.stat(epath, time: :local)
-    Map.get(info, :mtime)
+    DIO.inspect [EPAZZ: epath], color: "RED"
+    case File.stat(epath, time: :local) do
+      {:ok, info} -> Map.get(info, :mtime)
+      _           -> {{0,0,0},{0,0,0}}
+    end
   end
 
   @doc """
@@ -168,6 +171,8 @@ defmodule ExMake do
       true
   """
   def is?(timestamp, args) do
+    DIO.inspect [TIMEZ1: timestamp], color: "BLUE"
+    DIO.inspect [TIMEZ2: args]     , color: "BLUE"
     cond do
       args[:newer_than] -> timestamp >= args[:newer_than]
       args[:older_than] -> timestamp  < args[:older_than]
@@ -187,24 +192,18 @@ defmodule ExMake do
   """
   def oldest(enum), do: Enum.min(enum)
 
-  # -----------------------------------------------------
-  
-  @doc false
-  # default params for `handle_chain`
-  def default_params do
-    %{
-      validations:       []                       ,
-      children:          []                       ,
-      lcl_timestamp:     &timestamp_now/0         ,
-      action_when_fresh: {:ok, &timestamp_now/0}  ,
-      action_when_stale: {:ok, &timestamp_now/0}
-    }
-  end
+  @doc """
+  Checks a set of validation functions
 
-  @doc false
-  # NOTE: validation functions returns one of:
-  # {:ok}
-  # {:error, msg}
+  If all validation functions pass, return `{:ok}`.
+
+  If one or more validation functions fail, return
+  `{:error, [list of error messages]}`
+
+  NOTE: validation functions returns one of:
+  {:ok}
+  {:error, msg}
+  """
   def check_validations(validations, args) when is_list(validations) do
     DIO.inspect [VAL1: validations], color: "GREEN"
     DIO.inspect [VAL2: args], color: "GREEN"
@@ -219,6 +218,20 @@ defmodule ExMake do
   def check_validations(validations, args) when is_function(validations) do
     DIO.inspect [VAL0: validations], color: "CYAN"
     check_validations(validations.(), args)
+  end
+
+  # -----------------------------------------------------
+
+  @doc false
+  # default params for `handle_chain`
+  def default_params do
+    %{
+      validations:       []                       ,
+      children:          []                       ,
+      lcl_timestamp:     &timestamp_now/0         ,
+      action_when_fresh: {:ok, &timestamp_now/0}  ,
+      action_when_stale: {:ok, &timestamp_now/0}
+    }
   end
 
   @doc false
@@ -243,6 +256,9 @@ defmodule ExMake do
 
   defp chain_and_check(child, lcl_timestamp) when is_function(child),
   do: chain_and_check(child.(), lcl_timestamp)
+
+  defp chain_and_check(child, lcl_timestamp) when is_function(lcl_timestamp),
+  do: chain_and_check(child, lcl_timestamp.())
 
   defp chain_and_check(child, lcl_timestamp),
   do: chain_and_check([child], lcl_timestamp)

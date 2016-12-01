@@ -36,10 +36,11 @@ defmodule Searchex.Config.Helpers do
 
   # -----
 
+  # TODO: add a test to check validity of config file...
   def cfg_invalid?(_cfg_name), do: {:ok}
 
-  def cfg_dir_absent?(path) do
-    err = {:error, "Dir does not exist (#{path})"}
+  def cfg_dir_absent?(path \\ Searchex.settings.cfgs) do
+    err = {:error, "Config dir does not exist (#{path})"}
     unless File.dir?(path), do: err, else: {:ok}
   end
 

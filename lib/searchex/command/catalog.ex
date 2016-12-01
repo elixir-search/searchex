@@ -16,15 +16,15 @@ defmodule Searchex.Command.Catalog do
       validations:       fn -> validations(cfg_name)                   end  ,
       children:          fn -> [newest_child_timestamp(cfg_name)]      end  ,
       lcl_timestamp:     fn -> lcl_timestamp(cfg_name)                 end  ,
-      action_when_fresh: fn(vals) -> generate_catalog_from_scratch(cfg_name, vals) end  ,
-      action_when_stale: fn(vals) -> load_catalog_from_cache(cfg_name, vals)       end  ,
+      action_when_stale: fn(vals) -> generate_catalog_from_scratch(vals, cfg_name) end  ,
+      action_when_fresh: fn(vals) -> load_catalog_from_cache(vals, cfg_name)       end  ,
     }
   end
 
   defp validations(cfg_name) do
     [
       cfg_name_invalid?(cfg_name),
-      cfg_dir_absent?(cfg_name)  ,
+      cfg_dir_absent?            ,
       cfg_missing?(cfg_name)     ,
       cfg_invalid?(cfg_name)
     ]
@@ -40,12 +40,14 @@ defmodule Searchex.Command.Catalog do
     {:ok, stamp}
   end
 
-  defp load_catalog_from_cache(cfg_name, _vals) do
+  defp load_catalog_from_cache(_child_state, cfg_name) do
+    DIO.inspect :FRESH, color: "green"
     gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Cache.read_catalog
   end
 
-  defp generate_catalog_from_scratch(cfg_name, _vals) do
+  defp generate_catalog_from_scratch(_child_state, cfg_name) do
+    DIO.inspect :STALE, color: "green"
     gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Scan.create_from_params
     |> Searchex.Command.Build.Catalog.create_from_scan

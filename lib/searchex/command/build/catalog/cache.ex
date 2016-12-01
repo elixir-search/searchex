@@ -15,6 +15,7 @@ defmodule Searchex.Command.Build.Catalog.Cache do
   @doc "Read catalog from input file"
   def read_catalog(params) do
     path = cache_file(params)
+    DIO.inspect [PAZZ: path], color: "CYAN"
     {:ok, string} = File.read(path)
     :erlang.binary_to_term(string)
   end

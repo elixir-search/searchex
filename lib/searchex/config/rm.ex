@@ -2,13 +2,28 @@ defmodule Searchex.Config.Rm do
   @moduledoc false
 
   import Searchex.Config.Helpers
+  import ExMake, only: [check_validations: 2]
 
   def exec(path) do
-      cfg_name = name_from_path(path)
-    cond do
-#      cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name)}
-#      cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)}
-      true                        -> System.cmd("rm", [cfg_file(cfg_name)]); {:ok}
+    cfg_name = name_from_path(path)
+    case check_validations(validation_list(cfg_name), :null) do
+      {:error, msgs} -> {:error, msgs}
+      {:ok}          -> remove_cfg(cfg_name)
     end
+  end
+
+  # -----
+
+  defp validation_list(cfg_name) do
+    [
+      cfg_name_invalid?(cfg_name)     ,
+      cfg_missing?(cfg_name)          ,
+      cfg_dir_absent?
+    ]
+  end
+
+  defp remove_cfg(cfg_name) do
+    System.cmd("rm", [cfg_file(cfg_name)])
+    {:ok}
   end
 end
