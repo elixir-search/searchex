@@ -245,12 +245,12 @@ defmodule ExMake do
     DIO.inspect [CHILD: children], color: "BLUE"
     DIO.inspect [LCLTS: lcl_ts], color: "BLUE"
     Enum.reduce children, {:fresh, []}, fn
-      ({:error, msg}  , {:error, _tmp}) -> DIO.inspect {:error, msg ++ [msg]}             , color: "RED"
-      ({:error, msg}  , _acc          ) -> DIO.inspect {:error, [msg]}                    , color: "RED"
-      ({:ok, _ts}     , {:stale, vlst}) -> DIO.inspect {:stale, vlst ++ [nil]}            , color: "RED"
-      ({:ok, _ts, val}, {:stale, vlst}) -> DIO.inspect {:stale, vlst ++ [val]}            , color: "RED"
-      ({:ok, ts}      , {:fresh, vlst}) -> DIO.inspect {check(ts, lcl_ts), vlst ++ [nil]} , color: "RED"
-      ({:ok, ts, val} , {:fresh, vlst}) -> DIO.inspect {check(ts, lcl_ts), vlst ++ [val]} , color: "RED"
+      ({:error, msg}  , {:error, _tmp}) -> {:error, msg ++ [msg]}
+      ({:error, msg}  , _acc          ) -> {:error, [msg]}
+      ({:ok, _ts}     , {:stale, vlst}) -> {:stale, vlst ++ [nil]}
+      ({:ok, _ts, val}, {:stale, vlst}) -> {:stale, vlst ++ [val]}
+      ({:ok, ts}      , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [nil]}
+      ({:ok, ts, val} , {:fresh, vlst}) -> {check(ts, lcl_ts), vlst ++ [val]}
     end
   end
 

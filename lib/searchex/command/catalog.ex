@@ -1,4 +1,5 @@
 defmodule Searchex.Command.Catalog do
+
   use ExMake
 
   import Searchex.Config.Helpers
@@ -7,19 +8,19 @@ defmodule Searchex.Command.Catalog do
     chain({:load_catalog, cfg_name})
   end
 
-  # -----
-
   @doc false
   def handle_chain({:load_catalog, cfg_name}) do
     DIO.inspect [KONG: cfg_name], color: "RED"
     %{
-      validations:       fn -> validations(cfg_name)                   end  ,
-      children:          fn -> [newest_child_timestamp(cfg_name)]      end  ,
-      lcl_timestamp:     fn -> lcl_timestamp(cfg_name)                 end  ,
-      action_when_stale: fn(vals) -> generate_catalog_from_scratch(vals, cfg_name) end  ,
-      action_when_fresh: fn(vals) -> load_catalog_from_cache(vals, cfg_name)       end  ,
+      validations:       fn -> validations(cfg_name)                                 end  ,
+      children:          fn -> [newest_child_timestamp(cfg_name)]                    end  ,
+      lcl_timestamp:     fn -> lcl_timestamp(cfg_name)                               end  ,
+      action_when_fresh: fn(state) -> load_catalog_from_cache(state, cfg_name)       end  ,
+      action_when_stale: fn(state) -> generate_catalog_from_scratch(state, cfg_name) end  ,
     }
   end
+
+  # -----
 
   defp validations(cfg_name) do
     [
@@ -42,16 +43,17 @@ defmodule Searchex.Command.Catalog do
 
   defp load_catalog_from_cache(_child_state, cfg_name) do
     DIO.inspect :FRESH, color: "green"
-    gen_params(cfg_name)
-    |> Searchex.Command.Build.Catalog.Cache.read_catalog
+    state = gen_params(cfg_name) |> Searchex.Command.Build.Catalog.Cache.read_catalog
+    {:ok, lcl_timestamp(cfg_name), state}
   end
 
   defp generate_catalog_from_scratch(_child_state, cfg_name) do
     DIO.inspect :STALE, color: "green"
-    gen_params(cfg_name)
+    state = gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Scan.create_from_params
     |> Searchex.Command.Build.Catalog.create_from_scan
     |> Searchex.Command.Build.Catalog.Cache.write_catalog
+    {:ok, lcl_timestamp(cfg_name), state}
   end
 
   defp gen_params(cfg_name) do

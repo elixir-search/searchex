@@ -2,48 +2,53 @@ defmodule Searchex.Command.Index do
 
   use ExMake
 
-#  import Searchex.Config.Helpers
+  import Searchex.Config.Helpers
+  import Searchex.Command.Build.Index
 
   def exec(cfg_name) do
     DIO.inspect "DING EXEC", color: "RED"
-    handle_chain({:load_index, cfg_name})
+    chain({:load_index, cfg_name})
   end
 
+  @doc false
   def handle_chain({:load_index, cfg_name}) do
-    DIO.inspect "DING HANDLE", color: "RED"
-    cond do
-#      cfg_name_invalid?(cfg_name) -> {:error, cfg_name_invalid_msg(cfg_name) }
-#      cfg_dir_absent?(cfg_name)   -> {:error, cfg_dir_absent_msg(cfg_name)   }
-#      cfg_missing?(cfg_name)      -> {:error, cfg_missing_msg(cfg_name)      }
-#      cfg_invalid?(cfg_name)      -> {:error, cfg_invalid_msg(cfg_name)      }
-      true                        -> load_index(cfg_name)
-    end
+    DIO.inspect "BANG HANDLE", color: "RED"
+    %{
+      validations:       []                                                               ,
+      children:          fn -> children(cfg_name)                                    end  ,
+      lcl_timestamp:     fn -> lcl_timestamp(cfg_name)                               end  ,
+      action_when_fresh: fn(state) -> load_index_from_cache(state, cfg_name)         end  ,
+      action_when_stale: fn(state) -> generate_index_from_scratch(state, cfg_name)   end  ,
+    }
   end
 
   # -----
 
-  defp load_index(cfg_name) do
-    {:ok, timestamp, catalog} = DIO.inspect(Searchex.Command.Catalog.exec(cfg_name), color: "CYAN")
-    DIO.inspect timestamp, color: "RED"  , label: "AAAAA"
-    DIO.inspect catalog  , color: "GREEN", label: "YYYYY", limit: 8
-    if stale?(cfg_name) do
-      generate_index_from_scratch(cfg_name)
-      {:ok, catalog}
-    else
-      load_index_from_cache(cfg_name)
-    end
+  defp children(cfg_name) do
+    [
+      Searchex.Command.Catalog.chain({:load_catalog, cfg_name})
+    ]
   end
 
-  defp generate_index_from_scratch(_cfg_name) do
-#      {:ok}Searchex.Command.Build.Index.read_or_generate(catalog)
-#    "OK"
+  defp load_index_from_cache(state, cfg_name) do
+    DIO.inspect "INDEX FRESH", color: "BLUE"
+    [catalog | _] = state
+    start_supervisor(:index)
+    Searchex.Command.Build.Index.Cache.read_index(catalog)
+    {:ok, lcl_timestamp(cfg_name), catalog}
   end
 
-  defp load_index_from_cache(_cfg_name) do
-    "OK"
+  defp generate_index_from_scratch(state, cfg_name) do
+    DIO.inspect "INDEX STALE", color: "BLUE"
+    start_supervisor(:index)
+    [catalog | _rest] = state
+    catalog |> create_from_catalog
+    Searchex.Command.Build.Index.Cache.write_index(catalog)
+    {:ok, lcl_timestamp(cfg_name), catalog}
   end
 
-  defp stale?(_cfg_name) do
-    false
+  defp lcl_timestamp(cfg_name) do
+    DIO.inspect [PATH: idx_file(cfg_name)], color: "YELLOW"
+    DIO.inspect(idx_file(cfg_name) |> filepath_timestamp, color: "YELLOW")
   end
 end
