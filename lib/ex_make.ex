@@ -6,6 +6,7 @@ defmodule ExMake do
   - support make-like behavior
   - multiple processes are joined together in a Parent>Child dependency chain
   - processess can create intermediate cached products which can be combined
+  - handle validations and error checking at every step of the chain
   - the goal is to prevent unnecessary re-generation of intermediate products
   - maintain compatibility with Elixir's concurrent / distributed features
 
@@ -21,20 +22,26 @@ defmodule ExMake do
 
   The Parent module calls the `chain` function on the Child module.
 
-  The Child module implements the `handle_chain` function.
+  An `ExMake` behavior requires five callbacks:
 
-  `chain` returns one of the following tuples:
+  1. `chain_validations(args)` returns a list of validation functions.
+      Each function returns either `{:ok}`, `{:error, "message"}
+  2. `chain_children(args)` a list of chained children to run.
+      Each child returns a `chain` tuple.
+  3. `chain_lcl_timestamp(args)` a timestamp function to be used locally
+  4. `chain_action_when_fresh(args, child_state): a function to run when
+      current state is fresh.  Child state is a list, one item for each child.
+      This function must return a `chain` tuple.
+  5. `chain_action_when_stale(args, child_state): a function to run when
+      current state is stale.  Child state is a list, one item for each child.
+      This function must return a `chain` tuple.
+
+  `chain`, `chain_action_when_fresh`, `chain_action_when_stale` all return
+  one of the following tuples:
   - {:ok, timestamp}
   - {:ok, timestamp, return_val}
   - {:error, message}
 
-  `handle_chain` returns a map with the following keys:
-   - validations: a list of validation functions
-   - children: a list of `Method.chain` functions to call
-   - lcl_timestamp: a timestamp function to be used locally
-   - action_when_fresh: a function to run when current state is fresh
-   - action_when_stale: function to run when current state is stale
-   
    A validation function returns one of:
    - {:ok}
    - {:error, message}
@@ -76,25 +83,27 @@ defmodule ExMake do
     use ExMake
   
     def api_call(args) do
-      chain {:test_run, args}   # runs on itself!
+      chain {:test, args}   # runs on itself!
     end
-  
-    def handle_chain({:test_run, args})
-      %{
-          validations:       []                         ,
-          children:          []                         ,
-          lcl_timestamp:   &(calculate_timestamp(args)) ,
-          action_when_fresh: &(gen_fresh(&1, args))     ,
-          action_when_stale: &(gen_stale(&1, args))
-        }
-     end
-  
-    def perform_operation(params) do
-      {:ok, parent_timestamp, parent_val} = Parent.chain(<params>)
-      case lcl_timestamp < parent_timestamp do
-        true  -> {:ok, timestamp_now, generate_new_return_val(parent_val)}
-        false -> {:ok, lcl_timestamp, return_cached_val}
-      end
+
+    def chain_validations({:test, args}) do
+      [ validation1(args), validation2(args)]
+    end
+
+    def chain_children({:test, args}) do
+      [ Child1.chain(args), Child2.chain(args) ]
+    end
+
+    def chain_lcl_timestamp({:test, args}) do
+      timestamp_function(args)
+    end
+
+    def chain_action_when_fresh({:test, args}, child_state) do
+      {:ok, timestamp_function(args), new_state}
+    end
+
+    def chain_action_when_stale({:test, args}, child_state) do
+      {:ok, timestamp_function(args), new_state}
     end
   end
   ```
@@ -105,18 +114,14 @@ defmodule ExMake do
     `action_when_stale` is invoked.
   - You can implement more than one `handle_chain` function per module.
     Each implementation must match a unique tuple as the function argument.
-
-   Pro Tip: Sometimes rather than linking to a child sub-module, it is simpler
-   to stick a `chain` return value directly in the children list - like this:
-
-   ```elixir
-   def handle_chain({:test, args}) do
-     %{children: [{:ok, {{2014, 05, 33}}, {{00,00,00}}}]}
-   end
-   ```
   """
 
-  @callback handle_chain(tuple) :: map
+  # TODO: define types
+  @callback chain_validations(tuple)       :: list
+  @callback chain_children(tuple)          :: list
+  @callback chain_lcl_timestamp(tuple)     :: tuple
+  @callback chain_action_when_fresh(tuple) :: tuple
+  @callback chain_action_when_stale(tuple) :: tuple
 
   @doc "Return the current timestamp"
   def timestamp_now do
@@ -220,20 +225,6 @@ defmodule ExMake do
     check_validations(validations.(), args)
   end
 
-  # -----------------------------------------------------
-
-  @doc false
-  # default params for `handle_chain`
-  def default_params do
-    %{
-      validations:       []                       ,
-      children:          []                       ,
-      lcl_timestamp:     &timestamp_now/0         ,
-      action_when_fresh: {:ok, &timestamp_now/0}  ,
-      action_when_stale: {:ok, &timestamp_now/0}
-    }
-  end
-
   @doc false
   # Takes an array of `chained children`
   # Returns a tuple
@@ -242,7 +233,6 @@ defmodule ExMake do
   # The `:stale` atom is returned unless all parents are `:fresh`
   # Return vals are in order of `chained parents`.
   defp chain_and_check(children, lcl_ts) when is_list(children) do
-    DIO.inspect [CHILD: children], color: "BLUE"
     DIO.inspect [LCLTS: lcl_ts], color: "BLUE"
     Enum.reduce children, {:fresh, []}, fn
       ({:error, msg}  , {:error, _tmp}) -> {:error, msg ++ [msg]}
@@ -280,9 +270,9 @@ defmodule ExMake do
   # When stale, perform action (generate a new returned value)
   def perform_action(params, _arg) do
     case chain_and_check(params.children, params.lcl_timestamp) do
-      {:error , msg  }  -> {:error, msg}
-      {:fresh , values} -> params.action_when_fresh.(values)
-      {:stale , values} -> params.action_when_stale.(values)
+      {:error , msg  }       -> {:error, msg}
+      {:fresh , child_state} -> params.action_when_fresh.(child_state)
+      {:stale , child_state} -> params.action_when_stale.(child_state)
     end
   end
 
@@ -290,11 +280,23 @@ defmodule ExMake do
     quote do
 
       @doc false
+      # links to all the callbacks in `ExMake`
+      def handle_chain(args) do
+        %{
+          validations:       fn -> chain_validations(args)                                 end  ,
+          children:          fn -> chain_children(args)                                    end  ,
+          lcl_timestamp:     fn -> chain_lcl_timestamp(args)                               end  ,
+          action_when_fresh: fn(child_state) -> chain_action_when_fresh(args, child_state) end  ,
+          action_when_stale: fn(child_state) -> chain_action_when_stale(args, child_state) end
+        }
+      end
+
+      @doc false
       # why is this function defined in the macro?
       # because it does a callback to `handle_chain`
       # which is defined in the host method.
       def chain(args) do
-        params = Map.merge(ExMake.default_params, handle_chain(args))
+        params = handle_chain(args)
         DIO.inspect [BING: params], color: "BLUE"
         case DIO.inspect(ExMake.check_validations(params.validations, args), color: "MAGENTA") do
           {:error, msgs} -> {:error, msgs}
