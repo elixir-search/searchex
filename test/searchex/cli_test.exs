@@ -5,36 +5,36 @@ defmodule Searchex.CliTest do
 
   @cmd_list Searchex.Cli.command_list_for_testing
 
-#  describe "#main" do
-#    for cmd <- @cmd_list do
-#      @cmd cmd
-#      test "with '#{@cmd}'" do
-#        var = is_tuple(Searchex.Cli.main([@cmd]))
-#        unless Enum.member?(~w(results), @cmd) do
-#          refute var == true
-#        else
-#          assert var == true
-#        end
-#      end
-#    end
-#
-#    test "call main function with no args" do
-#      val = Searchex.Cli.main []
-#      refute is_tuple(val)
-#    end
-#  end
+  describe "#main" do
+    for cmd <- @cmd_list do
+      @cmd cmd
+      test "with '#{@cmd}'" do
+        var = is_tuple(Searchex.Cli.main([@cmd]))
+        unless Enum.member?(~w(results), @cmd) do
+          refute var == true
+        else
+          assert var == true
+        end
+      end
+    end
 
-#  describe "#route" do
-#    for cmd <- @cmd_list do
-#      @cmd cmd
-#      test "with '#{@cmd}'" do
-#        assert Searchex.Cli.route([@cmd]) != nil
-#      end
-#    end
-#
-#    test "bad input data" do
-#      {status, _msg} = Searchex.Cli.route(~w(unknown))
-#      assert status == :error
-#    end
-#  end
+    test "call main function with no args" do
+      val = Searchex.Cli.main []
+      refute is_tuple(val)
+    end
+  end
+
+  describe "#route" do
+    for cmd <- @cmd_list do
+      @cmd cmd
+      test "with '#{@cmd}'" do
+        assert Searchex.Cli.route([@cmd]) != nil
+      end
+    end
+
+    test "bad input data" do
+      {status, _msg} = Searchex.Cli.route(~w(unknown))
+      assert status == :error
+    end
+  end
 end

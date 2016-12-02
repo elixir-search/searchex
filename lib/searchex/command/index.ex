@@ -19,15 +19,15 @@ defmodule Searchex.Command.Index do
   end
 
   def chain_action_when_fresh({:load_index, cfg_name}, child_state) do
-    DIO.inspect "INDEX FRESH", color: "BLUE"
     [catalog | _] = child_state
+    DIO.inspect :FRESH_INDEX, color: "green"
     start_supervisor(:index)
     Searchex.Command.Build.Index.Cache.read_index(catalog)
     {:ok, chain_lcl_timestamp(cfg_name), catalog}
   end
 
   def chain_action_when_stale({:load_index, cfg_name}, child_state) do
-    DIO.inspect "INDEX STALE", color: "BLUE"
+    DIO.inspect :STALE_INDEX, color: "green"
     start_supervisor(:index)
     [catalog | _rest] = child_state
     catalog |> create_from_catalog

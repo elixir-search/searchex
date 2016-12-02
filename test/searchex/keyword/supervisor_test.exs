@@ -40,7 +40,6 @@ defmodule Searchex.Keyword.SupervisorTest do
     case Searchex.Keyword.Supervisor.start_link do
       {:ok, pid}      -> pid
       {:error, _elem} ->
-        #IO.inspect(START_SUP_ERROR_B: elem)
         start_supervisor(:restart)
     end
     :ok

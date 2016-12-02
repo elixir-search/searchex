@@ -131,7 +131,6 @@ defmodule Searchex.Keyword.ServerTest do
     case Searchex.Keyword.Supervisor.start_link do
       {:ok, pid}      -> pid
       {:error, _elem} ->
-        #IO.inspect(START_SUP_ERROR_A: elem)
         start_supervisor(:restart)
     end
     :ok

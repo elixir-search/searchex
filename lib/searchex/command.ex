@@ -90,7 +90,7 @@ defmodule Searchex.Command do
   Display results to stdout
   """
   def results do
-    Searchex.Command.Results.exec
+    {:ok, Searchex.Command.Results.exec}
   end
 
   @doc """

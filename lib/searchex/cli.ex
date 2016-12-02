@@ -109,6 +109,7 @@ defmodule Searchex.Cli do
 
   def clean do
     Searchex.Config.Helpers.clean
+    {:ok, ""}
   end
 
   # ----------------------------------------------------------------------------------------------------

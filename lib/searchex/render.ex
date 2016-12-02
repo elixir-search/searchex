@@ -28,8 +28,8 @@ defmodule Searchex.Render do
   """
   def search(cfg_name, query) do
     case Searchex.Command.search(cfg_name, query) do
-      {:error, msg      } -> {:error, msg}
-      {:ok   , params   } -> Searchex.Render.Results.to_table(params)
+      {:error, msg              } -> {:error, msg}
+      {:ok   , {:ok, _ts, state}} -> Searchex.Render.Results.to_table(state)
     end
   end
 
@@ -45,8 +45,8 @@ defmodule Searchex.Render do
   """
   def results do
     case Searchex.Command.results do
-      {:error , msg     } -> {:error, msg}
-      {:ok    , params  } -> Searchex.Render.Results.to_table(params)
+      {:error , msg      } -> {:error, msg}
+      {:ok    , results  } -> Searchex.Render.Results.to_table(results)
     end
   end
 end

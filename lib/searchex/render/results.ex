@@ -1,8 +1,11 @@
+require IEx
+
 defmodule Searchex.Render.Results do
 
   @moduledoc false
 
-  def to_table({catalog, results}) do
+  def to_table(args) do
+    {catalog, results} = args
     docs   = catalog.docs
     title  = catalog_title(catalog)
     fields = String.split(catalog.params.cli_format.fields)
@@ -18,8 +21,8 @@ defmodule Searchex.Render.Results do
   end
 
   defp catalog_title(catalog) do
-    query = catalog.query || "TBD"
-    title = catalog.params.cli_format.title || "Search Results"
+    query = Map.from_struct(catalog)[:query] || "TBD"
+    title = catalog.params.cli_format[:title] || "Search Results"
     Enum.join [title, " [query='#{query}']"]
   end
 end
