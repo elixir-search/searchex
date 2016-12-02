@@ -5,7 +5,8 @@ defmodule Searchex.Command.Build.Catalog do
   @scan %Searchex.Command.Build.Catalog.Scan{}
 
   def create_from_scan(scan) do
-    Searchex.Util.File.ls_r(scan.params.doc_dirs, scan.params.file_types)
+    scan.params.doc_dirs
+    |> Searchex.Util.File.ls_r(scan.params.file_types)
     |> Enum.reduce(scan, fn(file, acc) -> create_from_scan(acc, file) end)
   end
 
@@ -24,7 +25,8 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   def gen_docsep_positions(scan) do
-    positions = Regex.scan(scan.params.docsep, scan.rawdata, return: :index )
+    positions = scan.params.docsep
+                |> Regex.scan(scan.rawdata, return: :index )
                 |> Enum.map(fn(x) -> [{beg, fin} | _tail] = x; beg + fin end)
     %Searchex.Command.Build.Catalog.Scan{scan | docsep_positions: positions}
   end

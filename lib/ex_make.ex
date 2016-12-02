@@ -2,15 +2,18 @@ defmodule ExMake do
   @moduledoc """
   Generic Make behavior for Elixir
 
-  The idea:
+  ### Overview
+  
   - support make-like behavior
-  - multiple processes are joined together in a Parent>Child dependency chain
-  - processess can create intermediate cached products which can be combined
+  - multiple modules are joined together in a Parent > Child dependency chain
+  - modules can create intermediate cached products which can be combined
   - handle validations and error checking at every step of the chain
-  - the goal is to prevent unnecessary re-generation of intermediate products
+  - use caching to prevent unnecessary re-generation of intermediate products
   - maintain compatibility with Elixir's concurrent / distributed features
 
-  ExMake works by comparing timestamps - a tuple of six integers:
+  ### Timestamps
+  
+  `ExMake` works by comparing timestamps - a tuple of six integers:
   `{{year, month, day}, {hour, min, sec}}`
 
   For more precision, add milliseconds (thousandths of a second)
@@ -18,65 +21,47 @@ defmodule ExMake do
 
   Important: `year` should be four digits!!
 
+  ### How it works
+
   The Parent module calls the `chain` function on the Child module.
 
   An `ExMake` behavior requires five callbacks:
 
   1. `chain_validations(args)` returns a list of validation functions.
-      Each function returns either `{:ok}`, `{:error, "message"}
   2. `chain_children(args)` a list of chained children to run.
-      Each child returns a `chain` tuple.
-  3. `chain_lcl_timestamp(args)` a timestamp function to be used locally
-  4. `chain_action_when_fresh(args, child_state): a function to run when
-      current state is fresh.  Child state is a list, one item for each child.
-      This function must return a `chain` tuple.
-  5. `chain_action_when_stale(args, child_state): a function to run when
-      current state is stale.  Child state is a list, one item for each child.
-      This function must return a `chain` tuple.
+  3. `chain_lcl_timestamp(args)` a timestamp function to be used locally.
+  4. `chain_action_when_fresh(args, child_state)` Runs when state is fresh.
+  5. `chain_action_when_stale(args, child_state)` Child state is a list, one per child.
 
   `chain`, `chain_action_when_fresh`, `chain_action_when_stale` all return
   one of the following tuples:
-  - {:ok, timestamp}
-  - {:ok, timestamp, return_val}
-  - {:error, message}
+  - `{:ok, timestamp}`
+  - `{:ok, timestamp, child_state}`
+  - `{:error, message}`
 
    A validation function returns one of:
-   - {:ok}
-   - {:error, message}
+   - `{:ok}`
+   - `{:error, message}`
 
    Here is the `chain` execution sequence:
-   1. All the validations are run.  If one or more validations
-      fail, `{:error, [messages]}` is returned.
+   1. All the validations are run.  If one or more validations fail, `{:error,
+     [messages]}` is returned.
    2. The `child` modules are all invoked.
-   3. If one or more of the child modules fails, the error
-      message is returned.
-   4. The timestamps of the child modules are compared to the
-      timestamp of the current module.  If one of the child
-      modules is newer than the current module, the current
-      state is marked as `:stale`.
-   5. If the current state is `:stale`, the `action_when_stale`
-      function is invoked.
-   6. If the current state is `:fresh`, the `action_when_fresh`
-      function is invoked.
+   3. If one or more of the child modules fails, the error message is returned.
+   4. The timestamps of the child modules are compared to the timestamp of the
+      current module.  If one or more of the child modules is newer than the
+      current module, the current state is marked as `:stale`.
+   5. If the current state is `:stale`, invoke `chain_action_when_stale`.
+   6. If the current state is `:fresh`, invoke `chain_action_when_fresh`.
 
-  Note: timestamps can represent events like:
-  - file modification date
-  - directory modification date (recursive search)
-  - last GenServer state change
-  - last call to a third-party API
-  - an http 'last-modified' header, etc.
-
-  Note: intermediate state can be cached in any form you want:
-  disk files, SQL / ETS / DETS / Mnesia databases, GenServer processes, etc.
-
-  Here's an example of `ExMake` in action:
+  ### Example
 
   ```elixir
   defmodule TestModule do
     use ExMake
   
     def api_call(args) do
-      chain {:test, args}   # runs on itself!
+      chain {:test, args}   
     end
 
     def chain_validations({:test, args}) do
@@ -84,7 +69,7 @@ defmodule ExMake do
     end
 
     def chain_children({:test, args}) do
-      [ Child1.chain(args), Child2.chain(args) ]
+      [ Child1.chain({:ctx1, args}), Child2.chain({:ctx2, args}) ]
     end
 
     def chain_lcl_timestamp({:test, args}) do
@@ -100,6 +85,18 @@ defmodule ExMake do
     end
   end
   ```
+  ### Notes
+  
+  Note: timestamps can represent events like:
+  - file modification date
+  - directory modification date (recursive search)
+  - last GenServer state change
+  - last call to a third-party API
+  - an http 'last-modified' header, etc.
+
+  Note: intermediate state can be cached in any form you want:
+  disk files, SQL / ETS / DETS / Mnesia databases, GenServer processes, etc.
+
   """
 
   # TODO: define types
@@ -109,14 +106,14 @@ defmodule ExMake do
   @callback chain_action_when_fresh(tuple, any) :: tuple
   @callback chain_action_when_stale(tuple, any) :: tuple
 
-  @doc "Return the current timestamp"
+  @doc "Return the current timestamp."
   def timestamp_now do
     {time, _} = System.cmd("date", ["+%Y %m %d %H %M %S"])
     [y,m,d,hh,mm,ss] = time |> String.split |> Enum.map(&String.to_integer/1)
     {{y,m,d},{hh,mm,ss}}
   end
 
-  @doc "Return a timestamp for a specific filepath"
+  @doc "Return a timestamp for a specific filepath."
   def filepath_timestamp(path) do
     epath = Path.expand(path)
     case File.stat(epath, time: :local) do
@@ -126,7 +123,7 @@ defmodule ExMake do
   end
 
   @doc """
-  Return a timestamp for a specific directory
+  Return a timestamp for a specific directory.
 
   Timestamp is the most recently modified file under the directory.
   """
@@ -138,7 +135,7 @@ defmodule ExMake do
   end
 
   @doc """
-  Return a timestamp for a list of directories
+  Return a timestamp for a list of directories.
 
   Timestamp is the most recently modified file for all sub-directories.
   """
@@ -150,7 +147,9 @@ defmodule ExMake do
   end
 
   @doc """
-  Predicate to compare two timestamps using `newer_than` / `older_than` labels
+  Predicate to compare two timestamps.
+  
+  Uses `newer_than` / `older_than` labels.
 
   Examples:
 
@@ -168,16 +167,10 @@ defmodule ExMake do
     end
   end
 
-  @doc """
-  For working with timestamps to make the function name 
-  `Enum.max` more intention revealing
-  """
+  @doc "Returns the newest timestamp in a list."
   def newest(enum), do: Enum.max(enum)
 
-  @doc """
-  For working with timestamps to make the function name 
-  `Enum.min` more intention revealing
-  """
+  @doc "Returns the oldest timestamp in a list."
   def oldest(enum), do: Enum.min(enum)
 
   @doc """

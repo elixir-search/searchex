@@ -1,4 +1,5 @@
 defmodule Searchex.Command.Build do
+  @moduledoc false
 
 #  use ExMake
 

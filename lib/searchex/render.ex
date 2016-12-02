@@ -1,6 +1,6 @@
 defmodule Searchex.Render do
   @moduledoc """
-  CLI rendering for anything more sophisticated than `IO.puts`
+  CLI rendering : tables and editor launch
 
   - editor launching
   - rendering search-results as a table
@@ -19,7 +19,7 @@ defmodule Searchex.Render do
   def cfg_edit(cfg_name) do
     case Searchex.Config.cfg_edit(cfg_name) do
       {:error, msg     } -> {:error, msg}
-      {:ok   , cfg_name} -> EditorLaunch.using_tmux(cfg_file(cfg_name))
+      {:ok   , cfg_name} -> EditorLaunch.launch_using_tmux(cfg_file(cfg_name))
     end
   end
 
@@ -45,8 +45,8 @@ defmodule Searchex.Render do
   """
   def results do
     case Searchex.Command.results do
-      {:error , msg      } -> {:error, msg}
-      {:ok    , results  } -> Searchex.Render.Results.to_table(results)
+      {:error , msg   } -> {:error, msg}
+      {:ok    , data  } -> Searchex.Render.Results.to_table(data)
     end
   end
 end

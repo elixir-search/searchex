@@ -2,6 +2,7 @@ defmodule Searchex.Config.New do
   @moduledoc false
 
   import Searchex.Config.Helpers
+  import ExMake, only: [check_validations: 1]
 
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
@@ -9,14 +10,20 @@ defmodule Searchex.Config.New do
       full_path = Path.expand(path)
       cfg_name = name_from_path(path)
       make_active_dirs()
-      cond do
-#        cfg_dir_absent?(full_path)  -> {:error, cfg_dir_absent_msg(path)}
-#        cfg_exists?(cfg_name)       -> {:error, cfg_exists_msg(cfg_name)}
-        true                        -> create_cfg(cfg_name, full_path)
+      case check_validations(validation_list(cfg_name)) do
+        {:error, msgs} -> {:error, msgs}
+        {:ok}          -> create_cfg(cfg_name, full_path)
       end
   end
 
   # -----
+
+  defp validation_list(cfg_name) do
+    [
+      cfg_name_invalid?(cfg_name) ,
+      cfg_present?(cfg_name)
+    ]
+  end
 
   defp create_cfg(cfg_name, root_path) do
     File.write(cfg_file(cfg_name), default_cfg_text(cfg_name, root_path))

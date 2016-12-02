@@ -21,11 +21,10 @@ defmodule Searchex.Command.Catalog do
 
   def chain_children({:load_catalog, cfg_name}) do
     params  = gen_params(cfg_name)
-    stamp = [
+    stamp = newest([
       filepath_timestamp(cfg_file(cfg_name))  ,      # timestamp of the cfg file
       dirlist_timestamp(params.doc_dirs)             # newest timestamp of all doc_dirs
-    ]
-    |> newest
+    ])
     [{:ok, stamp}]
   end
 

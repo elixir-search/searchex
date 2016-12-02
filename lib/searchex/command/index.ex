@@ -36,6 +36,6 @@ defmodule Searchex.Command.Index do
   end
 
   def chain_lcl_timestamp({:load_index, cfg_name}) do
-    idx_file(cfg_name) |> filepath_timestamp
+    cfg_name |> idx_file |> filepath_timestamp
   end
 end

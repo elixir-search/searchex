@@ -1,15 +1,24 @@
 defmodule EditorLaunch do
   @moduledoc """
-  Launching editors on the BEAM is difficult.
+  Launch editors (like Vim, Emacs) from Elixir
 
-  See this thread for more discussion.
-  https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094
+  Launching editors from Elixir is difficult. In other languages like Ruby, you
+  can invoke `system("vim")` and you're done.  But the BEAM hides the `tty` in
+  such a way that editors will not launch properly, so you have to use hacks
+  and workarounds like those provided in this module.
+
+  See this
+  [thread](https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094)
+  for more discussion.
   """
 
   @doc """
   Launch editor on command-line console using TMUX
+
+  The editor opens in a split window.  When the editor is closed, the
+  split-window disappears.
   """
-  def using_tmux(file_path, _opts \\ []) do
+  def launch_using_tmux(file_path, _opts \\ []) do
     cond do
       missing_editor?()         -> {:error, missing_editor_msg()}
       connected_without_tmux?() -> {:error, connected_without_tmux_msg(file_path)}
@@ -26,7 +35,7 @@ defmodule EditorLaunch do
 
   # -----
 
-  def editor()  , do: System.get_env("EDITOR")
+  def editor(), do: System.get_env("EDITOR")
 
   # -----
 

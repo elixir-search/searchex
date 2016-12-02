@@ -41,13 +41,13 @@ defmodule Searchex.Config.Helpers do
 
   def cfg_dir_absent?(path \\ Searchex.settings.cfgs) do
     err = {:error, "Config dir does not exist (#{path})"}
-    unless File.dir?(path), do: err, else: {:ok}
+    if File.dir?(path), do: {:ok}, else: err
   end
 
   def cfg_name_invalid?(cfg_name) do
     test = Regex.match?(~r/[^0-9A-Za-z-_]/, cfg_name)
     err  = {:error, "Invalid config name (#{cfg_name})"}
-    unless test, do: {:ok}, else: err
+    if test, do: err, else: {:ok}
   end
 
   def cfg_exists?(cfg_name) do
@@ -57,6 +57,11 @@ defmodule Searchex.Config.Helpers do
 
   def cfg_missing?(cfg_name) do
     err = {:error, "Config does not exist (#{cfg_name})"}
-    unless File.exists?(cfg_file(cfg_name)), do: err, else: {:ok}
+    if File.exists?(cfg_file(cfg_name)), do: {:ok}, else: err
+  end
+
+  def cfg_present?(cfg_name) do
+    err = {:error, "Config already exists (#{cfg_name})"}
+    if File.exists?(cfg_file(cfg_name)), do: err, else: {:ok}
   end
 end

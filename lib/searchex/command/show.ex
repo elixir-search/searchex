@@ -1,4 +1,5 @@
 defmodule Searchex.Command.Show do
+  @moduledoc false
 #  use ExMake
 
   # error checks:

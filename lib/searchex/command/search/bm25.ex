@@ -24,7 +24,7 @@ defmodule Searchex.Command.Search.Bm25 do
   def doc_scores(terms, doc_matches, matches_per_term_and_doc) do
     docids = uniq_doc_ids(doc_matches)
     tuples = Enum.map docids, fn(docid) ->
-      {docid, doc_score(terms, docid, doc_matches, matches_per_term_and_doc, @avg_doc_token_len, @num_docs)}
+      {docid, doc_score(terms, docid, doc_matches, matches_per_term_and_doc, {@avg_doc_token_len, @num_docs})}
     end
     Enum.sort tuples, &(elem(&1,1) > elem(&2,1))
   end
@@ -32,7 +32,7 @@ defmodule Searchex.Command.Search.Bm25 do
   @doc """
   Document Score
   """
-  def doc_score(terms, docid, doc_matches, matches_per_term_and_doc, avg_doc_len, num_docs) do
+  def doc_score(terms, docid, doc_matches, matches_per_term_and_doc, {avg_doc_len, num_docs}) do
     term_scores = Enum.map terms, fn(term) ->
       match_count = case matches_per_term_and_doc[{term, docid}] do
         nil   -> 0
@@ -111,8 +111,8 @@ defmodule Searchex.Command.Search.Bm25 do
   end
 
   def inverse_doc_freq_of_term(total_num_docs, num_docs_with_term) do
-    :math.log(1.0 + total_num_docs / num_docs_with_term)
-    |> Float.round(5)
+    base = :math.log(1.0 + total_num_docs / num_docs_with_term)
+    Float.round(base, 5)
   end
 
   @doc """
@@ -131,9 +131,9 @@ defmodule Searchex.Command.Search.Bm25 do
     0
   end
   def term_freq(num_appearances_in_doc, avg_doc_len) do
-    (num_appearances_in_doc * (@term_freq_tuning_factor + 1)) /
+    base = (num_appearances_in_doc * (@term_freq_tuning_factor + 1)) /
             (num_appearances_in_doc + avg_doc_len * @term_freq_tuning_factor)
-    |> Float.round(5)
+    Float.round(base, 5)
   end
 
   @doc """

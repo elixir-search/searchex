@@ -1,4 +1,5 @@
 defmodule Searchex.Command.Results do
+  @moduledoc false
 
 #  use ExMake
 

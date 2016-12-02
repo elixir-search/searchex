@@ -62,8 +62,8 @@ defmodule Searchex.Keyword.Server do
   """
   def get_ids(term) do
     case find_keyword_server(term) do
-      { :ok, server } -> {term, GenServer.call(server, :get_ids)};
-      { :error, _ }   -> {term, %{} }
+      {:ok, server} -> {term, GenServer.call(server, :get_ids)};
+      {:error, _  } -> {term, %{}}
     end
   end
 
@@ -101,10 +101,7 @@ defmodule Searchex.Keyword.Server do
   end
 
   def get_keyword_server(keyword) do
-    name = cond do
-      is_atom(keyword) -> keyword
-      true             -> keyword_server_name(keyword)
-    end
+    name = if is_atom(keyword), do: keyword, else: keyword_server_name(keyword)
     Process.whereis(name) || Searchex.Keyword.Supervisor.add_child_and_return_pid(name)
   end
 

@@ -1,32 +1,35 @@
 defmodule DIO do
 
   @moduledoc """
-  DIO in an IO module with support for debugging.  
+  An IO module with support for debugging
   """
 
   @doc """
-  Has the same interface as `IO.inspect` with some additional options.
+  Has the same interface as `IO.inspect` with additional options.
 
-  - color - one of red, green, blue, yellow, cyan, magenta, white
+  - color - one of `:red`, `:green`, `:blue`, `:yellow`, `:cyan`, `:magenta`, `:white`
 
   - label - just like the label option in Elixir 1.4 - useful within pipes
 
   - length: 0 - print the label but not the item
 
-  - display: fn(item) -> "OUTPUT" end - custom display function
+  - display: `fn(item) -> "OUTPUT" end` custom display function
 
+  - test: :show - show output in `:test` mode
+
+  Note: by default, output is generated in `:dev` and `:prod` but not `:test`.
   """
   def inspect(item, opts \\ []) do
     inspect :stdio, item, opts
   end
 
   @doc """
-  Inspects `item` according to the given options using the IO `device`.
+  Inspect `item` according to the given options using the IO `device`.
   """
   def inspect(device, item, opts) when is_list(opts) do
-    label    = if (label = opts[:label]), do: [to_chardata(label), ": "], else: []
-    alt_opts  = struct(Inspect.Opts, opts)
-    new_item  = display(item, opts)
+    label    = if lbl = opts[:label], do: [to_chardata(lbl), ": "], else: []
+    alt_opts = struct(Inspect.Opts, opts)
+    new_item = display(item, opts)
     chardata = Inspect.Algebra.format(Inspect.Algebra.to_doc(new_item, alt_opts), alt_opts.width)
     [label, chardata, reset] = modify([label, chardata], opts)
     unless label == "" && chardata == "", do: IO.puts(device, [label, chardata, reset])
@@ -34,7 +37,7 @@ defmodule DIO do
   end
 
   @doc """
-  Generates output in :dev and :prod modes, but not in :test.
+  Generate output in `:dev` and `:prod` modes, but not in `:test`.
 
   If you want output in test mode, fall back to `IO.puts`.
   """
@@ -50,24 +53,20 @@ defmodule DIO do
   @doc """
   Returns the element type.
   """
-  def type(item) do
-    cond do 
-      is_atom(item)      -> :atom
-      is_binary(item)    -> :binary
-      is_bitstring(item) -> :bitstring
-      is_boolean(item)   -> :boolean
-      is_float(item)     -> :float
-      is_function(item)  -> :function
-      is_integer(item)   -> :integer
-      is_list(item)      -> :list
-      is_map(item)       -> :map
-      is_pid(item)       -> :pid
-      is_port(item)      -> :port
-      is_reference(item) -> :reference
-      is_tuple(item)     -> :tuple
-      true               -> :unknown
-    end
-  end
+  def type(item) when is_atom(item)      , do: :atom
+  def type(item) when is_binary(item)    , do: :binary
+  def type(item) when is_bitstring(item) , do: :bitstring
+  def type(item) when is_boolean(item)   , do: :boolean
+  def type(item) when is_float(item)     , do: :float
+  def type(item) when is_function(item)  , do: :function
+  def type(item) when is_integer(item)   , do: :integer
+  def type(item) when is_list(item)      , do: :list
+  def type(item) when is_map(item)       , do: :map
+  def type(item) when is_pid(item)       , do: :pid
+  def type(item) when is_port(item)      , do: :port
+  def type(item) when is_reference(item) , do: :reference
+  def type(item) when is_tuple(item)     , do: :tuple
+  def type(item) when true               , do: :unknown
 
   # ----------------------------------------------------------------
 

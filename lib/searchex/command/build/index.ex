@@ -3,9 +3,9 @@ defmodule Searchex.Command.Build.Index do
   @moduledoc false
 
   def create_from_catalog(catalog) do
-    catalog.docs
+    _result = catalog.docs
     |> Enum.map(&process_doc/1)
-    |> Enum.map(fn(x) -> Task.await(x, 60000) end)
+    |> Enum.map(fn(x) -> Task.await(x, 60_000) end)
     :ok
   end
 
@@ -16,7 +16,7 @@ defmodule Searchex.Command.Build.Index do
       |> Enum.with_index(1)
       |> Enum.map(fn({word, pos}) -> {docid, word, pos} end)
       |> Enum.map(&process_word/1)
-      |> Enum.map(fn(x) -> Task.await(x, 60000) end)
+      |> Enum.map(fn(x) -> Task.await(x, 60_000) end)
     end
   end
 

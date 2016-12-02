@@ -15,9 +15,9 @@ defmodule Searchex.Command.Search do
     [ Searchex.Command.Index.chain({:load_index, cfg_name}) ]
   end
 
-  def chain_action_when_fresh({:do_search, cfg_name, query}, child_state) do
+  def chain_action_when_fresh({:do_search, cfg_name, query}, _child_state) do
     DIO.inspect :FRESH_SEARCH, color: "green"
-    [catalog | _] = child_state
+#    [catalog | _] = child_state
     state = Searchex.Command.Search.Cache.read_results
     {:ok, chain_lcl_timestamp({:do_search, cfg_name, query}), state}
   end
