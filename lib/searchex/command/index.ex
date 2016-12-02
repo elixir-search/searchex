@@ -23,7 +23,7 @@ defmodule Searchex.Command.Index do
     [catalog | _] = child_state
     start_supervisor(:index)
     Searchex.Command.Build.Index.Cache.read_index(catalog)
-    {:ok, lcl_timestamp(cfg_name), catalog}
+    {:ok, chain_lcl_timestamp(cfg_name), catalog}
   end
 
   def chain_action_when_stale({:load_index, cfg_name}, child_state) do
@@ -32,7 +32,7 @@ defmodule Searchex.Command.Index do
     [catalog | _rest] = child_state
     catalog |> create_from_catalog
     Searchex.Command.Build.Index.Cache.write_index(catalog)
-    {:ok, lcl_timestamp({:load_index, cfg_name}), catalog}
+    {:ok, chain_lcl_timestamp({:load_index, cfg_name}), catalog}
   end
 
   def chain_lcl_timestamp({:load_index, cfg_name}) do

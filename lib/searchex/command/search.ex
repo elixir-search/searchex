@@ -6,7 +6,7 @@ defmodule Searchex.Command.Search do
 #
   def exec(cfg_name, query) do
     DIO.puts "SEARCH #{cfg_name} #{query}"
-    chain({:do_query, cfg_name, query})
+#    chain({:do_query, cfg_name, query})
   end
 
 

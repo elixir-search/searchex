@@ -32,7 +32,7 @@ defmodule Searchex.Command.Catalog do
   def chain_action_when_fresh(args = {:load_catalog, cfg_name}, _child_state) do
     DIO.inspect :FRESH, color: "green"
     state = gen_params(cfg_name) |> Searchex.Command.Build.Catalog.Cache.read_catalog
-    {:ok, lcl_timestamp(args), state}
+    {:ok, chain_lcl_timestamp(args), state}
   end
 
   def chain_action_when_stale(args = {:load_catalog, cfg_name}, _child_state) do
@@ -41,7 +41,7 @@ defmodule Searchex.Command.Catalog do
     |> Searchex.Command.Build.Catalog.Scan.create_from_params
     |> Searchex.Command.Build.Catalog.create_from_scan
     |> Searchex.Command.Build.Catalog.Cache.write_catalog
-    {:ok, lcl_timestamp(args), state}
+    {:ok, chain_lcl_timestamp(args), state}
   end
 
   defp gen_params(cfg_name) do

@@ -18,8 +18,6 @@ defmodule ExMake do
 
   Important: `year` should be four digits!!
 
-  `ExMake` requires a single callback: `handle_chain`.
-
   The Parent module calls the `chain` function on the Child module.
 
   An `ExMake` behavior requires five callbacks:
@@ -64,17 +62,12 @@ defmodule ExMake do
   Note: timestamps can represent events like:
   - file modification date
   - directory modification date (recursive search)
-  - last compilation date
   - last GenServer state change
   - last call to a third-party API
-  - an http 'last-modified' header
-  - etc.
+  - an http 'last-modified' header, etc.
 
   Note: intermediate state can be cached in any form you want:
-  - disk files
-  - SQL / ETS / DETS / Mnesia databases
-  - GenServer processes
-  - etc.
+  disk files, SQL / ETS / DETS / Mnesia databases, GenServer processes, etc.
 
   Here's an example of `ExMake` in action:
 
@@ -107,21 +100,14 @@ defmodule ExMake do
     end
   end
   ```
-
-  More Notes:
-  - All `handle_chain` fields are optional.
-  - If there are no children, the state is `:stale`, and
-    `action_when_stale` is invoked.
-  - You can implement more than one `handle_chain` function per module.
-    Each implementation must match a unique tuple as the function argument.
   """
 
   # TODO: define types
-  @callback chain_validations(tuple)       :: list
-  @callback chain_children(tuple)          :: list
-  @callback chain_lcl_timestamp(tuple)     :: tuple
-  @callback chain_action_when_fresh(tuple) :: tuple
-  @callback chain_action_when_stale(tuple) :: tuple
+  @callback chain_validations(tuple)            :: list
+  @callback chain_children(tuple)               :: list
+  @callback chain_lcl_timestamp(tuple)          :: tuple
+  @callback chain_action_when_fresh(tuple, any) :: tuple
+  @callback chain_action_when_stale(tuple, any) :: tuple
 
   @doc "Return the current timestamp"
   def timestamp_now do
@@ -133,7 +119,6 @@ defmodule ExMake do
   @doc "Return a timestamp for a specific filepath"
   def filepath_timestamp(path) do
     epath = Path.expand(path)
-    DIO.inspect [EPAZZ: epath], color: "RED"
     case File.stat(epath, time: :local) do
       {:ok, info} -> Map.get(info, :mtime)
       _           -> {{0,0,0},{0,0,0}}
@@ -176,8 +161,6 @@ defmodule ExMake do
       true
   """
   def is?(timestamp, args) do
-    DIO.inspect [TIMEZ1: timestamp], color: "BLUE"
-    DIO.inspect [TIMEZ2: args]     , color: "BLUE"
     cond do
       args[:newer_than] -> timestamp >= args[:newer_than]
       args[:older_than] -> timestamp  < args[:older_than]
@@ -209,9 +192,7 @@ defmodule ExMake do
   {:ok}
   {:error, msg}
   """
-  def check_validations(validations, args) when is_list(validations) do
-    DIO.inspect [VAL1: validations], color: "GREEN"
-    DIO.inspect [VAL2: args], color: "GREEN"
+  def check_validations(validations) when is_list(validations) do
     Enum.reduce validations, {:ok}, fn
       ({:error, msg}, {:ok}        ) -> {:error, [msg]       }
       ({:error, msg}, {:error, lst}) -> {:error, lst ++ [msg]}
@@ -220,20 +201,17 @@ defmodule ExMake do
     end
   end
 
-  def check_validations(validations, args) when is_function(validations) do
-    DIO.inspect [VAL0: validations], color: "CYAN"
-    check_validations(validations.(), args)
+  def check_validations(validations) when is_function(validations) do
+    check_validations(validations.())
   end
 
   @doc false
-  # Takes an array of `chained children`
-  # Returns a tuple
+  # Takes an array of `chained children`. Returns a tuple.
   # `{:error, [msg]}`, `{:stale, [val]}`, or `{:fresh, [val]}`
   # An `:error` is returned if only one parent has an error.
   # The `:stale` atom is returned unless all parents are `:fresh`
   # Return vals are in order of `chained parents`.
   defp chain_and_check(children, lcl_ts) when is_list(children) do
-    DIO.inspect [LCLTS: lcl_ts], color: "BLUE"
     Enum.reduce children, {:fresh, []}, fn
       ({:error, msg}  , {:error, _tmp}) -> {:error, msg ++ [msg]}
       ({:error, msg}  , _acc          ) -> {:error, [msg]}
@@ -268,7 +246,7 @@ defmodule ExMake do
   # If there are any errors, return them.
   # When fresh, perform action (return a cached value)
   # When stale, perform action (generate a new returned value)
-  def perform_action(params, _arg) do
+  def perform_action(params) do
     case chain_and_check(params.children, params.lcl_timestamp) do
       {:error , msg  }       -> {:error, msg}
       {:fresh , child_state} -> params.action_when_fresh.(child_state)
@@ -297,10 +275,9 @@ defmodule ExMake do
       # which is defined in the host method.
       def chain(args) do
         params = handle_chain(args)
-        DIO.inspect [BING: params], color: "BLUE"
-        case DIO.inspect(ExMake.check_validations(params.validations, args), color: "MAGENTA") do
+        case ExMake.check_validations(params.validations) do
           {:error, msgs} -> {:error, msgs}
-          _              -> ExMake.perform_action(params, args)
+          _              -> ExMake.perform_action(params)
         end
       end
 

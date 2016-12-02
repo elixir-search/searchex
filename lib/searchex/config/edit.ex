@@ -3,11 +3,11 @@ defmodule Searchex.Config.Edit do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import ExMake, only: [check_validations: 2]
+  import ExMake, only: [check_validations: 1]
 
   def exec(cfg_name) do
     make_active_dirs()
-    case check_validations(validation_list(cfg_name), :null) do
+    case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
       {:ok}          -> {:ok, cfg_name}
     end

@@ -2,11 +2,11 @@ defmodule Searchex.Config.Cat do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import ExMake, only: [check_validations: 2]
+  import ExMake, only: [check_validations: 1]
 
   def exec(path) do
     cfg_name = name_from_path(path)
-    case check_validations(validation_list(cfg_name), :null) do
+    case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
       {:ok}          -> cfg_contents(cfg_name)
     end
