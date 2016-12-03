@@ -1,5 +1,7 @@
 # Searchex Readme
 
+![build status](https://api.travis-ci.org/elixir-search/searchex.svg?branch=dev "Travis CI build status")
+
 A full-text search engine written in pure Elixir.
 
 The goals: a CLI simple as grep, an API that scales to the biggest search
