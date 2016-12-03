@@ -7,9 +7,8 @@ defmodule Searchex.Command.CatalogTest do
 
   describe "tweets collection" do
     test "basic operation" do
-      result = exec("worklog")
-      TIO.inspect result, label: "BANG", color: "blue"
-      assert 1 == 1
+      {:ok, _timestamp, scan} = exec("worklog")
+      assert scan.numdocs == 1
     end
   end
 
