@@ -8,7 +8,6 @@ defmodule Searchex.Command.Index do
   import Searchex.Command.Build.Index
 
   def exec(cfg_name) do
-    DIO.inspect "DING EXEC", color: "RED"
     chain({:load_index, cfg_name})
   end
 
