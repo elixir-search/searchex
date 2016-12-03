@@ -17,7 +17,7 @@ defmodule Searchex.Command.Search.Cache do
     DIO.inspect :READ_RESULTS, color: "green"
     case File.read(path) do
       {:ok, string} -> :erlang.binary_to_term(string)
-      {:error, _}   -> "ERROR #{path}"
+      {:error, _}   -> {:error, "ERROR #{path}"}
      end
   end
 

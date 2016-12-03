@@ -4,8 +4,11 @@ defmodule Searchex.Render.Results do
 
   @moduledoc false
 
-  def to_table(args) do
-    {catalog, results} = args
+  def to_table({:error, _msg}) do
+    DIO.puts "NO RESULTS"
+  end
+
+  def to_table({catalog, results}) do
     docs   = catalog.docs
     title  = catalog_title(catalog)
     fields = String.split(catalog.params.cli_format.fields)
