@@ -4,12 +4,14 @@ defmodule Searchex.Command.Build.Catalog.Params do
 
   @date_reg ~r/(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])/
 
-  defstruct collection:  ""                               ,
-            docsep:      ~r/---/                          ,
-            doc_dirs:    [ ]                              ,
-            file_types:  [ ]                              ,
-            field_defs:  %{}                              ,
-            cli_format:  %{}
+  defstruct collection:   ""               ,
+            docsep:       ~r/---/          ,
+            doc_dirs:     [ ]              ,
+            file_types:   [ ]              ,
+            field_defs:   %{}              ,
+            max_numfiles: 500              ,
+            max_file_kb:  500              ,
+            cli_format:   %{}
 
   def create_from_cfg(config) do
     new_config = %{config | docsep: ~r/(\n---\n)|(\n\*\*\n)/}

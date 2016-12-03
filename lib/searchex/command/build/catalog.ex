@@ -7,6 +7,7 @@ defmodule Searchex.Command.Build.Catalog do
   def create_from_scan(scan) do
     scan.params.doc_dirs
     |> Searchex.Util.File.ls_r(scan.params.file_types)
+    |> Enum.take(scan.params.max_numfiles)
     |> Enum.reduce(scan, fn(file, acc) -> create_from_scan(acc, file) end)
   end
 
@@ -21,7 +22,9 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   def read_rawdata(scan) do
-    %Searchex.Command.Build.Catalog.Scan{scan | rawdata: File.read!(scan.input_filename)}
+#    DIO.inspect scan, color: "RED", label: "SCANZ"
+    rawdata = File.stream!(scan.input_filename, [], scan.params.max_file_kb) |> Enum.at(0)
+    %Searchex.Command.Build.Catalog.Scan{scan | rawdata: rawdata}
   end
 
   def gen_docsep_positions(scan) do
