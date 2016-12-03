@@ -8,7 +8,9 @@ defmodule Searchex.Cli do
   Entry point for the `searchex` executable.  Takes a single argument `argv` which
   is a list of command-line options.
   """
-  def main(argv), do: route(argv) |> render
+  def main(argv) do
+    route(argv) |> render
+  end
 
   # List of command options.  The command should be the same as the function
   # name.  Argument and Description are used to generate help text.

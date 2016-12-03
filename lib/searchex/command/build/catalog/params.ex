@@ -14,9 +14,9 @@ defmodule Searchex.Command.Build.Catalog.Params do
             cli_format:   %{}
 
   def create_from_cfg(config) do
-    new_config = %{config | docsep: ~r/(\n---\n)|(\n\*\*\n)/}
-    result     = plain_struct()
-      |> Searchex.Util.Map.deep_merge(new_config)
+#    new_config = %{config | docsep: ~r/(\n---\n)|(\n\*\*\n)/}
+    result = plain_struct()
+             |> Searchex.Util.Map.deep_merge(config)
     Map.merge(%Searchex.Command.Build.Catalog.Params{}, result)
   end
 
