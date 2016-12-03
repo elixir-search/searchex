@@ -19,13 +19,16 @@ defmodule Searchex.Command.Catalog do
     ]
   end
 
+  # This is non-standard implementation of 'chain-children' at this level, the
+  # two dependencies are the cfg file and the document files.  So instead of
+  # calling to chained-children, we simply return the newest modification date.
   def chain_children({:load_catalog, cfg_name}) do
-    params  = gen_params(cfg_name)
-    stamp = newest([
+    params = gen_params(cfg_name)
+    tstamp = newest([
       filepath_timestamp(cfg_file(cfg_name))  ,      # timestamp of the cfg file
       dirlist_timestamp(params.doc_dirs)             # newest timestamp of all doc_dirs
     ])
-    [{:ok, stamp}]
+    [{:ok, tstamp}]
   end
 
   def chain_action_when_fresh(args = {:load_catalog, cfg_name}, _child_state) do
