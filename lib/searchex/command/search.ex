@@ -17,7 +17,6 @@ defmodule Searchex.Command.Search do
 
   def chain_action_when_fresh({:do_search, cfg_name, query}, _child_state) do
     DIO.inspect :FRESH_SEARCH, color: "green"
-#    [catalog | _] = child_state
     state = Searchex.Command.Search.Cache.read_results
     {:ok, chain_lcl_timestamp({:do_search, cfg_name, query}), state}
   end
@@ -28,8 +27,13 @@ defmodule Searchex.Command.Search do
     state = {catalog, String.split(query)}
     |> Searchex.Keyword.Server.do_query
     |> Searchex.Command.Search.Results.filter
+    |> add_query(query)
     |> Searchex.Command.Search.Cache.write_results
     {:ok, chain_lcl_timestamp({:do_search, cfg_name, query}), state}
+  end
+
+  defp add_query({collection, result}, query) do
+    {Map.merge(collection, %{query: query}), result}
   end
 
   def chain_lcl_timestamp({:do_search, _cfg_name, _query}) do
