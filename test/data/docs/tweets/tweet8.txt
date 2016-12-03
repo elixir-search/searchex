@@ -1,0 +1,4 @@
+from: @Jefferson
+date: Jan 5, 1777
+==
+We hold these truths to be self evident.

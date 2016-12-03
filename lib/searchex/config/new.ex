@@ -41,8 +41,8 @@ defmodule Searchex.Config.New do
       cfg_name:        "TBD"            ,   # the name of the config (collection?)
       file_types:      quotify(types)   ,   # file types
       docroot:         Path.expand("~") ,
-      max_numdocs:     1000             ,
-      max_doc_kb:      100              ,
+      max_numfiles:    500              ,
+      max_file_kb:     500              ,
       docsep:          "NNNN"           ,
       cli_style:       "TBD"            ,
     ]

@@ -108,4 +108,16 @@ defmodule Searchex.Command do
   def edit(idnum) do
     Searchex.Command.Edit.exec(idnum)
   end
+
+  @doc false
+  @nodoc """
+  Removed all cached files.
+  """
+  def clean do
+    Searchex.Config.Helpers.clean
+    {:ok, ""}
+  end
+
+
+
 end

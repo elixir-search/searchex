@@ -14,20 +14,12 @@ defmodule Searchex do
 
     case Mix.env do
       :test -> expand(test_settings)
+      :eval -> expand(test_settings)
       _     -> expand(base_settings)
     end
   end
 
   # -----------------------------------------------------------------------------------
-
-  defp base_settings do
-    %{
-      cfgs: "~/.searchex/cfgs"   ,
-      docs: "~/.searchex/docs"   ,
-      data: "~/.searchex/data"   ,
-      temp: "~/.searchex/temp"
-    }
-  end
 
   defp test_settings do
     %{
@@ -35,6 +27,15 @@ defmodule Searchex do
       docs: "/tmp/searchex_test/docs"    ,
       data: "/tmp/searchex_test/data"    ,
       temp: "/tmp/searchex_test/temp"
+    }
+  end
+
+  defp base_settings do
+    %{
+      cfgs: "~/.searchex/cfgs"   ,
+      docs: "~/.searchex/docs"   ,
+      data: "~/.searchex/data"   ,
+      temp: "~/.searchex/temp"
     }
   end
 

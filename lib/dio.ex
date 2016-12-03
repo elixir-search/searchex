@@ -43,10 +43,8 @@ defmodule DIO do
   """
   def puts(string) do
     case Mix.env do
-      :dev  -> IO.puts string
-      :prod -> IO.puts string
       :test -> :OK
-      _     -> :OK
+      _     -> IO.puts string
     end
   end
 
@@ -103,12 +101,12 @@ defmodule DIO do
 
   # don't print anything in test mode by default - can be overridden using `test: :show`
   defp envize({[label, chardata], options}) do
-    default = [dev: :show, prod: :show, test: :hide]
+    default = [dev: :show, prod: :show, test: :hide, eval: :show]
     modlist = Enum.reduce options, default, fn({k, v}, acc) ->
       if Enum.member?([:test, :prod, :dev], k), do: Keyword.merge(acc, [{k, to_atom(v)}]), else: acc end
     case Keyword.get(modlist, Mix.env) do
-      :show  -> {[label, chardata], options}
-      _      -> {[""   , ""      ], options}
+      :hide  -> {[""   , ""      ], options}
+      _      -> {[label, chardata], options}
     end
   end
 
