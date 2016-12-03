@@ -66,7 +66,7 @@ defmodule DIO do
   def type(item) when is_port(item)      , do: :port
   def type(item) when is_reference(item) , do: :reference
   def type(item) when is_tuple(item)     , do: :tuple
-  def type(item) when true               , do: :unknown
+  def type(_ele) when true               , do: :unknown
 
   # ----------------------------------------------------------------
 
