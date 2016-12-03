@@ -2,8 +2,6 @@ defmodule Searchex.Command.Build.Catalog.Params do
 
   @moduledoc false
 
-  @date_reg ~r/(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])/
-
   defstruct collection:   ""               ,
             docsep:       ~r/---/          ,
             doc_dirs:     [ ]              ,
@@ -14,11 +12,20 @@ defmodule Searchex.Command.Build.Catalog.Params do
             cli_format:   %{}
 
   def create_from_cfg(config) do
-#    new_config = %{config | docsep: ~r/(\n---\n)|(\n\*\*\n)/}
+    old_docsep = config[:docsep] || "-x-x-"
+    new_docsep = regify(old_docsep)
+    new_config = Map.merge(config, %{docsep: new_docsep})
     result = plain_struct()
-             |> Searchex.Util.Map.deep_merge(config)
+             |> Searchex.Util.Map.deep_merge(new_config)
     Map.merge(%Searchex.Command.Build.Catalog.Params{}, result)
   end
+
+  def regify(elem) when is_map(elem)   , do: elem
+  def regify(elem) when is_binary(elem) do
+    {:ok, reg} = Regex.compile(elem)
+    reg
+  end
+  def regify(elem), do: elem
 
   defp plain_struct do
     Map.from_struct %Searchex.Command.Build.Catalog.Params{}
