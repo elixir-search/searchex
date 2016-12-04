@@ -22,8 +22,7 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   def read_rawdata(scan) do
-#    DIO.inspect scan, color: "RED", label: "SCANZ"
-    rawdata = File.stream!(scan.input_filename, [], scan.params.max_file_kb) |> Enum.at(0)
+    rawdata = File.stream!(scan.input_filename, [], scan.params.max_file_kb * 1024) |> Enum.at(0)
     %Searchex.Command.Build.Catalog.Scan{scan | rawdata: rawdata}
   end
 

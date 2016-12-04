@@ -1,9 +1,8 @@
 defmodule Searchex.Command.Build.Catalog.Scan do
   @moduledoc false
-  defstruct params:   %Searchex.Command.Build.Catalog.Params{}          ,
+  defstruct params:   %Searchex.Command.Build.Catalog.Params{}  ,
             rawdata:  ""                                        ,
             input_filename:    ""                               ,
-            collection_name:   ""                               ,
             numdocs:           0                                ,
             avg_wordcount:     0                                ,
             docsep_positions:  []                               ,
