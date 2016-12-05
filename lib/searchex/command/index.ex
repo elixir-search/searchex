@@ -2,7 +2,7 @@ defmodule Searchex.Command.Index do
 
   @moduledoc false
 
-  use ExMake
+  use ExMakeOld
 
   import Searchex.Config.Helpers
   import Searchex.Command.Build.Index

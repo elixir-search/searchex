@@ -2,7 +2,7 @@ defmodule Searchex.Config.Load do
 
   @moduledoc false
 
-#  use ExMake
+#  use ExMakeOld
 
   @doc "Return the CFG data as a Map"
   def to_map({:ok, yaml_data}) do

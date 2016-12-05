@@ -1,7 +1,7 @@
 defmodule Searchex.Command.Results do
   @moduledoc false
 
-#  use ExMake
+#  use ExMakeOld
 
   # error checks:
   # - valid cfg_name

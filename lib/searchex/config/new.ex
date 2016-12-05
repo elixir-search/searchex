@@ -2,7 +2,7 @@ defmodule Searchex.Config.New do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import ExMake, only: [check_validations: 1]
+  import ExMakeOld, only: [check_validations: 1]
 
   @default_cfg File.read("eex/default_cfg.yml.eex")
 

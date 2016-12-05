@@ -2,7 +2,7 @@ defmodule Searchex.Command.Search do
 
   @moduledoc false
 
-  use ExMake
+  use ExMakeOld
 
   def exec(cfg_name, query) do
     DIO.puts "SEARCH #{cfg_name} #{query}"

@@ -1,23 +1,23 @@
-defmodule ExMake do
+defmodule ExMakeOld do
   @moduledoc """
   Generic Make behavior for Elixir
 
   ### Overview
 
-  `ExMake` Enables:
+  `ExMakeOld` Enables:
   - make-like behavior
   - multiple modules joined together in a Parent > Child dependency chain
   - compatibility with Elixir's concurrent / distributed features
   - composable processing elements
 
-  `ExMake` extends the standard Elixir pipeline with:
+  `ExMakeOld` extends the standard Elixir pipeline with:
   - caching to prevent unnecessary re-generation of intermediate products
   - validations and error checking at every step of the chain
   - DAG processing topologies
 
   ### Timestamps
   
-  `ExMake` works by comparing timestamps - a tuple of six integers:
+  `ExMakeOld` works by comparing timestamps - a tuple of six integers:
   `{{year, month, day}, {hour, min, sec}}`
 
   For more precision, add milliseconds (thousandths of a second)
@@ -29,7 +29,7 @@ defmodule ExMake do
 
   The Parent module calls the `chain` function on the Child module.
 
-  An `ExMake` behavior requires five callbacks:
+  An `ExMakeOld` behavior requires five callbacks:
 
   1. `chain_validations(args)` returns a list of validation functions.
   2. `chain_children(args)` a list of chained children to run.
@@ -62,7 +62,7 @@ defmodule ExMake do
 
   ```elixir
   defmodule TestModule do
-    use ExMake
+    use ExMakeOld
   
     def api_call(args) do
       chain {:test, args}   
@@ -255,7 +255,7 @@ defmodule ExMake do
     quote do
 
       @doc false
-      # links to all the callbacks in `ExMake`
+      # links to all the callbacks in `ExMakeOld`
       def handle_chain(args) do
         %{
           validations:       fn -> chain_validations(args)                                 end  ,
@@ -272,14 +272,14 @@ defmodule ExMake do
       # which is defined in the host method.
       def chain(args) do
         params = handle_chain(args)
-        case ExMake.check_validations(params.validations) do
+        case ExMakeOld.check_validations(params.validations) do
           {:error, msgs} -> {:error, msgs}
-          _              -> ExMake.perform_action(params)
+          _              -> ExMakeOld.perform_action(params)
         end
       end
 
-      import ExMake
-      @behaviour ExMake
+      import ExMakeOld
+      @behaviour ExMakeOld
     end
   end
 end

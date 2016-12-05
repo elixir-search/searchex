@@ -6,6 +6,7 @@
   "ex_doc": {:hex, :ex_doc, "0.14.4", "a0a79a6896075814f4bc6802b74ccbed6549f47cc5ab34c71eaee2303170b8ef", [:mix], [{:earmark, "~> 1.0", [hex: :earmark, optional: false]}]},
   "ex_guard": {:hex, :ex_guard, "1.1.1", "bd260c9aa1a5b8c438adab4cf4131e775af637723c241296cf1a100b402ade52", [:mix], [{:fs, "~> 0.9", [hex: :fs, optional: false]}]},
   "fs": {:hex, :fs, "0.9.2", "ed17036c26c3f70ac49781ed9220a50c36775c6ca2cf8182d123b6566e49ec59", [:rebar], []},
+  "lru_cache": {:hex, :lru_cache, "0.1.1", "5bd850535a69a07c702099a3f09d1fc0d982f347735d4d733de2cdd97e4dd91b", [:mix], []},
   "stem_ex": {:hex, :stem_ex, "0.0.1", "75aa862d0341a6047f8afc9d332779db0001956aee64bec28c346bd1c72ce21e", [:mix], []},
   "table_rex": {:hex, :table_rex, "0.8.3", "1c68dfc6886d6f118f5047b0449d6402ae0ac5709064789e578c2f4659f4064b", [:mix], []},
   "yamerl": {:hex, :yamerl, "0.3.2", "9eac1537d251e926f47763ab1db0d9e6e8f2397646c290d58aa6ceebc6832fb7", [:rebar3], []},

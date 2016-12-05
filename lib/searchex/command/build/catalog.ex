@@ -23,7 +23,7 @@ defmodule Searchex.Command.Build.Catalog do
     |> gen_docs
     |> extract_counts
     |> extract_fields
-    |> TIO.inspect(color: "BLUE")
+#    |> TIO.inspect(color: "BLUE")
   end
 
   def read_rawdata(scan) do

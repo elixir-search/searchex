@@ -7,16 +7,16 @@ defmodule Searchex.Command.CatalogTest do
 
   describe "min collection" do
     test "doc count" do
-    TIO.inspect "MIN", color: "red"
+#    TIO.inspect "MIN", color: "red"
       {:ok, _timestamp, scan} = exec("min")
-      TIO.inspect scan, color: "green"
+#      TIO.inspect scan, color: "green"
       assert scan.numdocs == 0
     end
   end
 
   describe "multi collection" do
     test "doc count" do
-    TIO.inspect "MULTI", color: "red"
+#    TIO.inspect "MULTI", color: "red"
       {:ok, _timestamp, scan} = exec("multi")
       assert scan.numdocs == 7
     end
@@ -24,7 +24,7 @@ defmodule Searchex.Command.CatalogTest do
 
   describe "tweets collection" do
     test "doc count" do
-    TIO.inspect "TWEETS", color: "red"
+#    TIO.inspect "TWEETS", color: "red"
       {:ok, _timestamp, scan} = exec("tweets")
       assert scan.numdocs == 0
     end
@@ -32,7 +32,7 @@ defmodule Searchex.Command.CatalogTest do
 
   describe "worklog collection" do
     test "doc count" do
-    TIO.inspect "WORKLOG", color: "red"
+#    TIO.inspect "WORKLOG", color: "red"
       {:ok, _timestamp, scan} = exec("worklog")
       assert scan.numdocs == 7
     end

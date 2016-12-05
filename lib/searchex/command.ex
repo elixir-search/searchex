@@ -21,7 +21,7 @@ defmodule Searchex.Command do
 
   [config_file,doc_dirs] < Read Configuration < Build Index < Perform Query
 
-  The `Cmd` system uses the Elixir behavior `ExMake` to manage the dependency chain.
+  The `Cmd` system uses the Elixir behavior `ExMakeOld` to manage the dependency chain.
   """
 
   @doc """

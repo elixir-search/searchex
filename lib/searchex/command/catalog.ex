@@ -2,7 +2,7 @@ defmodule Searchex.Command.Catalog do
 
   @moduledoc false
 
-  use ExMake
+  use ExMakeOld
 
   import Searchex.Config.Helpers
 
