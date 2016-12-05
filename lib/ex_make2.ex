@@ -1,4 +1,4 @@
-defmodule ExMake do
+defmodule ExMake2 do
   @moduledoc """
   Generic Make behavior for Elixir
 
@@ -8,39 +8,27 @@ defmodule ExMake do
   - make-like behavior
   - multiple modules joined together in a Parent > Child dependency chain
   - compatibility with Elixir's concurrent / distributed features
-  - composable processing elements
 
-  `ExMake` extends the standard Elixir pipeline with:
+  `ExMake` is different than the standard Elixir pipeline:
   - caching to prevent unnecessary re-generation of intermediate products
   - validations and error checking at every step of the chain
   - DAG processing topologies
-
-  ### Timestamps
-  
-  `ExMake` works by comparing timestamps - a tuple of six integers:
-  `{{year, month, day}, {hour, min, sec}}`
-
-  For more precision, add milliseconds (thousandths of a second)
-  to your timestamp, like this: `{{year, month, day}, {hour, min, sec, msec}}`
-
-  Important: `year` should be four digits!!
+  - bottom-up processing direction
 
   ### How it works
 
   The Parent module calls the `chain` function on the Child module.
 
-  An `ExMake` behavior requires five callbacks:
+  An `ExMake` behavior uses three callbacks:
 
   1. `chain_validations(args)` returns a list of validation functions.
   2. `chain_children(args)` a list of chained children to run.
-  3. `chain_lcl_timestamp(args)` a timestamp function to be used locally.
-  4. `chain_action_when_fresh(args, child_state)` Runs when state is fresh.
-  5. `chain_action_when_stale(args, child_state)` Child state is a list, one per child.
+  4. `chain_generate(args, child_state)` Content generation function.
 
   `chain`, `chain_action_when_fresh`, `chain_action_when_stale` all return
   one of the following tuples:
-  - `{:ok, timestamp}`
-  - `{:ok, timestamp, child_state}`
+  - `{:ok}`
+  - `{:ok, child_state}`
   - `{:error, message}`
 
    A validation function returns one of:
@@ -52,11 +40,16 @@ defmodule ExMake do
      [messages]}` is returned.
    2. The `child` modules are all invoked.
    3. If one or more of the child modules fails, the error message is returned.
-   4. The timestamps of the child modules are compared to the timestamp of the
-      current module.  If one or more of the child modules is newer than the
-      current module, the current state is marked as `:stale`.
-   5. If the current state is `:stale`, invoke `chain_action_when_stale`.
-   6. If the current state is `:fresh`, invoke `chain_action_when_fresh`.
+   4. Otherwise the child returns data.
+   5. The hash keys of the child data is looked up in the LRU cache.  If a cache
+      value is found, it is returned.
+   6. Otherwise, the `chain_generate` function is called.
+
+  ### Caching
+
+  `ExMake` uses an ETS-based LRU cache at every step of the generation chain.
+
+  Cache keys are content digests, generated and expired automatically.
 
   ### Example
 
@@ -76,54 +69,26 @@ defmodule ExMake do
       [ Child1.chain({:ctx1, args}), Child2.chain({:ctx2, args}) ]
     end
 
-    def chain_lcl_timestamp({:test, args}) do
-      timestamp_function(args)
-    end
-
-    def chain_action_when_fresh({:test, args}, child_state) do
-      {:ok, timestamp_function(args), new_state}
-    end
-
-    def chain_action_when_stale({:test, args}, child_state) do
-      {:ok, timestamp_function(args), new_state}
+    def chain_generate({:test, args}, child_state) do
+      {:ok, new_state}
     end
   end
   ```
-  ### Notes
-  
-  Note: timestamps can represent events like:
-  - file modification date
-  - directory modification date (recursive search)
-  - last GenServer state change
-  - last call to a third-party API
-  - an http 'last-modified' header, etc.
-
-  Note: intermediate state can be cached in any form you want:
-  disk files, SQL / ETS / DETS / Mnesia databases, GenServer processes, etc.
-
   """
 
   # TODO: define types
-  @callback chain_validations(tuple)            :: list
-  @callback chain_children(tuple)               :: list
-  @callback chain_lcl_timestamp(tuple)          :: tuple
-  @callback chain_action_when_fresh(tuple, any) :: tuple
-  @callback chain_action_when_stale(tuple, any) :: tuple
+  @callback chain_validations(tuple)   :: list
+  @callback chain_children(tuple)      :: list
+  @callback chain_generate(tuple, any) :: tuple
 
-  @doc "Return the current timestamp."
-  def timestamp_now do
-    {time, _} = System.cmd("date", ["+%Y %m %d %H %M %S"])
-    [y,m,d,hh,mm,ss] = time |> String.split |> Enum.map(&String.to_integer/1)
-    {{y,m,d},{hh,mm,ss}}
+  @doc "Start the cache service"
+  def start_cache do
+    "TBD"
   end
 
-  @doc "Return a timestamp for a specific filepath."
-  def filepath_timestamp(path) do
-    epath = Path.expand(path)
-    case File.stat(epath, time: :local) do
-      {:ok, info} -> Map.get(info, :mtime)
-      _           -> {{0,0,0},{0,0,0}}
-    end
+  @doc "Save the cache data to disk"
+  def save_cache do
+    "TBD"
   end
 
   @doc """
@@ -151,25 +116,24 @@ defmodule ExMake do
   end
 
   @doc """
-  Predicate to compare two timestamps.
-  
-  Uses `newer_than` / `older_than` labels.
+  Timestamp 'newer' comparison predicate
 
-  Examples:
+  Example:
 
-      iex> is? {{2012,2,5},{12,12,12}}, newer_than: {{2014,9,9},{4,4,4}}
+      iex> {{2012,2,5},{12,12,12}} |> is_newer_than? {{2014,9,9},{4,4,4}}
       false
+  """
+  def is_newer_than?(ts1, ts2), do: ts1 >= ts2
 
-      iex> is? {{2012,2,5},{12,12,12}}, older_than: {{2014,9,9},{4,4,4}}
+  @doc """
+  Timestamp 'older' comparison predicate
+
+  Example:
+
+      iex> {{2012,2,5},{12,12,12}} |> is_older_than? {{2014,9,9},{4,4,4}}
       true
   """
-  def is?(timestamp, args) do
-    cond do
-      args[:newer_than] -> timestamp >= args[:newer_than]
-      args[:older_than] -> timestamp  < args[:older_than]
-      true              -> false
-    end
-  end
+  def is_older_than?(ts1, ts2), do: ts1  < ts2
 
   @doc "Returns the newest timestamp in a list."
   def newest(enum), do: Enum.max(enum)
@@ -244,8 +208,8 @@ defmodule ExMake do
   # When fresh, perform action (return a cached value)
   # When stale, perform action (generate a new returned value)
   def perform_action(params) do
-    case chain_and_check(params.children, params.lcl_timestamp) do
-      {:error , msg  }       -> {:error, msg}
+    case chain_and_check(chain_children) do
+      {:error , msgs }       -> {:error, msgs}
       {:fresh , child_state} -> params.action_when_fresh.(child_state)
       {:stale , child_state} -> params.action_when_stale.(child_state)
     end
@@ -255,31 +219,27 @@ defmodule ExMake do
     quote do
 
       @doc false
-      # links to all the callbacks in `ExMake`
-      def handle_chain(args) do
-        %{
-          validations:       fn -> chain_validations(args)                                 end  ,
-          children:          fn -> chain_children(args)                                    end  ,
-          lcl_timestamp:     fn -> chain_lcl_timestamp(args)                               end  ,
-          action_when_fresh: fn(child_state) -> chain_action_when_fresh(args, child_state) end  ,
-          action_when_stale: fn(child_state) -> chain_action_when_stale(args, child_state) end
-        }
-      end
+      def chain_validations(_args), do: []
 
       @doc false
-      # why is this function defined in the macro?
-      # because it does a callback to `handle_chain`
-      # which is defined in the host method.
+      def chain_children(_args), do: []
+
+      @doc false
+      def chain_generate(_args, _child_state), do: nil
+
+      @doc false
       def chain(args) do
-        params = handle_chain(args)
-        case ExMake.check_validations(params.validations) do
+        case ExMake2.check_validations(chain_validations) do
           {:error, msgs} -> {:error, msgs}
-          _              -> ExMake.perform_action(params)
+          _              -> ExMake2.perform_action(params)
         end
       end
 
       import ExMake
       @behaviour ExMake
+
+      defoverridable [chain_validations: 1, chain_children: 1, chain_generate: 2]
+
     end
   end
 end

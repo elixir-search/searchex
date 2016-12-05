@@ -12,7 +12,7 @@ defmodule Searchex.Render.Results do
     docs   = catalog.docs
     title  = catalog_title(catalog)
     fields = String.split(catalog.params.cli_format.fields)
-    data = Searchex.Command.Build.Catalog.Scan.table_data(docs, title: title, fields: fields )
+    data = Searchex.Command.Build.Catalog.Filescan.table_data(docs, title: title, fields: fields )
     {title, header, rows} = data
     numdocs = Enum.count(rows)
     if numdocs == 0 do

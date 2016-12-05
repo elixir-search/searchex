@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.Scan.Doc do
+defmodule Searchex.Command.Build.Catalog.Filescan.Doc do
 
   @moduledoc false
 

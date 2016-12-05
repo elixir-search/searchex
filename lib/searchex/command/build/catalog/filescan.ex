@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.Scan do
+defmodule Searchex.Command.Build.Catalog.Filescan do
   @moduledoc false
   defstruct params:   %Searchex.Command.Build.Catalog.Params{}  ,
             rawdata:  ""                                        ,
@@ -12,12 +12,12 @@ defmodule Searchex.Command.Build.Catalog.Scan do
   @doc "Add a new document to the scan"
   def add_doc(scan, newdoc) do
     newdocs = scan.docs ++ [newdoc]
-    %Searchex.Command.Build.Catalog.Scan{scan | docs: newdocs}
+    %Searchex.Command.Build.Catalog.Filescan{scan | docs: newdocs}
   end
 
   @doc "Create a new Scan with specified Params"
   def create_from_params(params) do
-    %Searchex.Command.Build.Catalog.Scan{params: params}
+    %Searchex.Command.Build.Catalog.Filescan{params: params}
   end
 
   @doc "Generate table data from the scan"
