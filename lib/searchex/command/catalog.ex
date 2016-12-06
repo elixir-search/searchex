@@ -24,18 +24,15 @@ defmodule Searchex.Command.Catalog do
   # two dependencies are the cfg file and the document files.  So instead of
   # calling to chained-children, we simply return the newest modification date.
   def chain_children({:load_catalog, cfg_name}) do
-    TIO.inspect "CHILDREN", color: "BLUE"
     params = gen_params(cfg_name)
     term = [
       filepath_timestamp(cfg_file(cfg_name))  , # timestamp of the cfg file
       dirlist_timestamp(params.doc_dirs)        # newest timestamp of all doc_dirs
     ] |> newest
-    TIO.inspect term, color: "GREEN"
-    [{:ok, term_digest(term)}]
+    [{:ok, term_digest(term, cfg_name)}]
   end
 
   def chain_generate({:load_catalog, cfg_name}, _child_state) do
-    DIO.inspect :GENERATE, color: "green"
     gen_params(cfg_name)
     |> Searchex.Command.Build.Catalog.Filescan.create_from_params
     |> Searchex.Command.Build.Catalog.create_from_scan

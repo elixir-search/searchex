@@ -23,7 +23,6 @@ defmodule Searchex.Command.Build.Catalog do
     |> gen_docs
     |> extract_counts
     |> extract_fields
-#    |> TIO.inspect(color: "BLUE")
   end
 
   def read_rawdata(scan) do
@@ -70,7 +69,7 @@ defmodule Searchex.Command.Build.Catalog do
       doclength: String.length(string_head),
       wordcount: Searchex.Util.String.wordcount(string_head),
       wordstems: Searchex.Util.String.wordstems(string_head),
-      docid: Searchex.Util.String.digest(string_head),
+      docid: X.Term.digest(string_head),
       body: string_head
     }
     new_scan = Searchex.Command.Build.Catalog.Filescan.add_doc(scan, doc)

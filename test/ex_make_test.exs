@@ -45,7 +45,7 @@ defmodule ExMakeTest do
   describe "#chain" do
     test "with empty module" do
       {state, _digest} = TestMod1.chain
-      assert state == :notimpl
+      assert state == :ok
     end
 
     test "with failing validation" do

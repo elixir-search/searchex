@@ -117,7 +117,4 @@ defmodule Searchex.Command do
     Searchex.Config.Helpers.clean
     {:ok, ""}
   end
-
-
-
 end

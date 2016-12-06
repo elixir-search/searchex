@@ -52,6 +52,9 @@ defmodule ExMake do
 
   Cache keys are content digests, generated and expired automatically.
 
+  A content digest is the SHA hash of the content concatenated with
+  the SHA hash of the input parameter(s) used to generate the content.
+
   ### Example
 
   ```elixir
@@ -82,10 +85,16 @@ defmodule ExMake do
   @callback chain_children(tuple)      :: list
   @callback chain_generate(tuple, any) :: tuple
 
-  @doc "Generates a digest for a term"
-  def term_digest(term) do
-    digest = term |> :erlang.term_to_binary |> Searchex.Util.String.digest(10)
-    {term, digest}
+  @doc """
+  Generates a digest for a term.
+
+  Optionally, the inputs used to generate the term may be provided.
+  """
+  def term_digest(term, inputs \\ "") do
+    import X.Term
+    digest1 = if inputs == "", do: "null_", else: inputs |> digest
+    digest2 = term |> digest(10)
+    {term, digest1 <> digest2}
   end
 
   @doc """
@@ -144,19 +153,13 @@ defmodule ExMake do
   # look up cached value
   # if not found, regenerate
   def current_action(args, child_state, module) do
-    TIO.inspect "CURRENT", color: "RED"
     child_key = Enum.reduce(child_state, "", fn(x, acc) -> acc <> elem(x, 1) end)
-    TIO.inspect child_key, color: "CYAN"
-    if val = TIO.inspect(ExCache.get_cache(child_key), color: "RED") do
-      val
+    if val = ExCache.get_cache(child_key) do
+      {:ok, val}
     else
-      TIO.inspect :A, color: "GREEN"
       val = module.chain_generate(args, child_state)
-      TIO.inspect [B: val], color: "GREEN"
-      return_val = val |> term_digest
-      TIO.inspect [C: return_val], color: "GREEN"
+      return_val = val |> term_digest([args, module])
       ExCache.put_cache(child_key, return_val)
-      TIO.inspect :D, color: "GREEN"
       {:ok, return_val}
     end
   end
@@ -166,9 +169,9 @@ defmodule ExMake do
   # If there are any errors, return them.
   # Otherwise perform the action
   def child_actions(args, module) do
-    case TIO.inspect(chain_and_check(module.chain_children(args)), color: "GREEN") do
+    case chain_and_check(module.chain_children(args)) do
       {:error , msgs }       -> {:error, msgs}
-      {:ok    , child_state} -> TIO.inspect(current_action(args, child_state, module), color: "MAGENTA")
+      {:ok    , child_state} -> current_action(args, child_state, module)
     end
   end
 
