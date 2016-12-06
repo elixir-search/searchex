@@ -21,10 +21,10 @@ defmodule Searchex.Util.String do
     |> Enum.map(&StemEx.stem/1)
   end
 
-  def signature(string) do
+  def digest(string, length \\ 5) do
     :crypto.hash(:sha, string)
     |> Base.encode16
-    |> String.slice(0,5)
+    |> String.slice(0,length)
     |> String.downcase
   end
 

@@ -94,27 +94,31 @@ defmodule ExMake do
   {:error, msg}
   """
   def check_validations(validations) when is_list(validations) do
-    Enum.reduce validations, {:ok}, fn
-      ({:error, msg}, {:ok}        ) -> {:error, [msg]       }
-      ({:error, msg}, {:error, lst}) -> {:error, lst ++ [msg]}
-      ({:ok}        , {:error, lst}) -> {:error, lst         }
-      ({:ok}        , {:ok}        ) -> {:ok}
-    end
+    Enum.reduce validations, {:ok}, fn(x, acc) -> reduce_validation(x, acc) end
   end
 
   def check_validations(validations) when is_function(validations) do
     check_validations(validations.())
   end
 
-  defmacro __using__(_opts) do
-    quote do
+  def check_validations(validation), do: check_validations([validation])
+
+  def reduce_validation(func, acc) when is_function(func), do: reduce_validation(func.(), acc)
+  def reduce_validation({:error, msg}, {:ok}        ), do: {:error, [msg]       }
+  def reduce_validation({:error, msg}, {:error, lst}), do: {:error, lst ++ [msg]}
+  def reduce_validation({:ok}        , {:error, lst}), do: {:error, lst         }
+  def reduce_validation({:ok   , _xx}, {:error, lst}), do: {:error, lst         }
+  def reduce_validation({:ok}        , {:ok}        ), do: {:ok                 }
+  def reduce_validation({:ok}        , {:ok   , lst}), do: {:ok   , lst         }
+  def reduce_validation({:ok   , val}, {:ok}        ), do: {:ok   , [val]       }
+  def reduce_validation({:ok   , val}, {:ok   , lst}), do: {:ok   , lst ++ [val]}
 
       @doc false
       # Takes an array of `chained children`. Returns a tuple.
       # `{:error, [msg]}` or `{:ok, [val]}`
       # An `:error` is returned if only one parent has an error.
       # Return vals are in order of `chained parents`.
-      defp chain_and_check(children) when is_list(children) do
+      def chain_and_check(children) when is_list(children) do
         Enum.reduce children, {:ok, []}, fn
           ({:error, msg}, {:error, ele}) -> {:error, ele ++ [msg]}
           ({:error, msg}, _acc         ) -> {:error, [msg]}
@@ -123,25 +127,25 @@ defmodule ExMake do
         end
       end
 
-      defp chain_and_check(child, lcl_timestamp) when is_function(child),
+      def chain_and_check(child, lcl_timestamp) when is_function(child),
       do: chain_and_check(child.(), lcl_timestamp)
 
-      defp chain_and_check(child, lcl_timestamp) when is_function(lcl_timestamp),
+      def chain_and_check(child, lcl_timestamp) when is_function(lcl_timestamp),
       do: chain_and_check(child, lcl_timestamp.())
 
-      defp chain_and_check(child, lcl_timestamp),
+      def chain_and_check(child, lcl_timestamp),
       do: chain_and_check([child], lcl_timestamp)
 
       @doc false
       # look up cached value
       # if not found, regenerate
-      defp perform_current_action(args, child_state) do
+      def perform_current_action(args, child_state, module) do
         digest_key = Enum.reduce(child_state, "", fn(x, acc) -> acc <> elem(x, 1) end)
         if val = ExCache.get_cache(digest_key) do
           val
         else
-          val = generate_content(args, child_state)
-          digest_key = val |> :erlang.term_to_binary |> ExCache.put_cache(val)
+          val = module.chain_generate(args, child_state)
+          digest_key = val |> :erlang.term_to_binary |> Searchex.Util.String.digest(10) |> ExCache.put_cache(val)
           {val, digest_key}
         end
       end
@@ -151,29 +155,36 @@ defmodule ExMake do
       # If there are any errors, return them.
       # When fresh, perform action (return a cached value)
       # When stale, perform action (generate a new returned value)
-      defp perform_child_action(args) do
-        case ExMake.chain_and_check(chain_children) do
+      def perform_child_action(args, module) do
+        case chain_and_check(module.chain_children(args)) do
           {:error , msgs }       -> {:error, msgs}
-          {:ok    , child_state} -> perform_current_action(args, child_state)
+          {:ok    , child_state} -> perform_current_action(args, child_state, module)
         end
       end
 
-      @doc false
-      def chain_validations(_args), do: []
+  defmacro __using__(_opts) do
+    quote do
 
-      @doc false
-      def chain_children(_args), do: []
+          @doc false
+          def chain_validations(_args), do: []
 
-      @doc false
-      def chain_generate(_args, _child_state), do: nil
+          @doc false
+          def chain_children(_args), do: []
+
+          @doc false
+          def chain_generate(_args, _child_state), do: :notimpl
+
+
 
       @doc false
       def chain(args) do
-        case ExMake.check_validations(chain_validations) do
+        case ExMake.check_validations(__MODULE__.chain_validations(args)) do
           {:error, msgs} -> {:error, msgs}
-          _              -> ExMake.perform_child_action(args)
+          _              -> ExMake.perform_child_action(args, __MODULE__)
         end
       end
+
+      def chain, do: chain(:ok)
 
       import ExMake
       @behaviour ExMake
