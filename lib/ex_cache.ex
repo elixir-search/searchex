@@ -44,7 +44,6 @@ defmodule ExCache do
 
   @doc "Put a value in the cache"
   def put_cache(key, val) do
-#     TIO.inspect [key, val], color: "MAGENTA"
     unless Process.whereis(:ex_cache_ets), do: start
     LruCache.put(:ex_cache_ets, key, val)
     key

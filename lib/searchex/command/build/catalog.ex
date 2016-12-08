@@ -3,9 +3,9 @@ defmodule Searchex.Command.Build.Catalog do
   @moduledoc false
 
   defstruct params:        %Searchex.Command.Build.Catalog.Params{}  ,
-            filescans:     []                                        ,
             numdocs:       0                                         ,
             avg_wordcount: 0                                         ,
+            filescans:     []                                        ,
             docs:          []
 
   def create_from_params(params) do
@@ -28,9 +28,9 @@ defmodule Searchex.Command.Build.Catalog do
     %Searchex.Command.Build.Catalog{catalog | docs: docs}
   end
 
-  def extract_counts(scan) do
-    wordcounts = Enum.map(scan.docs, fn(doc) -> doc.wordcount end)
+  def extract_counts(catalog) do
+    wordcounts = Enum.map(catalog.docs, fn(doc) -> doc.wordcount end)
     newvals    = %{numdocs: Enum.count(wordcounts), avg_wordcount: Searchex.Util.Enum.average(wordcounts)}
-    Map.merge(scan, newvals)
+    Map.merge(catalog, newvals)
   end
 end

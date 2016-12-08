@@ -9,13 +9,13 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
 
   def generate_filescan(catalog, filename) do
     %Searchex.Command.Build.Catalog.Filescan{input_filename: filename}
-    |> read_rawdata
+    |> read_rawdata(catalog.params.max_file_kb)
     |> gen_docsep_positions(catalog)
     |> gen_docsep_offsets
   end
   
-  defp read_rawdata(scan) do
-    rawdata = File.stream!(scan.input_filename, [], scan.params.max_file_kb * 1024) |> Enum.at(0)
+  defp read_rawdata(scan, max_file_kb) do
+    rawdata = File.stream!(scan.input_filename, [], max_file_kb * 1024) |> Enum.at(0)
     %Searchex.Command.Build.Catalog.Filescan{scan | rawdata: rawdata}
   end
 

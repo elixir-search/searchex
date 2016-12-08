@@ -26,8 +26,11 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     positions = filescan.docsep_positions
     offsets   = filescan.docsep_offsets
     pairs     = List.zip([positions, offsets])
-    Enum.reduce pairs, [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end
+    Enum.reduce setpairs(pairs), [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end
   end
+
+  defp setpairs([]) , do: [{0, 99999999999}]
+  defp setpairs(val), do: val
 
   defp gen_doc({position, offset}, filescan) do
     body = String.slice(filescan.rawdata, position, offset)
