@@ -15,8 +15,8 @@ defmodule Searchex.Kw.Server do
     GenServer.start_link(__MODULE__, %{}, name: server_name)
   end
 
-  def add_keyword_position(keyword, docid, position) do
-    server = get_keyword_server(keyword)
+  def add_keyword_position(col, keyword, docid, position) do
+    server = get_keyword_server(col, keyword)
     GenServer.cast(server, {:add, docid, position})
   end
 
@@ -31,8 +31,8 @@ defmodule Searchex.Kw.Server do
   matches_per_term_and_doc looks like:
   %{{"term1", "docid1"} => 23, {"term1", "docid2"} => 4, ...}
   """
-  def do_query(terms) when is_list(terms) do
-    doc_matches = gen_doc_matches(terms)
+  def do_query(col, terms) when is_list(terms) do
+    doc_matches = gen_doc_matches(col, terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
     Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
   end
@@ -40,8 +40,8 @@ defmodule Searchex.Kw.Server do
   def do_query({cat, terms}) when is_list(terms)  , do: {cat, do_query(terms)}
   def do_query({cat, terms}) when is_binary(terms), do: {cat, do_query(String.split(terms))}
 
-  def gen_doc_matches(terms) do
-    Enum.map(terms, fn(term) -> get_ids(term) end)
+  def gen_doc_matches(col, terms) do
+    Enum.map(terms, fn(term) -> get_ids(col, term) end)
   end
 
   def gen_matches_per_term_and_doc(doc_matches) do
@@ -59,8 +59,8 @@ defmodule Searchex.Kw.Server do
   The returned data structure look like:
   %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
-  def get_ids(term) do
-    case find_keyword_server(term) do
+  def get_ids(col, term) do
+    case find_keyword_server(col, term) do
       {:ok, server} -> {term, GenServer.call(server, :get_ids)};
       {:error, _  } -> {term, %{}}
     end
@@ -99,20 +99,21 @@ defmodule Searchex.Kw.Server do
     {:noreply, new_state}
   end
 
-  def get_keyword_server(keyword) do
-    name = if is_atom(keyword), do: keyword, else: keyword_server_name(keyword)
-    Process.whereis(name) || Searchex.Kw.Supervisor.add_child_and_return_pid(name)
+  def get_keyword_server(col, keyword) do
+    name = if is_atom(keyword), do: keyword, else: keyword_server_name(col, keyword)
+    Process.whereis(name) || Searchex.Kw.Supervisor.add_child_and_return_pid(col, name)
   end
 
-  def find_keyword_server(keyword) do
-    name = keyword_server_name(keyword)
+  def find_keyword_server(col, keyword) do
+    name = keyword_server_name(col, keyword)
     case Process.whereis(name) do
       nil -> {:error, "Not found"}
       pid -> {:ok, pid}
     end
   end
 
-  def keyword_server_name(keyword) do
-    "kw_" <> keyword |> String.to_atom
+  def keyword_server_name(col, keyword) do
+    new_col = to_string(col)
+    "kw_" <> new_col <> keyword |> String.to_atom
   end
 end
