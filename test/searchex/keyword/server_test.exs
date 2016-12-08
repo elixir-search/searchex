@@ -29,11 +29,11 @@ defmodule Searchex.Keyword.ServerTest do
     setup :start_supervisor
 
     test "with one word" do
-      assert is_pid(get_keyword_server("first"))
+      assert is_pid(get_keyword_server(:test, "first"))
     end
 
     test "with repeat words" do
-      assert is_pid(get_keyword_server("first"))
+      assert is_pid(get_keyword_server(:test, "first"))
     end
   end
 
@@ -41,24 +41,24 @@ defmodule Searchex.Keyword.ServerTest do
     setup :start_supervisor
 
     test "with no words" do
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 0
+      assert Supervisor.count_children(:test).active == 0
     end
 
     test "with one word" do
-      get_keyword_server("first")
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
+      get_keyword_server(:test, "first")
+      assert Supervisor.count_children(:test).active == 1
     end
 
     test "with two words" do
-      get_keyword_server("first")
-      get_keyword_server("second")
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
+      get_keyword_server(:test, "first")
+      get_keyword_server(:test, "second")
+      assert Supervisor.count_children(:test).active == 2
     end
 
     test "with a repeat word" do
-      get_keyword_server("first")
-      get_keyword_server("first")
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
+      get_keyword_server(:test, "first")
+      get_keyword_server(:test, "first")
+      assert Supervisor.count_children(:test).active == 1
     end
   end
   
@@ -66,32 +66,32 @@ defmodule Searchex.Keyword.ServerTest do
     setup :start_supervisor
 
     test "with one word" do
-      add_keyword_position("word", 99, 22)
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
+      add_keyword_position(:test, "word", 99, 22)
+      assert Supervisor.count_children(:test).active == 1
     end
 
     test "with words in one document" do
-      add_keyword_position("word", 99, 22)
-      add_keyword_position("word", 99, 33)
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
+      add_keyword_position(:test, "word", 99, 22)
+      add_keyword_position(:test, "word", 99, 33)
+      assert Supervisor.count_children(:test).active == 1
     end
 
     test "with different words in one document" do
-      add_keyword_position("word", 99, 22)
-      add_keyword_position("prole", 99, 33)
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
+      add_keyword_position(:test, "word", 99, 22)
+      add_keyword_position(:test, "prole", 99, 33)
+      assert Supervisor.count_children(:test).active == 2
     end
 
     test "with words in two documents" do
-      add_keyword_position("word", 99, 22)
-      add_keyword_position("word", 44, 33)
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 1
+      add_keyword_position(:test, "word", 99, 22)
+      add_keyword_position(:test, "word", 44, 33)
+      assert Supervisor.count_children(:test).active == 1
     end
 
     test "with different words in two documents" do
-      add_keyword_position("word", 99, 22)
-      add_keyword_position("prole", 44, 33)
-      assert Supervisor.count_children(Searchex.Keyword.Supervisor).active == 2
+      add_keyword_position(:test, "word", 99, 22)
+      add_keyword_position(:test, "prole", 44, 33)
+      assert Supervisor.count_children(:test).active == 2
     end
   end
 
@@ -99,28 +99,28 @@ defmodule Searchex.Keyword.ServerTest do
     setup :start_supervisor
 
     test "with empty index" do
-      result = get_ids("word")
+      result = get_ids(:test, "word")
       assert result == {"word", %{}}
     end
 
     test "with a match" do
-      add_keyword_position("word", 99, 22)
-      get_ids("word")
-      result = get_ids("word")
+      add_keyword_position(:test, "word", 99, 22)
+      get_ids(:test, "word")
+      result = get_ids(:test, "word")
       assert result == {"word", %{99 => [22]}}
     end
 
     test "with two matches" do
-      add_keyword_position("word", 99, 22)
-      add_keyword_position("word", 99, 33)
-      result = get_ids("word")
+      add_keyword_position(:test, "word", 99, 22)
+      add_keyword_position(:test, "word", 99, 33)
+      result = get_ids(:test, "word")
       assert result == {"word", %{99 => [22, 33]}}
     end
 
     test "with two documents" do
-      add_keyword_position("word", 93, 22)
-      add_keyword_position("word", 99, 33)
-      result = get_ids("word")
+      add_keyword_position(:test, "word", 93, 22)
+      add_keyword_position(:test, "word", 99, 33)
+      result = get_ids(:test, "word")
       assert result == {"word", %{93 => [22], 99 => [33]}}
     end
   end
@@ -128,10 +128,10 @@ defmodule Searchex.Keyword.ServerTest do
   # -----
 
   defp start_supervisor(_) do
-    case Searchex.Keyword.Supervisor.start_link do
+    case Searchex.Keyword.Supervisor.start_link(:test) do
       {:ok, pid}      -> pid
       {:error, _elem} ->
-        start_supervisor(:restart)
+        start_supervisor(:test)
     end
     :ok
   end

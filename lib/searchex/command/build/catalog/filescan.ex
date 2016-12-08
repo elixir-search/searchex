@@ -1,57 +1,39 @@
 defmodule Searchex.Command.Build.Catalog.Filescan do
   @moduledoc false
-  defstruct params:   %Searchex.Command.Build.Catalog.Params{}  ,
-            rawdata:  ""                                        ,
+
+  defstruct rawdata:           ""                               ,
             input_filename:    ""                               ,
-            numdocs:           0                                ,
-            avg_wordcount:     0                                ,
             docsep_positions:  []                               ,
-            docsep_offsets:    []                               ,
-            docs:              []
+            docsep_offsets:    []                               
 
-  @doc "Add a new document to the scan"
-  def add_doc(scan, newdoc) do
-    newdocs = scan.docs ++ [newdoc]
-    %Searchex.Command.Build.Catalog.Filescan{scan | docs: newdocs}
+
+  def generate_filescan(catalog, filename) do
+    %Searchex.Command.Build.Catalog.Filescan{input_filename: filename}
+    |> read_rawdata
+    |> gen_docsep_positions(catalog)
+    |> gen_docsep_offsets
+  end
+  
+  defp read_rawdata(scan) do
+    rawdata = File.stream!(scan.input_filename, [], scan.params.max_file_kb * 1024) |> Enum.at(0)
+    %Searchex.Command.Build.Catalog.Filescan{scan | rawdata: rawdata}
   end
 
-  @doc "Create a new Scan with specified Params"
-  def create_from_params(params) do
-    %Searchex.Command.Build.Catalog.Filescan{params: params}
+  defp gen_docsep_positions(scan, catalog) do
+    positions = catalog.params.docsep
+                |> Regex.scan(scan.rawdata, return: :index )
+                |> Enum.map(fn(x) -> [{beg, fin} | _tail] = x; beg + fin end)
+    %Searchex.Command.Build.Catalog.Filescan{scan | docsep_positions: positions}
   end
 
-  @doc "Generate table data from the scan"
-  def table_data(docs, opts \\ [title: "Collection", fields: ~w(filename doclength docstart body)]) do
-    fields  = ~w(docid) ++ opts[:fields]
-    headers = Enum.map fields, &clean_header(&1)
-    rows    = docs
-              |> Enum.with_index(1)
-              |> Enum.map(&row_data(&1, fields))
-    {opts[:title], ["ID"] ++ headers, rows}
+  defp gen_docsep_offsets(scan) do
+    offsets = scan.docsep_positions
+              |> gen_offsets([])
+    %Searchex.Command.Build.Catalog.Filescan{scan | docsep_offsets: offsets}
   end
 
-  # ---------------------------------------------------------------------------------------------
-
-  defp clean_header(header) do
-    header
-    |> String.replace("f:", "")
-    |> String.capitalize
-  end
-
-  defp row_data({doc, idx}, headers) do
-    [idx] ++ Enum.map headers, &row_item(doc, &1)
-  end
-
-  defp row_item(doc, <<"f:" , field_name::binary>>) do
-    Map.get(doc.fields, String.to_atom(field_name)) || "TBD"
-  end
-
-  defp row_item(doc, header_name) do
-    value = Map.get(doc, String.to_atom(header_name)) || "TBD"
-    "#{value}"
-    |> String.slice(0..40)
-    |> String.replace(~r/[\j\n\m\r\e\a\f\t\v]/, " ")
-    |> String.replace(~r/[\x80-\xff]/, "")
-    |> String.slice(0..30)
+  defp gen_offsets([], list), do: list
+  defp gen_offsets([head|tail], list) do
+    gen_offsets(tail, list ++ [head - Enum.sum(list)])
   end
 end

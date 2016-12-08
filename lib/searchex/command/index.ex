@@ -18,9 +18,9 @@ defmodule Searchex.Command.Index do
     [{catalog, child_digest} | _rest] = child_state
     catalog |> create_from_catalog
     col = X.Term.to_atom(cfg_name)
-    val = Searchex.Kw.Supervisor.otp_to_term(col)
+    val = Searchex.Keyword.Supervisor.otp_to_term(col)
     arg = [
-      process_tree: Searchex.Kw.Supervisor,
+      process_tree: Searchex.Keyword.Supervisor,
       collection:   col,
       value:        val
     ]

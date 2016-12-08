@@ -5,7 +5,7 @@ defmodule Searchex.Command.Build.Index do
   def create_from_catalog(catalog) do
     col = X.Term.to_atom(catalog.params.collection)
     start_supervisor(col)
-    Searchex.Kw.Supervisor.remove_all_otp_children(col)
+    Searchex.Keyword.Supervisor.remove_all_otp_children(col)
     catalog.docs
     |> Enum.map(fn(doc) -> process_doc(doc, col) end)
     |> Enum.map(fn(x)   -> Task.await(x, 1_000) end)
@@ -25,12 +25,12 @@ defmodule Searchex.Command.Build.Index do
 
   def process_word({col, docid, word, position}) do
     Task.async fn() ->
-      Searchex.Kw.Server.add_keyword_position(col, word, docid, position)
+      Searchex.Keyword.Server.add_keyword_position(col, word, docid, position)
     end
   end
 
   def start_supervisor(col) do
-    case Searchex.Kw.Supervisor.start_link(col) do
+    case Searchex.Keyword.Supervisor.start_link(col) do
       {:ok, pid}      -> pid
       {:error, _elem} -> start_supervisor(col)
     end
