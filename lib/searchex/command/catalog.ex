@@ -34,8 +34,13 @@ defmodule Searchex.Command.Catalog do
 
   def chain_generate({:load_catalog, cfg_name}, _child_state) do
     gen_params(cfg_name)
+    |> TIO.inspect(color: "BLUE")
+#    |> Searchex.Command.Build.Catalog.create_from_params
+#    |> Searchex.Command.Build.Catalog.add_filescans
     |> Searchex.Command.Build.Catalog.Filescan.create_from_params
+    |> TIO.inspect(color: "RED")
     |> Searchex.Command.Build.Catalog.create_from_scan
+    |> TIO.inspect(color: "CYAN")
   end
 
   # this belongs in another level

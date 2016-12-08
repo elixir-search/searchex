@@ -1,7 +1,7 @@
 defmodule Searchex.Command.IndexTest do
   use ExUnit.Case
 
-  import Searchex.Command.Index
+#  import Searchex.Command.Index
 
   setup :cleanup
 
@@ -9,16 +9,17 @@ defmodule Searchex.Command.IndexTest do
 #    test "doc count" do
 #      {:ok, {scan, _digest}} = exec("min")
 #      assert scan.numdocs == 0
+#      # should be 10
 #    end
 #  end
 
-  describe "multi collection" do
-    test "doc count" do
-      {:ok, {scan, _digest}} = exec("multi")
-      assert scan.numdocs == 7
-    end
-  end
-
+#  describe "multi collection" do
+#    test "doc count" do
+#      {:ok, {scan, _digest}} = exec("multi")
+#      assert scan.numdocs == 7
+#    end
+#  end
+#
 #  describe "tweets collection" do
 #    test "doc count" do
 #      {:ok, {scan, _digest}} = exec("tweets")
@@ -32,7 +33,7 @@ defmodule Searchex.Command.IndexTest do
 #      assert scan1.numdocs == 7
 #    end
 #  end
-#
+
 #  describe "multiple runs" do
 #    test "doc count" do
 #      TIO.inspect "A"

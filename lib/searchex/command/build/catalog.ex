@@ -61,20 +61,20 @@ defmodule Searchex.Command.Build.Catalog do
     gen_docs(scan, scan.rawdata, pairs)
   end
   def gen_docs(scan, _string, []), do: scan
-  def gen_docs(scan, string, [{position, offset}|pair_tail]) do
-    {string_head, string_tail} = String.split_at(string, offset)
-    doc = %Searchex.Command.Build.Catalog.Filescan.Doc{
-      filename: scan.input_filename,
-      docstart: position,
-      doclength: String.length(string_head),
-      wordcount: Searchex.Util.String.wordcount(string_head),
-      wordstems: Searchex.Util.String.wordstems(string_head),
-      docid: X.Term.digest(string_head),
-      body: string_head
-    }
-    new_scan = Searchex.Command.Build.Catalog.Filescan.add_doc(scan, doc)
-    gen_docs(new_scan, string_tail, pair_tail)
-  end
+#  def gen_docs(scan, string, [{position, offset}|pair_tail]) do
+#    {string_head, string_tail} = String.split_at(string, offset)
+#    doc = %Searchex.Command.Build.Catalog.Fs.Doc{
+#      filename: scan.input_filename,
+#      docstart: position,
+#      doclength: String.length(string_head),
+#      wordcount: Searchex.Util.String.wordcount(string_head),
+#      wordstems: Searchex.Util.String.wordstems(string_head),
+#      docid: X.Term.digest(string_head),
+#      body: string_head
+#    }
+#    new_scan = Searchex.Command.Build.Catalog.Filescan.add_doc(scan, doc)
+#    gen_docs(new_scan, string_tail, pair_tail)
+#  end
 
   def extract_fields(scan) do
     docs  = scan.docs
@@ -87,7 +87,8 @@ defmodule Searchex.Command.Build.Catalog do
       {field_name, extract_doc_field(scan, doc, field_name)}
     end
     new_map = Enum.into(new_fields, %{})
-    %Searchex.Command.Build.Catalog.Filescan.Doc{doc | fields: new_map}
+    "TBD"
+#    %Searchex.Command.Build.Catalog.Filescan.Doc{doc | fields: new_map}
   end
 
   def extract_doc_field(scan, doc, field) do

@@ -25,7 +25,6 @@ defmodule Searchex.Command.Build.Index do
 
   def process_word({col, docid, word, position}) do
     Task.async fn() ->
-      TIO.inspect col, color: "GREEN"
       Searchex.Kw.Server.add_keyword_position(col, word, docid, position)
     end
   end

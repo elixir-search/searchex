@@ -15,11 +15,16 @@ defmodule Searchex.Command.Index do
   end
 
   def chain_generate({:load_index, cfg_name}, child_state) do
-    [{catalog, _digest} | _rest] = child_state
+    [{catalog, child_digest} | _rest] = child_state
     catalog |> create_from_catalog
     col = X.Term.to_atom(cfg_name)
     val = Searchex.Kw.Supervisor.otp_to_term(col)
-    TIO.inspect val, color: "RED"
+    arg = [
+      process_tree: Searchex.Kw.Supervisor,
+      collection:   col,
+      value:        val
+    ]
+    ExCache.put_cache(child_digest, arg)
     catalog
   end
 end

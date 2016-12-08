@@ -29,7 +29,6 @@ defmodule Searchex.Kw.Supervisor do
   Creates a child process, and returns the pid.
   """
   def add_child_and_return_pid(collection, name) do
-    TIO.inspect name, color: "RED"
     case add_child(collection, name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
