@@ -18,11 +18,11 @@ defmodule Searchex.Keyword.ServerTest do
       assert Process.whereis(:server) == nil
     end
 
-    test "using specific name" do
-      {:ok, pid} = start_link :tst_name
-      assert is_pid(pid)
-      assert Process.whereis(:tst_name) == pid
-    end
+#    test "using specific name" do
+#      {:ok, pid} = start_link :tst_name
+#      assert is_pid(pid)
+#      assert Process.whereis(:tst_name) == pid
+#    end
   end
 
   describe "#get_keyword_server return value" do
@@ -128,11 +128,6 @@ defmodule Searchex.Keyword.ServerTest do
   # -----
 
   defp start_supervisor(_) do
-    case Searchex.Keyword.Supervisor.start_link do
-      {:ok, pid}      -> pid
-      {:error, _elem} ->
-        start_supervisor(:restart)
-    end
-    :ok
+    Searchex.Command.Build.Index.start_supervisor(:test)
   end
 end

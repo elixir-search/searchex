@@ -47,6 +47,14 @@ defmodule Searchex.Command.CatalogTest do
     end
   end
 
+  describe "error condition" do
+    test "missing cfg" do
+      {status, msgs} = exec("unknown")
+      assert status == :error
+      assert msgs   == ["Config does not exist (unknown)"]
+    end
+  end
+
   # remove all cached products...
   defp cleanup(_) do
     Searchex.Command.clean

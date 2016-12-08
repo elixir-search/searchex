@@ -3,15 +3,7 @@ defmodule Searchex.Util.Map do
   @moduledoc false
 
   def atomify_keys(map) do
-    Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{atomify(k) => v}) end)
-  end
-
-  defp atomify(ele) do
-    if is_binary(ele) do
-      String.to_atom(ele)
-    else
-      ele
-    end
+    Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{X.Term.to_atom(k) => v}) end)
   end
 
   def deep_merge(left, right) do

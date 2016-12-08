@@ -6,13 +6,14 @@ defmodule ExMake do
 
   `ExMake` Enables:
   - make-like behavior
-  - multiple modules joined together in a Parent > Child dependency chain
+  - processing steps joined together in a Parent > Child dependency chain
+  - each step implemented as a module
   - compatibility with Elixir's concurrent / distributed features
 
   `ExMake` is different than the standard Elixir pipeline:
   - caching to prevent unnecessary re-generation of intermediate products
   - validations and error checking at every step of the chain
-  - top-down process definition, DAG topologies
+  - top-down process flow
 
   ### How it works
 
@@ -154,8 +155,9 @@ defmodule ExMake do
   # if not found, regenerate
   def current_action(args, child_state, module) do
     child_key = Enum.reduce(child_state, "", fn(x, acc) -> acc <> elem(x, 1) end)
-    if val = ExCache.get_cache(child_key) do
-      {:ok, val}
+    if cache_val = ExCache.get_cache(child_key) do
+      cached_val = chain_restore(args, cache_val)
+      {:ok, cached_val}
     else
       val = module.chain_generate(args, child_state)
       return_val = val |> term_digest([args, module])
@@ -163,6 +165,13 @@ defmodule ExMake do
       {:ok, return_val}
     end
   end
+
+  def chain_restore(_args, [supervisor: sup, collection: col, value: val]) do
+    atom_name = X.Term.join_atoms([sup, col])
+    unless Process.whereis(atom_name), do: sup.term_to_otp(atom_name, val)
+  end
+
+  def chain_restore(_args, cached_val), do: cached_val
 
   @doc false
   # Run all chained children.
@@ -187,6 +196,9 @@ defmodule ExMake do
       @doc false
       def chain_generate(_args, _child_state), do: :notimpl
 
+#      @doc false
+#      def chain_restore(_args, _child_state), do: :notimpl
+
       @doc false
       def chain(args) do
         case ExMake.check_validations(__MODULE__.chain_validations(args)) do
@@ -200,8 +212,8 @@ defmodule ExMake do
       import ExMake
       @behaviour ExMake
 
-      defoverridable [chain_validations: 1,
-                      chain_children: 1,
+      defoverridable [chain_validations: 1 ,
+                      chain_children: 1    ,
                       chain_generate: 2]
 
     end
