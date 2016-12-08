@@ -156,9 +156,11 @@ defmodule ExMake do
   def current_action(args, child_state, module) do
     child_key = Enum.reduce(child_state, "", fn(x, acc) -> acc <> elem(x, 1) end)
     if cache_val = ExCache.get_cache(child_key) do
+#      TIO.inspect [RESTORE: args], color: "GREEN"
       cached_val = chain_restore(args, cache_val)
       {:ok, cached_val}
     else
+#      TIO.inspect [GENERATE: args], color: "GREEN"
       val = module.chain_generate(args, child_state)
       return_val = val |> term_digest([args, module])
       ExCache.put_cache(child_key, return_val)
@@ -195,9 +197,6 @@ defmodule ExMake do
 
       @doc false
       def chain_generate(_args, _child_state), do: :notimpl
-
-#      @doc false
-#      def chain_restore(_args, _child_state), do: :notimpl
 
       @doc false
       def chain(args) do

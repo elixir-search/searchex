@@ -29,6 +29,7 @@ defmodule Searchex.Kw.Supervisor do
   Creates a child process, and returns the pid.
   """
   def add_child_and_return_pid(collection, name) do
+    TIO.inspect name, color: "RED"
     case add_child(collection, name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
@@ -37,7 +38,6 @@ defmodule Searchex.Kw.Supervisor do
   end
 
   def otp_to_term(col) do
-#    list = Supervisor.which_children(Searchex.Kw.Supervisor)
     list = Supervisor.which_children(col)
     Enum.reduce list, %{}, fn({child, _, _, _}, acc) ->
       vals = GenServer.call(child, :get_ids)
@@ -54,7 +54,7 @@ defmodule Searchex.Kw.Supervisor do
        end)
   end
 
-  defp remove_all_otp_children(col) do
+  def remove_all_otp_children(col) do
 #    list = Supervisor.which_children(Searchex.Kw.Supervisor)
     list = Supervisor.which_children(col)
     Enum.each list, fn({child, _, _, _}) ->

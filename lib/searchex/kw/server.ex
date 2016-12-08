@@ -114,6 +114,6 @@ defmodule Searchex.Kw.Server do
 
   def keyword_server_name(col, keyword) do
     new_col = to_string(col)
-    "kw_" <> new_col <> keyword |> String.to_atom
+    "kw_" <> new_col <> "_" <> keyword |> String.to_atom
   end
 end

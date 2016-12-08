@@ -3,16 +3,16 @@ defmodule Searchex.Command.Build.Index do
   @moduledoc false
 
   def create_from_catalog(catalog) do
-    TIO.inspect catalog, color: "BLUE"
+    col = X.Term.to_atom(catalog.params.collection)
+    start_supervisor(col)
+    Searchex.Kw.Supervisor.remove_all_otp_children(col)
     catalog.docs
-    |> Enum.map(&process_doc/1)
-    |> Enum.map(fn(x) -> Task.await(x, 1_000) end)
+    |> Enum.map(fn(doc) -> process_doc(doc, col) end)
+    |> Enum.map(fn(x)   -> Task.await(x, 1_000) end)
     :ok
   end
 
-  def process_doc(doc) do
-#    TIO.inspect "PD"  , color: "BLUE"
-    col = X.Term.to_atom(doc.params.collection)
+  def process_doc(doc, col) do
     Task.async fn() ->
       docid = doc.docid
       doc.wordstems
@@ -25,6 +25,7 @@ defmodule Searchex.Command.Build.Index do
 
   def process_word({col, docid, word, position}) do
     Task.async fn() ->
+      TIO.inspect col, color: "GREEN"
       Searchex.Kw.Server.add_keyword_position(col, word, docid, position)
     end
   end

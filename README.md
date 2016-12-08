@@ -88,6 +88,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] BM25 query algorithm
 - [ ] Simple CLI
 - [ ] Repository for Sample Docs
+- [ ] Add a Plug-like processing framework 
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] Server mode

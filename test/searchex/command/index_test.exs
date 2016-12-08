@@ -5,20 +5,20 @@ defmodule Searchex.Command.IndexTest do
 
   setup :cleanup
 
-  describe "min collection" do
+#  describe "min collection" do
+#    test "doc count" do
+#      {:ok, {scan, _digest}} = exec("min")
+#      assert scan.numdocs == 0
+#    end
+#  end
+
+  describe "multi collection" do
     test "doc count" do
-      {:ok, {scan, _digest}} = exec("min")
-      assert scan.numdocs == 0
+      {:ok, {scan, _digest}} = exec("multi")
+      assert scan.numdocs == 7
     end
   end
 
-#  describe "multi collection" do
-#    test "doc count" do
-#      {:ok, {scan, _digest}} = exec("multi")
-#      assert scan.numdocs == 7
-#    end
-#  end
-#
 #  describe "tweets collection" do
 #    test "doc count" do
 #      {:ok, {scan, _digest}} = exec("tweets")

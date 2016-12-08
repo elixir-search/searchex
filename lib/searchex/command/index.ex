@@ -11,19 +11,15 @@ defmodule Searchex.Command.Index do
   end
 
   def chain_children({:load_index, cfg_name}) do
-    start_supervisor(:index)
     [ Searchex.Command.Catalog.chain({:load_catalog, cfg_name}) ]
   end
 
-#  def chain_restore({:load_index, _cfg_name}, cached_state) do
-#    {map, digest} = cached_state
-#    map_to_otp(map)
-#    digest
-#  end
-
-  def chain_generate({:load_index, _cfg_name}, child_state) do
+  def chain_generate({:load_index, cfg_name}, child_state) do
     [{catalog, _digest} | _rest] = child_state
     catalog |> create_from_catalog
+    col = X.Term.to_atom(cfg_name)
+    val = Searchex.Kw.Supervisor.otp_to_term(col)
+    TIO.inspect val, color: "RED"
     catalog
   end
 end
