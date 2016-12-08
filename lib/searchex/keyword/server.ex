@@ -11,8 +11,8 @@ defmodule Searchex.Keyword.Server do
 
   %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
-  def start_link() do
-    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+  def start_link(server_name \\ :server) do
+    GenServer.start_link(__MODULE__, %{}, name: server_name)
   end
 
   def add_keyword_position(keyword, docid, position) do

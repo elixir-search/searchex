@@ -22,7 +22,6 @@ defmodule Searchex.Keyword.Supervisor do
   is returned if the child already exists.
   """
   def add_child(name) do
-    TIO.inspect name, color: "RED"
     Supervisor.start_child(__MODULE__, worker(Searchex.Keyword.Server, [name], id: name))
   end
 
