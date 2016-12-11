@@ -3,7 +3,7 @@ defmodule Searchex.Command.IndexTest do
 
 #  import Searchex.Command.Index
 
-  setup :cleanup
+#  setup :cleanup
 
 #  describe "min collection" do
 #    test "doc count" do
@@ -63,8 +63,8 @@ defmodule Searchex.Command.IndexTest do
 #  end
 
   # remove all cached products...
-  defp cleanup(_) do
-    Searchex.Command.clean
-    :ok
-  end
+#  defp cleanup(_) do
+#    Searchex.Command.clean
+#    :ok
+#  end
 end

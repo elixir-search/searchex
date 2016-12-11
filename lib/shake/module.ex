@@ -16,6 +16,8 @@ defmodule Shake.Module do
 
       defoverridable [init: 1, call: 2]
 
+      use Shake.Validate
+
       import Shake.Frame
       import Shake.Module, only: [step: 1, step: 2]
 
@@ -36,7 +38,6 @@ defmodule Shake.Module do
   end
 
   defmacro step(step, opts \\ []) do
-    IO.inspect step
     quote do
       @steps {unquote(step), unquote(opts), true}
     end
@@ -78,7 +79,7 @@ defmodule Shake.Module do
     error_message = case step_type do
       :module   -> "expected #{inspect step}.call/2 to return a Shake.Frame"
       :function -> "expected #{step}/2 to return a Shake.Frame"
-    end <> ", all steps must receive a frameection (frame) and return a frameection"
+    end <> ", all steps must receive a frame and return a frame"
 
     {fun, meta, [arg, [do: clauses]]} =
       quote do

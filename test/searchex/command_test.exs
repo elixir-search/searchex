@@ -1,19 +1,19 @@
 defmodule Searchex.CommandTest do
   use ExUnit.Case
 
-  describe "#catalog" do
-    test "basic operation" do
-      result = Searchex.Command.catalog("worklog")
-      assert result != nil
-    end
-  end
-
-  describe "#index" do
-    test "basic operation" do
-      result = Searchex.Command.index("worklog")
-      assert result != nil
-    end
-  end
+#  describe "#catalog" do
+#    test "basic operation" do
+#      result = Searchex.Command.catalog("worklog")
+#      assert result != nil
+#    end
+#  end
+#
+#  describe "#index" do
+#    test "basic operation" do
+#      result = Searchex.Command.index("worklog")
+#      assert result != nil
+#    end
+#  end
 
   describe "#search" do
 #    test "single word search" do
