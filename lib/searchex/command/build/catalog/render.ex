@@ -15,7 +15,7 @@
 #    defp print(scan) do
 #    {title, header, rows} = Searchex.Command.Build.Catalog.Filescan.table_data(scan, headers: ~w(doclength filename body f:date))
 #    numdocs = Enum.count(scan.docs)
-#    DIO.puts """
+#    X.DIO.puts """
 #
 #    NUMDIOCS: #{numdocs}
 #    """

@@ -86,9 +86,9 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] Config management 
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
+- [ ] Middleware framework for Search
 - [ ] Simple CLI
 - [ ] Repository for Sample Docs
-- [ ] Add a Plug-like processing framework 
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] Server mode

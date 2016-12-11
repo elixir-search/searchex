@@ -24,7 +24,7 @@ defmodule Searchex.Command.Index do
       collection:   col,
       value:        val
     ]
-    ExCache.put_cache(child_digest, arg)
+    X.Cache.put_cache(child_digest, arg)
     catalog
   end
 end

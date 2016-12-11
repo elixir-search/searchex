@@ -31,14 +31,15 @@ defmodule Searchex.Keyword.Server do
   matches_per_term_and_doc looks like:
   %{{"term1", "docid1"} => 23, {"term1", "docid2"} => 4, ...}
   """
-  def do_query(col, terms) when is_list(terms) do
+  def do_query({col, terms}) when is_list(terms) do
     doc_matches = gen_doc_matches(col, terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
     Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
   end
-  def do_query(terms) when is_binary(terms)       , do: do_query(String.split(terms, " "))
-  def do_query({cat, terms}) when is_list(terms)  , do: {cat, do_query(terms)}
-  def do_query({cat, terms}) when is_binary(terms), do: {cat, do_query(String.split(terms))}
+  def do_query(col, terms)   when is_binary(terms) , do: do_query(String.split(terms, " "))
+  def do_query({col, terms}) when is_list(terms)   , do: do_query(col, terms)
+  def do_query({col, terms}) when is_binary(terms) , do: do_query(col, String.split(terms))
+  def do_query({col, terms})                       , do: do_query(col, terms)
 
   def gen_doc_matches(col, terms) do
     Enum.map(terms, fn(term) -> get_ids(col, term) end)
@@ -52,6 +53,7 @@ defmodule Searchex.Keyword.Server do
       Map.merge(acc1, tmp)
     end
   end
+
 
   @doc """
   Gets the list of ID's for a term.

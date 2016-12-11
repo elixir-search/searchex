@@ -32,7 +32,7 @@ defmodule Searchex.Keyword.Supervisor do
     case add_child(collection, name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
-      alt                   -> DIO.inspect(PODNAME: alt) ; nil
+      alt                   -> X.DIO.inspect(PODNAME: alt) ; nil
     end
   end
 

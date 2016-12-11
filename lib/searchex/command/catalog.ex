@@ -5,7 +5,7 @@ defmodule Searchex.Command.Catalog do
   use ExMake
 
   import Searchex.Config.Helpers
-  import TimeStamp
+  import X.TimeStamp
 
   def exec(cfg_name) do
     chain({:load_catalog, cfg_name})

@@ -16,18 +16,18 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd        Arity     Module       Argument                 Description
-    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"           },
-    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                           },
-    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                          },
-    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                        },
-    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                         },
-    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"                 },
-    {"search"    ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                },
-    {"results"   ,   0,   "Render"   , ""                     , "show results from the last search"    },
-    {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                      },
-    {"edit"      ,   1,   "Render"   , "ID"                   , "edit ID"                              },
-    {"version"   ,   0,   ""         , ""                     , "show installed version"               },
-    {"help"      ,   0,   "Cli"      , ""                     , "this command"                         },
+    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"        },
+    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                        },
+    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                       },
+    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                     },
+    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                      },
+    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"              },
+    {"search"    ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"             },
+    {"results"   ,   0,   "Render"   , ""                     , "show results from the last search" },
+    {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                   },
+    {"edit"      ,   1,   "Render"   , "ID"                   , "edit ID"                           },
+    {"version"   ,   0,   ""         , ""                     , "show installed version"            },
+    {"help"      ,   0,   "Cli"      , ""                     , "this command"                      },
   ]
   @cmd_opts cmd_opts
 
@@ -117,7 +117,7 @@ defmodule Searchex.Cli do
   defp render(_val), do: {:ok}
 
   defp lcl_puts(string) do
-    unless Searchex.Util.String.empty?(string), do: DIO.puts string
+    unless Searchex.Util.String.empty?(string), do: X.DIO.puts string
   end
 
   # ----------------------------------------------------------------------------------------------------

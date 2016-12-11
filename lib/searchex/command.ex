@@ -34,7 +34,7 @@ defmodule Searchex.Command do
   The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
   """
   def catalog(cfg_name) do
-    DIO.puts "CATALOG #{cfg_name}"
+    X.DIO.puts "CATALOG #{cfg_name}"
     Searchex.Command.Catalog.exec(cfg_name)
   end
 
@@ -48,7 +48,7 @@ defmodule Searchex.Command do
   The index is cached on disk at `~/.searchex/data/<cfg_name>_index.dat`.
   """
   def index(cfg_name) do
-    DIO.puts "INDEX #{cfg_name}"
+    X.DIO.puts "INDEX #{cfg_name}"
     Searchex.Command.Index.exec(cfg_name)
   end
 
@@ -56,7 +56,7 @@ defmodule Searchex.Command do
   Generate both the catalog and the index for `cfg_name` in one step
   """
   def build(cfg_name) do
-    DIO.puts "BUILD #{cfg_name}"
+    X.DIO.puts "BUILD #{cfg_name}"
     Searchex.Command.Build.exec(cfg_name)
   end
 

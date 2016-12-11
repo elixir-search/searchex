@@ -11,7 +11,7 @@ defmodule Searchex.Command.Show do
     docs    = results.docs
     doc     = Enum.at(docs, String.to_integer(idnum))
     body = doc.body
-    DIO.puts body
+    X.DIO.puts body
   end
 
   def handle_chain(_cfg_name) do

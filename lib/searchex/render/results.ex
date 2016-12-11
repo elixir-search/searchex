@@ -5,10 +5,14 @@ defmodule Searchex.Render.Results do
   @moduledoc false
 
   def to_table({:error, _msg}) do
-    DIO.puts "NO RESULTS"
+    X.DIO.puts "NO RESULTS"
   end
 
-  def to_table({catalog, results}) do
+  def to_table({cat1, _dc}) do
+    {cat2, results} = cat1
+    {catalog,  _dc} = cat2
+    X.TIO.inspect catalog, color: "RED"
+    X.TIO.inspect results, color: "blue"
     docs   = catalog.docs
     title  = catalog_title(catalog)
     fields = String.split(catalog.params.cli_format.fields)
@@ -16,9 +20,9 @@ defmodule Searchex.Render.Results do
     {title, header, rows} = data
     numdocs = Enum.count(rows)
     if numdocs == 0 do
-      DIO.puts "NO RESULTS"
+      X.DIO.puts "NO RESULTS"
     else
-      DIO.puts TableRex.quick_render!(rows, header, title)
+      X.DIO.puts TableRex.quick_render!(rows, header, title)
     end
     {catalog, results}
   end

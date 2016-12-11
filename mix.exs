@@ -28,7 +28,7 @@ defmodule Searchex.Mixfile do
  
   def application do
     [
-      applications: [:mix, :yaml_elixir, :logger, :table_rex, :eex, :lru_cache],
+      applications: [:mix, :yaml_elixir, :logger, :table_rex, :eex, :lru_cache]
     ]
   end
 
@@ -38,6 +38,7 @@ defmodule Searchex.Mixfile do
       {:table_rex  , "~> 0.8"                },  # table formatter
       {:stem_ex    , "~> 0.0.1"              },  # word-stem generator
       {:lru_cache  , "~> 0.1.0"              },  # ETS-based LRU cache
+      {:dialyxir   , "~> 0.4.0", only: :dev  },  # 
       {:ex_guard   , "~> 1.1.1", only: :dev  },  # test runner
       {:ex_doc     , "~> 0.14" , only: :dev  },  # doc generator
       {:credo      , "~> 0.4"  , only: :dev  }   # code-style checker

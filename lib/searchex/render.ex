@@ -19,7 +19,7 @@ defmodule Searchex.Render do
   def cfg_edit(cfg_name) do
     case Searchex.Config.cfg_edit(cfg_name) do
       {:error, msg     } -> {:error, msg}
-      {:ok   , cfg_name} -> EditorLaunch.launch_using_tmux(cfg_file(cfg_name))
+      {:ok   , cfg_name} -> X.EditorLaunch.launch_using_tmux(cfg_file(cfg_name))
     end
   end
 
@@ -27,9 +27,10 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def search(cfg_name, query) do
-    case Searchex.Command.search(cfg_name, query) do
-      {:error, msg              } -> {:error, msg}
-      {:ok   , {:ok, _ts, state}} -> Searchex.Render.Results.to_table(state)
+    X.TIO.inspect {cfg_name, query}, color: "green"
+    case X.TIO.inspect(Searchex.Command.search(cfg_name, query), color: "green") do
+      {:error, msg         } -> {:error, msg}
+      {:ok   , {:ok, state}} -> Searchex.Render.Results.to_table(state)
     end
   end
 
