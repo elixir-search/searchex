@@ -2,7 +2,7 @@ defmodule Searchex.Config.Rm do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import ExMakeOld, only: [check_validations: 1]
+  import X.OldValidations
 
   def exec(path) do
     cfg_name = name_from_path(path)
