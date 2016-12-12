@@ -37,10 +37,25 @@ defmodule Searchex.Render do
   @doc """
   Invoke `Searchex.Command.results`, then render the results to a table.
   """
-  def results do
-    case Searchex.Command.results do
-      {:error , msg   } -> {:error, msg}
-      {:ok    , data  } -> Searchex.Render.Results.to_table(data)
-    end
+  def results(_cfg_name) do
+#    case Searchex.Command.results do
+#      {:error , msg   } -> {:error, msg}
+#      {:ok    , data  } -> Searchex.Render.Results.to_table(data)
+#    end
+    {:error, "RESULTS: UNDER CONSTRUCTION"}
   end
+
+  @doc """
+  Open the doc in an editor.
+  """
+  def edit(_cfg_name, _docid) do
+#    case Searchex.Command.results do
+#      {:error , msg   } -> {:error, msg}
+#      {:ok    , data  } -> Searchex.Render.Results.to_table(data)
+#    end
+    {:error, "EDIT: UNDER CONSTRUCTION"}
+  end
+
+
+
 end

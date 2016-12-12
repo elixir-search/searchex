@@ -90,9 +90,10 @@ defmodule Searchex.Command do
   @doc """
   Show document text
   """
-  def show(idnum) do
-    Searchex.Command.Show.exec(idnum)
-    {:ok}
+  def show(_cfg_name, _idnum) do
+#    Searchex.Command.Show.exec(idnum)
+#    {:ok}
+    {:error, "SHOW: Under Construction"}
   end
 
   @doc """
