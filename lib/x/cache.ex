@@ -1,7 +1,6 @@
 defmodule X.Cache do
-  @moduledoc """
-  Simple LRU cache, with optional persistence to disk.
-  """
+  @moduledoc false
+  # Simple LRU cache, with optional persistence to disk.
 
   @doc "Start the cache service"
   def start(opts \\ []) do

@@ -1,5 +1,7 @@
 defmodule X.OldValidations do
 
+    @moduledoc false
+
     @doc """
     Checks a set of validation functions
 

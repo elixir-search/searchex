@@ -1,4 +1,7 @@
 defmodule Shake.Module do
+
+  @moduledoc false
+
   @type step :: module | atom
 
   defmacro __using__(opts) do

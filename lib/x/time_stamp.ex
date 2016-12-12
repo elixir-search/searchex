@@ -1,7 +1,7 @@
 defmodule X.TimeStamp do
-  @moduledoc """
-  Utility functions for generating timestamps.
-  """
+
+  @moduledoc false
+  # Utility functions for generating timestamps.
 
   @doc "Return the current timestamp."
   def timestamp_now do

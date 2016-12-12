@@ -1,4 +1,5 @@
 defmodule X.Term do
+
   @moduledoc false
 
   def digest(term, length \\ 5) do

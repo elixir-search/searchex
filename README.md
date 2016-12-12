@@ -87,7 +87,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
 - [x] LRU Cache
-- [ ] Middleware framework
+- [x] Middleware framework
 - [ ] Simple CLI
 - [ ] Repository for Sample Docs
 - [ ] Faceted Search

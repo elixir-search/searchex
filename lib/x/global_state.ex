@@ -1,4 +1,7 @@
 defmodule X.GlobalState do
+
+  @moduledoc false
+
   def get(name) when is_atom(name) do
     case Process.whereis(name) do
       nil -> nil

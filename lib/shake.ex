@@ -1,6 +1,6 @@
 defmodule Shake do
   @moduledoc """
-  Shake is a data-processing framework optimized for search.
+  A Plug-like build framework optimized for search.
 
   Full-text search has a bunch of dependencies:
 
@@ -98,12 +98,15 @@ defmodule Shake do
   - Cache - in-memory hot standby
   - Backup - on-disk survives executable restart
 
-  |        | DataTerm             | ProcessTree            |
-  |--------|----------------------|------------------------|
-  | Active | variable             | PID / ProcessName      |
-  | Cached | ETS-based LRU Cached | ETS-based LRU Cache(?) |
-  | Backup | DETS                 | DETS(?)                |
+  |        | DataTerm  | ProcessTree       |
+  |--------|-----------|-------------------|
+  | Active | variable  | PID / ProcessName |
+  | Cached | LRU Cache | LRU Registry(TBD) |
+  | Backup | DETS      | DETS(?)           |
 
+  Right now we have a nice LRU-Cache based on ETS and DETS.  Going forward
+  we will need a LRU-Registry based on ETS and the Process Registry in Elixir 1.4.
+  
   ## Work in Progress
 
   We're using an iterative design process.  `Build > Use > Learn > Repeat`  The
