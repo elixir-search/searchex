@@ -96,13 +96,6 @@ defmodule Searchex.Command do
     {:error, "SHOW: Under Construction"}
   end
 
-  @doc """
-  Edit document text
-  """
-  def edit(idnum) do
-    Searchex.Command.Edit.exec(idnum)
-  end
-
   @doc false
   @nodoc """
   Removed all cached files.

@@ -39,7 +39,7 @@ defmodule X.EditorLaunch do
   # -----
 
   def connected_without_tmux_msg(file_path), do:
-  "Can't launch editor without TMUX.  Run `#{editor()} #{file_path}`"
+  "To edit, run `#{editor()} #{file_path}`\nTIP: use TMUX to auto-launch the editor."
 
   def missing_editor_msg(), do:
   "No EDITOR defined - put `export EDITOR=<editor>` in your `.bashrc`"

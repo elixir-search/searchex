@@ -16,14 +16,14 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd        Arity     Module       Argument                 Description
+    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                      },
     {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"        },
     {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                        },
     {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                       },
     {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                     },
-    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                      },
     {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"              },
     {"query"     ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"             },
-    {"results"   ,   1,   "Render"   , "COLLECTION"           , "show results from the last query"  },
+    {"results"   ,   1,   "Render"   , "COLLECTION"           , "results from the last query"  },
     {"show"      ,   2,   "Command"  , "COLLECTION DOCID"     , "show text of DOCID"                   },
     {"edit"      ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                           },
     {"version"   ,   0,   ""         , ""                     , "show installed version"            },
