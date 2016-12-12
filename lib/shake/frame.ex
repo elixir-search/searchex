@@ -7,6 +7,7 @@ defmodule Shake.Frame do
   @type params   :: map
   @type catalog  :: map
   @type index    :: map
+  @type query    :: String.t
   @type results  :: map
   @type halted   :: boolean
   @type halt_msg :: String.t | [String.t]
@@ -18,6 +19,7 @@ defmodule Shake.Frame do
              params:    params,
              catalog:   catalog,
              index:     index,
+             query:     query,
              results:   results,
              halted:    halted,
              halt_msg:  halt_msg,
@@ -29,6 +31,7 @@ defmodule Shake.Frame do
             params:   %{},
             catalog:  %{},
             index:    %{},
+            query:    "",
             results:  %{},
             halted:   false,
             halt_msg: "",

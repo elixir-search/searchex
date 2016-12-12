@@ -74,17 +74,10 @@ defmodule Searchex.Command do
   end
 
   @doc """
-  Search the collection
-  """
-  def search(cfg_name, query) do
-    {:ok, Searchex.Command.Search.exec(cfg_name, query)}
-  end
-
-  @doc """
-  Alias for `search`
+  Query the collection
   """
   def query(cfg_name, query) do
-    search(cfg_name, query)
+    {:ok, Searchex.Command.Query.exec(cfg_name, query)}
   end
 
   @doc """

@@ -18,6 +18,7 @@ defmodule Shake.Module do
 
       use Shake.Validate
 
+      alias  Shake.Frame
       import Shake.Frame
       import Shake.Module, only: [step: 1, step: 2]
 
