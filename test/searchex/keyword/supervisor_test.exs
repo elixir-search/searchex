@@ -14,11 +14,11 @@ defmodule Searchex.Keyword.SupervisorTest do
     end
 
     test "has no retained statee" do
-      assert Process.whereis(:asdf) == nil
+      assert Process.whereis(:a1s2d3f4q5w6e7r) == nil
     end
   end
 
-  describe "#add_childd" do
+  describe "#add_child" do
     test "with one child" do
       start_supervisor(:test)
       add_child :test, :asdf

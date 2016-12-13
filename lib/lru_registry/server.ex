@@ -33,7 +33,15 @@ defmodule LruRegistry.Server do
   end
 
   def num_procs(registry_name) do
-    GenServer.call(srv_name(registry_name), :num_procs)
+    GenServer.call(srv_name(registry_name), {:num_procs})
+  end
+
+  def get_pool_size(registry_name) do
+    GenServer.call(srv_name(registry_name), {:get_pool})
+  end
+
+  def set_pool_size(registry_name, new_size) do
+    GenServer.call(srv_name(registry_name), {:set_pool, new_size})
   end
 
   def touch(registry_name, process_name) do
@@ -76,8 +84,17 @@ defmodule LruRegistry.Server do
     {:reply, ! Enum.member?(list, process_name), {list, pool_size}}
   end
 
-  def handle_call(:num_procs, _, {list, pool_size}) do
+  def handle_call({:num_procs}, _, {list, pool_size}) do
     {:reply, length(list), {list, pool_size}}
+  end
+
+  # TODO: delete processes if the pool shrinks
+  def handle_call({:set_pool, new_pool_size}, _, {list, _pool_size}) do
+    {:reply, :ok, {list, new_pool_size}}
+  end
+
+  def handle_call({:get_pool}, _, {list, pool_size}) do
+    {:reply, pool_size, {list, pool_size}}
   end
 
   def handle_cast({:touch, process_name}, {list, pool_size}) do
