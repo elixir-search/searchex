@@ -8,9 +8,10 @@ defmodule Searchex.Render.Results do
     X.DIO.puts "NO RESULTS"
   end
 
-  def to_table({cat1, _dc}) do
-    {cat2, results} = cat1
-    {catalog,  _dc} = cat2
+#  def to_table({cat1, _dc}) do
+  def to_table(frame) do
+    catalog = frame.catalog
+    results = frame.results
     X.TIO.inspect catalog, color: "RED"
     X.TIO.inspect results, color: "blue"
     docs   = catalog.docs

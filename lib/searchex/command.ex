@@ -35,7 +35,11 @@ defmodule Searchex.Command do
   """
   def catalog(cfg_name) do
     frame = Searchex.Command.Catalog.exec(cfg_name)
-    [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+    end
   end
 
   @doc """
@@ -47,15 +51,23 @@ defmodule Searchex.Command do
   """
   def index(cfg_name) do
     frame = Searchex.Command.Index.exec(cfg_name)
-    [cmd: "index", cfg_name: cfg_name, ]
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "index", cfg_name: cfg_name]
+    end
   end
 
   @doc """
   Generate both the catalog and the index for `cfg_name` in one step
   """
   def build(cfg_name) do
-    X.DIO.puts "BUILD #{cfg_name}"
-    Searchex.Command.Build.exec(cfg_name)
+    frame = Searchex.Command.Build.exec(cfg_name)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+    end
   end
 
   @doc false
@@ -75,7 +87,12 @@ defmodule Searchex.Command do
   Query the collection
   """
   def query(cfg_name, query) do
-    {:ok, Searchex.Command.Query.exec(cfg_name, query)}
+    frame = Searchex.Command.Query.exec(cfg_name, query)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "query", results: frame.results]
+    end
   end
 
   @doc """

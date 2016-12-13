@@ -32,14 +32,16 @@ defmodule Searchex.Keyword.Server do
   %{{"term1", "docid1"} => 23, {"term1", "docid2"} => 4, ...}
   """
   def do_query({col, terms}) when is_list(terms) do
+    X.TIO.inspect "CCCCCCCCCCCCCCCCCCCCC", color: "BLUE"
     doc_matches = gen_doc_matches(col, terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
-    Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
+    X.TIO.inspect "DDDDDDDDDDDDDDDDDD", color: "MAGENTA"
+    X.TIO.inspect Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
   end
-  def do_query(col, terms)   when is_binary(terms) , do: do_query(String.split(terms, " "))
   def do_query({col, terms}) when is_list(terms)   , do: do_query(col, terms)
   def do_query({col, terms}) when is_binary(terms) , do: do_query(col, String.split(terms))
   def do_query({col, terms})                       , do: do_query(col, terms)
+  def do_query(col, terms)   when is_binary(terms) , do: do_query(col, String.split(terms, " "))
 
   def gen_doc_matches(col, terms) do
     Enum.map(terms, fn(term) -> get_ids(col, term) end)

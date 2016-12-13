@@ -27,11 +27,12 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def query(cfg_name, query) do
-    X.TIO.inspect {cfg_name, query}, color: "green"
-    case X.TIO.inspect(Searchex.Command.query(cfg_name, query), color: "green") do
-      {:error, msg         } -> {:error, msg}
-      {:ok   , {:ok, state}} -> Searchex.Render.Results.to_table(state)
-    end
+    Searchex.Command.Query.exec(cfg_name, query)
+    |> Searchex.Render.Results.to_table
+#    case X.TIO.inspect(Searchex.Command.query(cfg_name, query), color: "green") do
+#      {:error, msg         } -> {:error, msg}
+#      {:ok   , {:ok, state}} -> Searchex.Render.Results.to_table(state)
+#    end
   end
 
   @doc """

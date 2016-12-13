@@ -13,8 +13,10 @@ defmodule Searchex.Command.Query do
   step :do_query
 
   def do_query(%Frame{cfg_name: cfg_name, query: query} = frame, _opts) do
+    X.TIO.inspect "BBBBBBBBBBBBBBBBBBBB", color: "YELLOW"
     results = {cfg_name, String.split(query)}
-            |> Searchex.Keyword.Server.do_query
+              |> Searchex.Keyword.Server.do_query
+    X.TIO.inspect "DDDDDDDDDDDDDDDDDD", color: "GREEN"
     %Frame{frame | results: results}
   end
 end
