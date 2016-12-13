@@ -20,7 +20,7 @@ defmodule Searchex.Command.Catalog do
   def generate_catalog(frame, _opts) do
     child_digest = Frame.get_digest(frame, :params)
     if val = X.Cache.get_cache(child_digest) do
-      {_cfg_name, cat1} = val
+      cat1 = val
       %Frame{frame | catalog: cat1}
     else
       cat2 = frame.params

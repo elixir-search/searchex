@@ -31,11 +31,12 @@ defmodule Searchex.Command.Build.Index do
   end
 
   def start_supervisor(cfg_name) do
-    case Searchex.Keyword.Supervisor.start_link(X.Term.to_atom(cfg_name)) do
-      {:ok, pid}      -> pid
-      {:error, _elem} -> start_supervisor(X.Term.to_atom(cfg_name))
+    catom = X.Term.to_atom(cfg_name)
+    case Searchex.Keyword.Supervisor.start_link(catom) do
+      {:ok, pid}    -> pid
+      {:error, val} -> catom
     end
-    Searchex.Keyword.Supervisor.remove_all_otp_children(X.Term.to_atom(cfg_name))
+    Searchex.Keyword.Supervisor.remove_all_otp_children(catom)
     :ok
   end
 
