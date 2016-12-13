@@ -23,12 +23,12 @@ defmodule Searchex.Command.Index do
     cfg_name     = frame.cfg_name
     child_digest = frame.digests.catalog
     catalog |> create_from_catalog
-    col = X.Term.to_atom(cfg_name)
-    val = Searchex.Keyword.Supervisor.otp_to_term(col)
+#    col = X.Term.to_atom(cfg_name)
+#    val = Searchex.Keyword.Supervisor.otp_to_term(col)
     arg = [
       process_tree: Searchex.Keyword.Supervisor,
-      collection:   col,
-      value:        val
+#      collection:   col,
+#      value:        val
     ]
     X.Cache.put_cache(child_digest, arg)
     frame

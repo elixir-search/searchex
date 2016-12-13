@@ -16,18 +16,18 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd        Arity     Module       Argument                 Description
-    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                      },
-    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"        },
-    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                        },
-    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                       },
-    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                     },
-    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"              },
-    {"query"     ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"             },
-    {"results"   ,   1,   "Render"   , "COLLECTION"           , "results from the last query"  },
-    {"show"      ,   2,   "Command"  , "COLLECTION DOCID"     , "show text of DOCID"                   },
-    {"edit"      ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                           },
-    {"version"   ,   0,   ""         , ""                     , "show installed version"            },
-    {"help"      ,   0,   "Cli"      , ""                     , "this command"                      },
+    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                },
+    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"  },
+    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                  },
+    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                 },
+    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"               },
+    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"        },
+    {"query"     ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"       },
+    {"results"   ,   1,   "Render"   , "COLLECTION"           , "results from the last query" },
+    {"show"      ,   2,   "Command"  , "COLLECTION DOCID"     , "show text of DOCID"          },
+    {"edit"      ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                  },
+    {"version"   ,   0,   ""         , ""                     , "show installed version"      },
+    {"help"      ,   0,   "Cli"      , ""                     , "this command"                },
   ]
   @cmd_opts cmd_opts
 
@@ -109,14 +109,24 @@ defmodule Searchex.Cli do
   # ----------------------------------------------------------------------------------------------------
 
   # Render command output to stdout
-  defp render({:ok   , str}) when is_binary(str), do: lcl_puts str
-  defp render({:error, str}) when is_binary(str), do: lcl_puts str
-  defp render({:ok   , list}), do: lcl_puts Enum.join(list, "\n")
-  defp render({:error, list}), do: lcl_puts Enum.join(list, "\n")
-  defp render(_val), do: {:ok}
+  defp render({_, str}) when is_binary(str), do: lcl_puts(str)
+  defp render({_, lst}) when is_list(lst)  , do: lcl_test(lst)
+  defp render({_, ele})                    , do: lcl_insp(ele)
+  defp render(ele)                         , do: lcl_insp(ele)
+
+  defp lcl_test(list) do
+    case Enum.all?(List.flatten(list), fn(el) -> is_binary(el) end) do
+      true -> lcl_puts(Enum.join(list, "\n"))
+      _    -> lcl_insp(list)
+    end
+  end
 
   defp lcl_puts(string) do
     unless Searchex.Util.String.empty?(string), do: X.DIO.puts string
+  end
+
+  defp lcl_insp(ele) do
+    X.DIO.inspect(ele)
   end
 
   # ----------------------------------------------------------------------------------------------------

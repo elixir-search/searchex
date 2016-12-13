@@ -4,8 +4,8 @@ defmodule Searchex.Keyword.SupervisorTest do
 
   import Searchex.Keyword.Supervisor
 
-  describe "#start_link" do
-    test "using default namee" do
+  describe "supervisor #start_link" do
+    test "using def namee" do
       start_supervisor(:test)
       pid = Process.whereis(:test)
       assert is_pid(pid)

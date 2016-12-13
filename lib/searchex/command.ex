@@ -34,8 +34,8 @@ defmodule Searchex.Command do
   The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
   """
   def catalog(cfg_name) do
-    X.DIO.puts "CATALOG #{cfg_name}"
-    Searchex.Command.Catalog.exec(cfg_name)
+    frame = Searchex.Command.Catalog.exec(cfg_name)
+    [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
   end
 
   @doc """
@@ -43,13 +43,11 @@ defmodule Searchex.Command do
 
   The index is a data structure used for fast search and retrieval.
 
-  The index lives in memory as a series of GenServers, one for each keyword.
-
-  The index is cached on disk at `~/.searchex/data/<cfg_name>_index.dat`.
+  The index lives in a Process Tree, one worker for each keyword.
   """
   def index(cfg_name) do
-    X.DIO.puts "INDEX #{cfg_name}"
-    Searchex.Command.Index.exec(cfg_name)
+    frame = Searchex.Command.Index.exec(cfg_name)
+    [cmd: "index", cfg_name: cfg_name, ]
   end
 
   @doc """
