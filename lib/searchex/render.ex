@@ -16,7 +16,7 @@ defmodule Searchex.Render do
   This needs fixing.  See this thread for more info:
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
-  def edit(cfg_name) do
+  def modify(cfg_name) do
     case Searchex.Config.edit(cfg_name) do
       {:error, msg     } -> {:error, msg}
       {:ok   , cfg_name} -> Util.EditorLaunch.launch_using_tmux(cfg_file(cfg_name))

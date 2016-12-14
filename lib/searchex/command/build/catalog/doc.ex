@@ -14,7 +14,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   def generate_from_catalog(catalog, params) do
     catalog.filescans
     |> extract_docs
-    |> extract_fields(params.field_defs)
+    |> extract_fields(params.input_fields)
   end
 
   defp extract_docs(filescans) do
@@ -45,25 +45,24 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     }
   end
 
-  defp extract_fields(docs, field_defs) do
+  defp extract_fields(docs, input_fields) do
     docs
-#    |> Util.TIO.inspect(color: "GREEN")
-    |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, field_defs) end)
+    |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, input_fields) end)
     |> elem(0)
   end
 
-  defp get_fields(doc, {doclist, old_fields}, field_defs) do
-    alt_field_defs = field_defs || []
-    reg_fields = Enum.map alt_field_defs, fn({field_name, _field_spec}) ->
-      {field_name, reg_field(field_defs, doc, field_name)}
+  defp get_fields(doc, {doclist, old_fields}, input_fields) do
+    alt_input_fields = input_fields || []
+    reg_fields = Enum.map alt_input_fields, fn({field_name, _field_spec}) ->
+      {field_name, reg_field(input_fields, doc, field_name)}
     end
     new_fields = Map.merge(old_fields, Enum.into(reg_fields, %{}))
     new_doc    = %Searchex.Command.Build.Catalog.Doc{doc | fields: new_fields}
     {doclist ++ [new_doc], new_fields}
   end
 
-  defp reg_field(field_defs, doc, field_name) do
-    regstr  = field_defs[field_name].regex
+  defp reg_field(input_fields, doc, field_name) do
+    regstr  = input_fields[field_name].regex
     if caps = Regex.named_captures(~r/#{regstr}/, doc.body) do
       [head | _tail] = Map.values caps
       head

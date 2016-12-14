@@ -6,7 +6,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
             docsep:       ~r/---/            ,
             doc_dirs:     [ ]                ,
             file_types:   ~w(txt md js rb ex),
-            field_defs:   %{}                ,
+            input_fields: %{}                ,
             max_numfiles: 500                ,
             max_file_kb:  500                ,
             cli_format:   %{}

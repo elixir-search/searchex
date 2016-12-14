@@ -15,11 +15,11 @@ defmodule Searchex.Cli do
   # List of command options.  The command should be the same as the function
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
-    # Cmd      Arity     Module       Argument                 Description
+    # Cmd      Arity    Module       Argument                 Description
     {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
     {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
     {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
-    {"edit"    ,   1,   "Render"   , "COLLECTION"           , "edit config"                     },
+    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"            },
     {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
     {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"            },
     {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"           },
@@ -30,13 +30,13 @@ defmodule Searchex.Cli do
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd          Arity      Module       Argument               Description
-    {"results"     ,   1,   "Render"   , "COLLECTION"         , "results from the last query"               },
-    {"show"        ,   2,   "Command"  , "COLLECTION DOCID"   , "show text of DOCID"                        },
-    {"edit"        ,   2,   "Render"   , "COLLECTION DOCID"   , "edit DOCID"                                },
+    # Cmd          Arity    Module       Argument                Description
+    {"results"     ,   1,   "Render"   , "COLLECTION"          , "results from the last query"              },
+    {"show"        ,   2,   "Command"  , "COLLECTION DOCID"    , "show text of DOCID"                       },
+    {"edit"        ,   2,   "Render"   , "COLLECTION DOCID"    , "edit DOCID"                               },
     {"fetch"       ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "catalog the collection"                   },
-    {"index"       ,   1,   "Render"   , "COLLECTION"          , "index the collection"                     },
+    {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
+    {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
     {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
     {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
     {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },

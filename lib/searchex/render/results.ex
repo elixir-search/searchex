@@ -10,42 +10,35 @@ defmodule Searchex.Render.Results do
 
   def to_table(frame) do
     catalog = frame.catalog
-    results = frame.results
     docs    = catalog.docs
-    title   = catalog_title(frame)
+    title   = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
     fields  = String.split(get_fields(frame.params))
-    data = table_data(docs, title: title, fields: fields )
-    {title, header, rows} = data
-    numdocs = Enum.count(rows)
-    if numdocs == 0 do
+    {header, rows} = table_data(docs, title: title, fields: fields )
+    if Enum.count(rows) == 0 do
       Util.Ext.IO.puts "NO RESULTS"
     else
-      Util.Ext.IO.puts TableRex.quick_render!(rows, header, title)
+      # Note: TableRex Bug - https://github.com/djm/table_rex/issues/13
+      Util.Ext.IO.puts title
+      Util.Ext.IO.puts TableRex.quick_render!(rows, header)
     end
-    {catalog, results}
+    :ok
   end
 
   defp get_fields(params) do
-    case params.cli_format do
+    case Map.from_struct(params)[:cli_results_fields] do
       nil -> ""
       map -> map[:fields] || ""
     end
   end
 
-  defp catalog_title(frame) do
-    query = frame.query || "TBD"
-    title = frame.params.cli_format[:title] || "Search Results"
-    Enum.join [title, " [query='#{query}']"]
-  end
-
   @doc "Generate table data from the scan"
-  def table_data(docs, opts \\ [title: "Collection", fields: ~w(filename doclength docstart body)]) do
+  def table_data(docs, opts) do
     fields  = ~w(docid) ++ opts[:fields]
     headers = Enum.map fields, &clean_header(&1)
     rows    = docs
               |> Enum.with_index(1)
               |> Enum.map(&row_data(&1, fields))
-    {opts[:title], ["ID"] ++ headers, rows}
+    {["ID"] ++ headers, rows}
   end
 
   # ---------------------------------------------------------------------------------------------

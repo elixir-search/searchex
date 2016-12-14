@@ -6,14 +6,14 @@ defmodule Searchex.Command.QueryTest do
   describe "multi collection" do
     test "doc count" do
       frame = exec("multi", "monit")
-      assert length(frame.results) == 4
+      assert length(frame.scores) == 4
     end
   end
 
   describe "tweets collection" do
     test "doc count" do
       frame = exec("tweets", "bing")
-      assert length(frame.results) == 0
+      assert length(frame.scores) == 0
     end
   end
 end
