@@ -13,7 +13,7 @@ defmodule Searchex.Config do
 
   @doc "Fetch a config from elixir-search/sample_docs"
   def cfg_fetch(_tmp) do
-    DIO.puts "FETCH : UNDER CONSTRUCTION"
+    X.DIO.puts "FETCH : UNDER CONSTRUCTION"
     {:error, "Pending Implementation"}
   end
 

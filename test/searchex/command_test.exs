@@ -15,38 +15,24 @@ defmodule Searchex.CommandTest do
     end
   end
 
-  describe "#search" do
+  describe "#query" do
     test "single word search" do
-      result = Searchex.Command.search("worklog", "monit")
+      result = Searchex.Command.query("worklog", "monit")
       assert result != nil
     end
 
     test "two word search" do
-      result = Searchex.Command.search("worklog", "monit notes")
+      result = Searchex.Command.query("worklog", "monit notes")
       assert result != nil
     end
 
     test "no results" do
-      result = Searchex.Command.search("worklog", "unrecognizedyoyoyo")
+      result = Searchex.Command.query("worklog", "unrecognizedyoyoyo")
       assert result != nil
     end
 
     test "blank query" do
-      result = Searchex.Command.search("worklog", "")
-      assert result != nil
-    end
-  end
-
-  describe "#query" do
-    test "single word search" do
-      result = Searchex.Command.search("worklog", "monit")
-      assert result != nil
-    end
-  end
-
-  describe "#clean" do
-    test "removing all files" do
-      result = Searchex.Command.clean
+      result = Searchex.Command.query("worklog", "")
       assert result != nil
     end
   end

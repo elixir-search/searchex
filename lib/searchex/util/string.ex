@@ -21,13 +21,6 @@ defmodule Searchex.Util.String do
     |> Enum.map(&StemEx.stem/1)
   end
 
-  def signature(string) do
-    :crypto.hash(:sha, string)
-    |> Base.encode16
-    |> String.slice(0,5)
-    |> String.downcase
-  end
-
   def empty?(string) do
     String.length(string) == 0
   end

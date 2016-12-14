@@ -3,7 +3,7 @@ defmodule Searchex.Config.Edit do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import ExMake, only: [check_validations: 1]
+  import X.OldValidations
 
   def exec(cfg_name) do
     make_active_dirs()

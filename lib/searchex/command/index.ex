@@ -2,39 +2,23 @@ defmodule Searchex.Command.Index do
 
   @moduledoc false
 
-  use ExMake
+  use Shake.Module
 
-  import Searchex.Config.Helpers
-  import Searchex.Command.Build.Index
-
+  @doc """
+  The API for the module - takes a config name and returns
+  a frame with Params, Catalog and Index filled.
+  """
   def exec(cfg_name) do
-    chain({:load_index, cfg_name})
+    call(%Frame{cfg_name: cfg_name}, [])
   end
 
-  def chain_validations({:load_index, _cfg_name}), do: []
+  step Searchex.Command.Catalog
+  step :generate_index
 
-  def chain_children({:load_index, cfg_name}) do
-    [ Searchex.Command.Catalog.chain({:load_catalog, cfg_name}) ]
-  end
-
-  def chain_action_when_fresh({:load_index, cfg_name}, child_state) do
-    [catalog | _] = child_state
-    DIO.inspect :FRESH_INDEX, color: "green"
-    start_supervisor(:index)
-    Searchex.Command.Build.Index.Cache.read_index(catalog)
-    {:ok, chain_lcl_timestamp(cfg_name), catalog}
-  end
-
-  def chain_action_when_stale({:load_index, cfg_name}, child_state) do
-    DIO.inspect :STALE_INDEX, color: "green"
-    start_supervisor(:index)
-    [catalog | _rest] = child_state
-    catalog |> create_from_catalog
-    Searchex.Command.Build.Index.Cache.write_index(catalog)
-    {:ok, chain_lcl_timestamp({:load_index, cfg_name}), catalog}
-  end
-
-  def chain_lcl_timestamp({:load_index, cfg_name}) do
-    cfg_name |> idx_file |> filepath_timestamp
+  # TODO: reload the index from cache, if possible
+  def generate_index(frame, _opts) do
+    Searchex.Command.Build.Index.create_from_frame(frame)
+    #X.Cache.put_cache(frame.digests.catalog, arg)
+    %Frame{frame | index: frame.cfg_name}
   end
 end

@@ -2,59 +2,36 @@ defmodule Searchex.Command.Catalog do
 
   @moduledoc false
 
-  use ExMake
+  use Shake.Module
 
-  import Searchex.Config.Helpers
-
+  @doc """
+  The API for the module - takes a config name and returns
+  a frame with the Params and Catalog slots filled.
+  """
   def exec(cfg_name) do
-    chain({:load_catalog, cfg_name})
+    call(%Frame{cfg_name: cfg_name}, [])
   end
 
-  def chain_validations({:load_catalog, cfg_name}) do
-    [
-      cfg_name_invalid?(cfg_name),
-      cfg_dir_absent?            ,
-      cfg_missing?(cfg_name)     ,
-      cfg_invalid?(cfg_name)
-    ]
+  step Searchex.Command.Params
+  step :generate_catalog
+  step :generate_digest
+
+  # check to see if the catalog is in the LRU cache, otherwise regenerate
+  def generate_catalog(frame, _opts) do
+    child_digest = Frame.get_digest(frame, :params)
+    if val = X.Cache.get_cache(child_digest) do
+      cat1 = val
+      %Frame{frame | catalog: cat1}
+    else
+      cat2 = frame |> Searchex.Command.Build.Catalog.create_from_frame
+      X.Cache.put_cache(child_digest, cat2)
+      %Frame{frame | catalog: cat2}
+    end
   end
 
-  # This is non-standard implementation of 'chain-children' at this level, the
-  # two dependencies are the cfg file and the document files.  So instead of
-  # calling to chained-children, we simply return the newest modification date.
-  def chain_children({:load_catalog, cfg_name}) do
-    params = gen_params(cfg_name)
-    tstamp = newest([
-      filepath_timestamp(cfg_file(cfg_name))  ,      # timestamp of the cfg file
-      dirlist_timestamp(params.doc_dirs)             # newest timestamp of all doc_dirs
-    ])
-    [{:ok, tstamp}]
-  end
-
-  def chain_action_when_fresh(args = {:load_catalog, cfg_name}, _child_state) do
-    DIO.inspect :FRESH_CATALOG, color: "green"
-    state = gen_params(cfg_name) |> Searchex.Command.Build.Catalog.Cache.read_catalog
-    {:ok, chain_lcl_timestamp(args), state}
-  end
-
-  def chain_action_when_stale(args = {:load_catalog, cfg_name}, _child_state) do
-    DIO.inspect :STALE_CATALOG, color: "green"
-    state = gen_params(cfg_name)
-    |> Searchex.Command.Build.Catalog.Scan.create_from_params
-    |> Searchex.Command.Build.Catalog.create_from_scan
-    |> Searchex.Command.Build.Catalog.Cache.write_catalog
-    {:ok, chain_lcl_timestamp(args), state}
-  end
-
-  defp gen_params(cfg_name) do
-    cfg_name
-    |> Searchex.Config.cfg_cat
-    |> Searchex.Config.Load.to_map
-    |> Searchex.Util.Map.atomify_keys
-    |> Searchex.Command.Build.Catalog.Params.create_from_cfg
-  end
-
-  def chain_lcl_timestamp({:load_catalog, cfg_name}) do
-    cat_file(cfg_name) |> filepath_timestamp
+  # generate a digest for the catalog and store it in the frame
+  def generate_digest(%Frame{cfg_name: cfg_name, catalog: catalog} = frame, _opts) do
+    digest = X.Term.digest({cfg_name, catalog})
+    set_digest(frame, :catalog, digest)
   end
 end

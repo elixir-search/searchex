@@ -1,8 +1,7 @@
-defmodule DIO do
+defmodule X.DIO do
 
-  @moduledoc """
-  An IO module with support for debugging
-  """
+  @moduledoc false
+  # An IO module with support for debugging
 
   @doc """
   Has the same interface as `IO.inspect` with additional options.

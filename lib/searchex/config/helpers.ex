@@ -12,7 +12,11 @@ defmodule Searchex.Config.Helpers do
   end
 
   def cfg_file(cfg_name) do
-    active_dirs.cfgs <> "/" <> cfg_name <> ".yml"
+    cfg_path(cfg_name) <> cfg_name <> ".yml"
+  end
+
+  def cfg_path(_cfg_name) do
+    active_dirs.cfgs <> "/"
   end
 
   def cat_file(cfg_name) do
@@ -37,6 +41,10 @@ defmodule Searchex.Config.Helpers do
   # -----
 
   # TODO: add a test to check validity of config file...
+  def cfg_name_format(frame, _opts) do
+    frame
+  end
+
   def cfg_invalid?(_cfg_name), do: {:ok}
 
   def cfg_dir_absent?(path \\ Searchex.settings.cfgs) do
