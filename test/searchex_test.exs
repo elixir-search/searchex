@@ -17,7 +17,6 @@ defmodule SearchexTest do
         assert Searchex.settings.cfgs != nil
         assert Searchex.settings.docs != nil
         assert Searchex.settings.data != nil
-        assert Searchex.settings.temp != nil
       end
     end
 end
