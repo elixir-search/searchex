@@ -39,5 +39,4 @@ defmodule LruRegistry.ServerTest do
       assert num_procs(:tst_server)          == 0
     end
   end
-
 end

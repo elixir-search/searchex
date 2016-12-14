@@ -2,18 +2,18 @@ defmodule Shake do
   @moduledoc """
   A Plug-like build framework optimized for search.
 
-  Full-text search has a bunch of dependencies:
+  Full-text search is build on layers of dependencies:
 
       results <- query <- index <- catalog <- params
 
-  The overall shape of the project resembles 'make' - where you assemble results
-  out of intermediate parts.
+  The data-processing requirements resembles 'make' - where you assemble
+  results out of intermediate parts.
 
-  At every step of the build chain, you want parameter validation and caching so
-  you don't have to re-generate everything from scratch.
+  At every step of the build chain, you want parameter validation and caching
+  so you don't have to re-generate everything from scratch.
 
-  As we go forward, other types of intermediate data structures and indexes will
-  be introduced.  We need a data-processing abstraction that is flexible,
+  As we go forward, other types of intermediate data structures and indexes
+  will be introduced.  We need a data-processing abstraction that is flexible,
   pluggable and composable.
 
   That's the idea of Shake.

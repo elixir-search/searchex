@@ -71,9 +71,8 @@ defmodule Searchex.Command do
     {:ok, Searchex.Command.Results.exec}
   end
 
-  @doc """
-  Show document text
-  """
+  @doc false
+  # Show document text
   def show(_cfg_name, _idnum) do
 #    Searchex.Command.Show.exec(idnum)
 #    {:ok}

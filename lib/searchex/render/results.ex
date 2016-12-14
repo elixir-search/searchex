@@ -14,7 +14,6 @@ defmodule Searchex.Render.Results do
     docs    = catalog.docs
     title   = catalog_title(frame)
     fields  = String.split(get_fields(frame.params))
-    X.TIO.inspect fields , color: "GREEN"
     data = table_data(docs, title: title, fields: fields )
     {title, header, rows} = data
     numdocs = Enum.count(rows)
