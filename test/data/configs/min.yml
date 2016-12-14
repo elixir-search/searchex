@@ -1,4 +1,6 @@
 ---
 :collection: min
 :doc_dirs: ["test/data/docs/tweets"]
-
+:cli_format:
+  :title:  "Min Collection"
+  :fields: "doclength docstart body"

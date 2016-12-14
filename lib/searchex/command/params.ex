@@ -26,7 +26,7 @@ defmodule Searchex.Command.Params do
   # read the config file and generate params
   def generate_params(frame, _opts) do
     params = frame.cfg_name
-             |> Searchex.Config.cfg_cat
+             |> Searchex.Config.cat
              |> Searchex.Config.Load.to_map
              |> Util.Ext.Map.atomify_keys
              |> Searchex.Command.Build.Catalog.Params.create_from_cfg

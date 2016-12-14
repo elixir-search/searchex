@@ -9,4 +9,3 @@
 :cli_format:
   :title:  "Tweets"
   :fields: "doclength docstart body"
-

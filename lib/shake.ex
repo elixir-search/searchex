@@ -38,16 +38,7 @@ defmodule Shake do
 
   Plug is centered around a the Conn struct.  Shake uses the Frame struct.
 
-        defstruct cfg_name: "",
-                  params:   %{},
-                  catalog:  %{},
-                  index:    %{},
-                  query:    "",
-                  results:  %{},
-                  halted:   false,
-                  halt_msg: "",
-                  digests:  %{},
-                  assigns:  %{}
+  See the documentation for `Shake.Frame` for more info.
 
   ### Search Focus
 
