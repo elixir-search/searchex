@@ -5,10 +5,6 @@ defmodule Searchex.Util.AppTest do
 
   import Searchex.Util.App
 
-  test "#verion" do
-    assert version == '0.0.1-alpha.2'
-  end
-
   test "#symbol" do
     assert symbol == :searchex
   end

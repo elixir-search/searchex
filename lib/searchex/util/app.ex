@@ -4,11 +4,6 @@ defmodule Searchex.Util.App do
 
   @doc """
   Return the application version
-
-  ## Example
-
-      iex> Searchex.Util.App.version
-      '0.0.1-alpha.2'
   """
   def version do
     appsym = symbol
