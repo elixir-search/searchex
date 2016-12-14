@@ -85,6 +85,6 @@ defmodule Searchex.Command do
   """
   def clean do
     Searchex.Config.Helpers.clean
-    {:ok, ""}
+    {:ok}
   end
 end
