@@ -1,4 +1,4 @@
-defmodule X.CacheTest do
+defmodule Util.CacheTest do
   use ExUnit.Case
   
   describe "starting the cache" do
@@ -7,7 +7,7 @@ defmodule X.CacheTest do
     end
 
     test "after start" do
-      X.Cache.start
+      Util.Cache.start
       assert Process.whereis(:ex_cache_ets) != nil
     end
 
@@ -18,14 +18,14 @@ defmodule X.CacheTest do
 
   describe "getting and saving values" do
     test "basic ops" do
-      X.Cache.start
-      X.Cache.put_cache("mykey", "myval")
-      assert X.Cache.get_cache("mykey") == "myval"
+      Util.Cache.start
+      Util.Cache.put_cache("mykey", "myval")
+      assert Util.Cache.get_cache("mykey") == "myval"
     end
 
     test "returns the cache key on put" do
-      X.Cache.start
-      assert X.Cache.put_cache("mykey", "myval") == "mykey"
+      Util.Cache.start
+      assert Util.Cache.put_cache("mykey", "myval") == "mykey"
     end
   end
 end

@@ -1,9 +1,9 @@
-defmodule Searchex.Util.Map do
+defmodule Util.Ext.Map do
 
   @moduledoc false
 
   def atomify_keys(map) do
-    Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{X.Term.to_atom(k) => v}) end)
+    Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{Util.Ext.Term.to_atom(k) => v}) end)
   end
 
   def deep_merge(left, right) do

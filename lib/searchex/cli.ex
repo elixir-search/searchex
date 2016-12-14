@@ -49,7 +49,7 @@ defmodule Searchex.Cli do
 
   # Generate route functions for each command option
   for {cmd, len, mod, _args, _detail} <- cmd_opts ++ alt_opts do
-    modfun = Searchex.Util.Enum.join(["Searchex", mod, cmd], ".")
+    modfun = Util.Ext.Enum.join(["Searchex", mod, cmd], ".")
     {efunc, _} = Code.eval_string("&#{modfun}/#{len}")
     @cmd  cmd
     @func efunc
@@ -124,11 +124,11 @@ defmodule Searchex.Cli do
   end
 
   defp lcl_puts(string) do
-    unless Searchex.Util.String.empty?(string), do: X.DIO.puts string
+    unless Util.Ext.String.empty?(string), do: Util.Ext.IO.puts string
   end
 
   defp lcl_insp(ele) do
-    X.DIO.inspect(ele, width: 999)
+    Util.Ext.IO.inspect(ele, width: 999)
   end
 
   # ----------------------------------------------------------------------------------------------------
@@ -136,9 +136,9 @@ defmodule Searchex.Cli do
   def rpad(string, val), do: String.pad_trailing(string, val)
   def lpad(string, val), do: String.pad_leading(string, val)
 
-  defp prog         , do: Searchex.Util.App.name
+  defp prog         , do: Util.Ext.App.name
 
-  defp prog_version , do: Searchex.Util.App.version
+  defp prog_version , do: Util.Ext.App.version
 
   defp usage_message, do: "Type '#{prog} help' for usage information."
 

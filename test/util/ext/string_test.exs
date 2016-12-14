@@ -1,7 +1,7 @@
-defmodule Searchex.Util.StringTest do
+defmodule Util.Ext.StringTest do
   use ExUnit.Case, async: true
 
-  import Searchex.Util.String
+  import Util.Ext.String
 
   describe "#wordlist" do
     test "simple string" do

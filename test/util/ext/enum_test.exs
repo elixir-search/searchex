@@ -1,7 +1,7 @@
-defmodule Searchex.Util.EnumTest do
+defmodule Util.Ext.EnumTest do
   use ExUnit.Case, async: true
 
-  import Searchex.Util.Enum
+  import Util.Ext.Enum
 
   describe "#average" do
     test "empty list" do

@@ -1,4 +1,4 @@
-defmodule Searchex.Util.File do
+defmodule Util.Ext.File do
 
   @moduledoc false
 

@@ -1,4 +1,4 @@
-defmodule Searchex.Util.String do
+defmodule Util.Ext.String do
 
   @moduledoc false
 

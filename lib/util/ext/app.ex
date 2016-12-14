@@ -1,4 +1,4 @@
-defmodule Searchex.Util.App do
+defmodule Util.Ext.App do
 
   @moduledoc false
 
@@ -21,7 +21,7 @@ defmodule Searchex.Util.App do
 
   ## Example
 
-      iex> Searchex.Util.App.symbol
+      iex> Util.Ext.App.symbol
       :searchex
   """
   def symbol do
@@ -33,7 +33,7 @@ defmodule Searchex.Util.App do
 
   ## Example
 
-      iex> Searchex.Util.App.name
+      iex> Util.Ext.App.name
       "searchex"
   """
   def name do

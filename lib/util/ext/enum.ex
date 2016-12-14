@@ -1,4 +1,4 @@
-defmodule Searchex.Util.Enum do
+defmodule Util.Ext.Enum do
 
   @moduledoc false
 
@@ -12,7 +12,7 @@ defmodule Searchex.Util.Enum do
 
   def join(enumerable, char \\ " ") do
     enumerable
-    |> Enum.filter(fn(x) -> Searchex.Util.String.present?(x) end)
+    |> Enum.filter(fn(x) -> Util.Ext.String.present?(x) end)
     |> Enum.join(char)
   end
 end

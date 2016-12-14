@@ -1,7 +1,7 @@
-defmodule X.GlobalStateTest do
+defmodule Util.GlobalStateTest do
   use ExUnit.Case
 
-  import X.GlobalState
+  import Util.GlobalState
 
   test "basic operation" do
     assert get(:bing) == nil

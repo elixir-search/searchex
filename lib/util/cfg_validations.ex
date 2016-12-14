@@ -1,4 +1,4 @@
-defmodule X.OldValidations do
+defmodule Util.CfgValidations do
 
     @moduledoc false
 

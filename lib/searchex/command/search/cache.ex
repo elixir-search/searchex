@@ -4,7 +4,7 @@ defmodule Searchex.Command.Search.Cache do
   
   @doc "Write results to cache file"
   def write_results(elem) do
-    X.DIO.inspect :WRITE_RESULTS, color: "green"
+    Util.Ext.IO.inspect :WRITE_RESULTS, color: "green"
     path   = cache_file
     string = :erlang.term_to_binary(elem)
     File.write(path, string)
@@ -14,7 +14,7 @@ defmodule Searchex.Command.Search.Cache do
   @doc "Read index from input file"
   def read_results do
     path = cache_file
-    X.DIO.inspect :READ_RESULTS, color: "green"
+    Util.Ext.IO.inspect :READ_RESULTS, color: "green"
     case File.read(path) do
       {:ok, string} -> :erlang.binary_to_term(string)
       {:error, _}   -> {:error, "ERROR #{path}"}

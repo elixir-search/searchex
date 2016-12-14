@@ -1,13 +1,13 @@
-defmodule LruRegistry.Server do
+defmodule Util.Registry.Server do
 
   @moduledoc false
 
   use GenServer
 
-  import LruRegistry.Supervisor, only: [srv_name: 1]
+  import Util.Registry.Supervisor, only: [srv_name: 1]
 
   @doc """
-  LruRegistry Server
+  Util.Registry Server
   """
   def start_link(opts1 \\ []) do
     opts2 = Keyword.merge([name: :lru_registry_server, pool_size: 20], List.flatten(opts1))

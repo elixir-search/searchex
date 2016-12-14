@@ -1,9 +1,11 @@
-defmodule X.DIO do
+defmodule Util.Ext.IO do
 
   @moduledoc false
   # An IO module with support for debugging
 
   @doc """
+  `dins` = 'Debug INSpect'
+
   Has the same interface as `IO.inspect` with additional options.
 
   - color - one of `:red`, `:green`, `:blue`, `:yellow`, `:cyan`, `:magenta`, `:white`
@@ -18,14 +20,14 @@ defmodule X.DIO do
 
   Note: by default, output is generated in `:dev` and `:prod` but not `:test`.
   """
-  def inspect(item, opts \\ []) do
-    inspect :stdio, item, opts
+  def dins(item, opts \\ []) do
+    dins :stdio, item, opts
   end
 
   @doc """
   Inspect `item` according to the given options using the IO `device`.
   """
-  def inspect(device, item, opts) when is_list(opts) do
+  def dins(device, item, opts) when is_list(opts) do
     label    = if lbl = opts[:label], do: [to_chardata(lbl), ": "], else: []
     alt_opts = struct(Inspect.Opts, opts)
     new_item = display(item, opts)
@@ -33,6 +35,20 @@ defmodule X.DIO do
     [label, chardata, reset] = modify([label, chardata], opts)
     unless label == "" && chardata == "", do: IO.puts(device, [label, chardata, reset])
     item 
+  end
+
+  @doc """
+  `tins` = 'Test INSpect'
+  """
+  def tins(item, opts \\ []) do
+    dins :stdio, item, opts ++ [test: :show]
+  end
+
+  @doc """
+  alias for dins
+  """
+  def inspect(item, opts \\ []) do
+    dins :stdio, item, opts
   end
 
   @doc """

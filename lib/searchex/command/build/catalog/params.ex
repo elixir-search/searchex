@@ -16,7 +16,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
     new_docsep = regify(old_docsep)
     new_config = Map.merge(config, %{docsep: new_docsep})
     result = plain_struct()
-             |> Searchex.Util.Map.deep_merge(new_config)
+             |> Util.Ext.Map.deep_merge(new_config)
     Map.merge(%Searchex.Command.Build.Catalog.Params{}, result)
   end
 

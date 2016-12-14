@@ -1,4 +1,4 @@
-defmodule X.TimeStamp do
+defmodule Util.TimeStamp do
 
   @moduledoc false
   # Utility functions for generating timestamps.
@@ -26,7 +26,7 @@ defmodule X.TimeStamp do
   """
   def dirpath_timestamp(dirpath) do
     Path.expand(dirpath)
-    |> Searchex.Util.File.ls_r
+    |> Util.Ext.File.ls_r
     |> Enum.map(fn(path) -> filepath_timestamp(path) end)
     |> Enum.max
   end

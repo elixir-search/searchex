@@ -5,7 +5,7 @@ defmodule Searchex.Render.Results do
   @moduledoc false
 
   def to_table({:error, _msg}) do
-    X.DIO.puts "NO RESULTS"
+    Util.Ext.IO.puts "NO RESULTS"
   end
 
   def to_table(frame) do
@@ -18,9 +18,9 @@ defmodule Searchex.Render.Results do
     {title, header, rows} = data
     numdocs = Enum.count(rows)
     if numdocs == 0 do
-      X.DIO.puts "NO RESULTS"
+      Util.Ext.IO.puts "NO RESULTS"
     else
-      X.DIO.puts TableRex.quick_render!(rows, header, title)
+      Util.Ext.IO.puts TableRex.quick_render!(rows, header, title)
     end
     {catalog, results}
   end

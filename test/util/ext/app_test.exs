@@ -1,9 +1,9 @@
-defmodule Searchex.Util.AppTest do
+defmodule Util.Ext.AppTest do
   use ExUnit.Case, async: true
 
-  doctest Searchex.Util.App
+  doctest Util.Ext.App
 
-  import Searchex.Util.App
+  import Util.Ext.App
 
   test "#symbol" do
     assert symbol == :searchex

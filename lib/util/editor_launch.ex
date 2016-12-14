@@ -1,4 +1,4 @@
-defmodule X.EditorLaunch do
+defmodule Util.EditorLaunch do
   @moduledoc false
   # Launch editors (like Vim, Emacs) from Elixir
 

@@ -1,4 +1,4 @@
-defmodule X.Term do
+defmodule Util.Ext.Term do
 
   @moduledoc false
 

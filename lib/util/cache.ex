@@ -1,4 +1,4 @@
-defmodule X.Cache do
+defmodule Util.Cache do
   @moduledoc false
   # Simple LRU cache, with optional persistence to disk.
 
@@ -11,14 +11,14 @@ defmodule X.Cache do
       :ets.from_dets(:ex_cache_ets, :ex_cache_dets)
       :dets.close(:ex_cache_dets)
     end
-    X.GlobalState.set(:ex_cache, mopt)
+    Util.GlobalState.set(:ex_cache, mopt)
     :ok
   end
 
   defp merged_opts(opts) do
     [
       [size: 50, path: nil]                  ,
-      X.GlobalState.get(:ex_cache) || []     ,
+      Util.GlobalState.get(:ex_cache) || []     ,
       opts
     ]
     |> Enum.reduce([], fn(el, acc) -> Keyword.merge(acc, el) end)
@@ -26,7 +26,7 @@ defmodule X.Cache do
 
   @doc "Save the cache data to disk"
   def save do
-    if path = X.GlobalState.get(:ex_cache)[:path] do
+    if path = Util.GlobalState.get(:ex_cache)[:path] do
       :dets.open_file(:ex_cache_dets, [file: path])
       :ets.to_dets(:ex_cache_ets, :ex_cache_dets)
       :dets.close(:ex_cache_dets)

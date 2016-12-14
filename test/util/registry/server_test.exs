@@ -1,9 +1,9 @@
-defmodule LruRegistry.ServerTest do
+defmodule Util.Registry.ServerTest do
 
   use ExUnit.Case, async: true
 
-  import LruRegistry.Server
-  import LruRegistry.Supervisor, only: [srv_name: 1]
+  import Util.Registry.Server
+  import Util.Registry.Supervisor, only: [srv_name: 1]
 
   describe "server #start_link" do
     test "using default server name" do

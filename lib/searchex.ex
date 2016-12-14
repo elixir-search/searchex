@@ -4,7 +4,7 @@ defmodule Searchex do
 
   @doc "Return the application version"
   def version do
-    {:ok, "#{Searchex.Util.App.version}"}
+    {:ok, "#{Util.Ext.App.version}"}
   end
 
   @doc "Return the applications settings"

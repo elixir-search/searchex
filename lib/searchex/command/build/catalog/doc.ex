@@ -35,19 +35,19 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   defp gen_doc({position, offset}, filescan) do
     body = String.slice(filescan.rawdata, position, offset)
     %Searchex.Command.Build.Catalog.Doc {
-      docid:     X.Term.digest(body)                  ,
+      docid:     Util.Ext.Term.digest(body)                  ,
       filename:  filescan.input_filename              ,
       docstart:  position                             ,
       doclength: offset                               ,
-      wordcount: Searchex.Util.String.wordcount(body) ,
-      wordstems: Searchex.Util.String.wordstems(body) ,
+      wordcount: Util.Ext.String.wordcount(body) ,
+      wordstems: Util.Ext.String.wordstems(body) ,
       body:      body
     }
   end
 
   defp extract_fields(docs, field_defs) do
     docs
-#    |> X.TIO.inspect(color: "GREEN")
+#    |> Util.TIO.inspect(color: "GREEN")
     |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, field_defs) end)
     |> elem(0)
   end

@@ -19,7 +19,7 @@ defmodule Searchex.Command.Build.Catalog do
 
   def gen_filescans(catalog, params) do
     scans = params.doc_dirs
-            |> Searchex.Util.File.ls_r(params.file_types)
+            |> Util.Ext.File.ls_r(params.file_types)
             |> Enum.take(params.max_numfiles)
             |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, params) end)
     %Catalog{catalog | filescans: scans}
@@ -32,6 +32,6 @@ defmodule Searchex.Command.Build.Catalog do
 
   def extract_counts(catalog) do
     wordcounts = Enum.map(catalog.docs, fn(doc) -> doc.wordcount end)
-    %Catalog{catalog | numdocs: Enum.count(wordcounts), avg_wordcount: Searchex.Util.Enum.average(wordcounts)}
+    %Catalog{catalog | numdocs: Enum.count(wordcounts), avg_wordcount: Util.Ext.Enum.average(wordcounts)}
   end
 end

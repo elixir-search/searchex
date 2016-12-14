@@ -1,4 +1,4 @@
-defmodule X.GlobalState do
+defmodule Util.GlobalState do
 
   @moduledoc false
 
