@@ -8,15 +8,13 @@ defmodule Searchex.Render.Results do
     X.DIO.puts "NO RESULTS"
   end
 
-#  def to_table({cat1, _dc}) do
   def to_table(frame) do
     catalog = frame.catalog
     results = frame.results
-#    X.TIO.inspect catalog, color: "RED"
-#    X.TIO.inspect results, color: "blue"
-    docs   = catalog.docs
-    title  = catalog_title(frame)
-    fields = String.split(frame.params.cli_format.fields)
+    docs    = catalog.docs
+    title   = catalog_title(frame)
+    fields  = String.split(get_fields(frame.params))
+    X.TIO.inspect fields , color: "GREEN"
     data = table_data(docs, title: title, fields: fields )
     {title, header, rows} = data
     numdocs = Enum.count(rows)
@@ -26,6 +24,13 @@ defmodule Searchex.Render.Results do
       X.DIO.puts TableRex.quick_render!(rows, header, title)
     end
     {catalog, results}
+  end
+
+  defp get_fields(params) do
+    case params.cli_format do
+      nil -> ""
+      map -> map[:fields] || ""
+    end
   end
 
   defp catalog_title(frame) do

@@ -1,9 +1,12 @@
 ---
-collection:   "<%= cfg_name %>"
-file_types:   [<%= file_types %>]
-max_numfiles: <%= max_numfiles %>
-max_file_kb:  <%= max_file_kb  %>
-cli_style:    "<%= cli_style %>"
-docsep:       "<%= docsep %>"
-field_defs:  
-doc_dirs:     [<%= docroot %>]
+:collection:   "<%= cfg_name %>"
+:file_types:   [<%= file_types %>]
+:max_numfiles: <%= max_numfiles %>
+:max_file_kb:  <%= max_file_kb  %>
+:cli_style:    "<%= cli_style %>"
+:docsep:       "<%= docsep %>"
+:field_defs:
+:doc_dirs:     [<%= docroot %>]
+:cli_format:
+  :title:      "<%= String.capitalize(cfg_name) %> Collection"
+  :fields:     "doclength docstart body"

@@ -47,12 +47,14 @@ defmodule Searchex.Command.Build.Catalog.Doc do
 
   defp extract_fields(docs, field_defs) do
     docs
+#    |> X.TIO.inspect(color: "GREEN")
     |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, field_defs) end)
     |> elem(0)
   end
 
   defp get_fields(doc, {doclist, old_fields}, field_defs) do
-    reg_fields = Enum.map field_defs, fn({field_name, _field_spec}) ->
+    alt_field_defs = field_defs || []
+    reg_fields = Enum.map alt_field_defs, fn({field_name, _field_spec}) ->
       {field_name, reg_field(field_defs, doc, field_name)}
     end
     new_fields = Map.merge(old_fields, Enum.into(reg_fields, %{}))
