@@ -12,11 +12,11 @@ defmodule Searchex.Render.Results do
   def to_table(frame) do
     catalog = frame.catalog
     results = frame.results
-    X.TIO.inspect catalog, color: "RED"
-    X.TIO.inspect results, color: "blue"
+#    X.TIO.inspect catalog, color: "RED"
+#    X.TIO.inspect results, color: "blue"
     docs   = catalog.docs
-    title  = catalog_title(catalog)
-    fields = String.split(catalog.params.cli_format.fields)
+    title  = catalog_title(frame)
+    fields = String.split(frame.params.cli_format.fields)
     data = table_data(docs, title: title, fields: fields )
     {title, header, rows} = data
     numdocs = Enum.count(rows)
@@ -28,9 +28,9 @@ defmodule Searchex.Render.Results do
     {catalog, results}
   end
 
-  defp catalog_title(catalog) do
-    query = Map.from_struct(catalog)[:query] || "TBD"
-    title = catalog.params.cli_format[:title] || "Search Results"
+  defp catalog_title(frame) do
+    query = frame.query || "TBD"
+    title = frame.params.cli_format[:title] || "Search Results"
     Enum.join [title, " [query='#{query}']"]
   end
 

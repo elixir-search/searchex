@@ -21,11 +21,8 @@ defmodule Searchex.Cli do
     {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                  },
     {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                 },
     {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"               },
-    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"        },
+    {"build"     ,   1,   "Render"   , "COLLECTION"           , "build the collection"        },
     {"query"     ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"       },
-    {"results"   ,   1,   "Render"   , "COLLECTION"           , "results from the last query" },
-    {"show"      ,   2,   "Command"  , "COLLECTION DOCID"     , "show text of DOCID"          },
-    {"edit"      ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                  },
     {"version"   ,   0,   ""         , ""                     , "show installed version"      },
     {"help"      ,   0,   "Cli"      , ""                     , "this command"                },
   ]
@@ -34,9 +31,12 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity      Module       Argument               Description
+    {"results"     ,   1,   "Render"   , "COLLECTION"         , "results from the last query"               },
+    {"show"        ,   2,   "Command"  , "COLLECTION DOCID"   , "show text of DOCID"                        },
+    {"edit"        ,   2,   "Render"   , "COLLECTION DOCID"   , "edit DOCID"                                },
     {"cfg_fetch"   ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Command"  , "COLLECTION"          , "catalog the collection"                   },
-    {"index"       ,   1,   "Command"  , "COLLECTION"          , "index the collection"                     },
+    {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "catalog the collection"                   },
+    {"index"       ,   1,   "Render"   , "COLLECTION"          , "index the collection"                     },
     {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
     {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
     {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
@@ -126,7 +126,7 @@ defmodule Searchex.Cli do
   end
 
   defp lcl_insp(ele) do
-    X.DIO.inspect(ele)
+    X.DIO.inspect(ele, width: 999)
   end
 
   # ----------------------------------------------------------------------------------------------------

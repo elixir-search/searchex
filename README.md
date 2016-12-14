@@ -86,9 +86,10 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] Config management 
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
-- [x] LRU Cache
 - [x] Middleware framework
-- [ ] Simple CLI
+- [ ] CLI Indexing and Query
+- [ ] LRU Cache
+- [ ] CLI Results Display
 - [ ] Repository for Sample Docs
 - [ ] Faceted Search
 - [ ] CLI Tab Completion

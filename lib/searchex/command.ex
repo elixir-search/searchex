@@ -10,18 +10,7 @@ defmodule Searchex.Command do
   This workflow establishes a dependency chain, with higher level steps
   depending on the outputs of lower level steps.  Each step generates an
   intermediate output which can be cached to minimize re-execution of
-  compute-intensive steps.
-
-  - Read Configuration generates in-memory state
-  - Build Catalog generates an on-disk cache file (~/.searchex/data/<collection>_cat.dat)
-  - Build Index generates an on-disk cache file (~/.searchex/data/<collection>_idx.dat)
-  - Perform Query generates a results file (~/.searchex/temp/results.dat)
-
-  The overall dependency tree starts with on-disk assets:
-
-  [config_file,doc_dirs] < Read Configuration < Build Index < Perform Query
-
-  The `Cmd` system uses the Elixir behavior `ExMakeOld` to manage the dependency chain.
+  compute-intensive steps.  The command structure is based on `Shake`.
   """
 
   @doc """
@@ -34,12 +23,7 @@ defmodule Searchex.Command do
   The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
   """
   def catalog(cfg_name) do
-    frame = Searchex.Command.Catalog.exec(cfg_name)
-    if frame.halted do
-      {:error, frame.halt_msg}
-    else
-      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
-    end
+    Searchex.Command.Catalog.exec(cfg_name)
   end
 
   @doc """
@@ -50,24 +34,14 @@ defmodule Searchex.Command do
   The index lives in a Process Tree, one worker for each keyword.
   """
   def index(cfg_name) do
-    frame = Searchex.Command.Index.exec(cfg_name)
-    if frame.halted do
-      {:error, frame.halt_msg}
-    else
-      [cmd: "index", cfg_name: cfg_name]
-    end
+    Searchex.Command.Index.exec(cfg_name)
   end
 
   @doc """
   Generate both the catalog and the index for `cfg_name` in one step
   """
   def build(cfg_name) do
-    frame = Searchex.Command.Build.exec(cfg_name)
-    if frame.halted do
-      {:error, frame.halt_msg}
-    else
-      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
-    end
+    Searchex.Command.Build.exec(cfg_name)
   end
 
   @doc false
@@ -87,12 +61,7 @@ defmodule Searchex.Command do
   Query the collection
   """
   def query(cfg_name, query) do
-    frame = Searchex.Command.Query.exec(cfg_name, query)
-    if frame.halted do
-      {:error, frame.halt_msg}
-    else
-      [cmd: "query", results: frame.results]
-    end
+    Searchex.Command.Query.exec(cfg_name, query)
   end
 
   @doc """

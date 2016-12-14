@@ -29,10 +29,43 @@ defmodule Searchex.Render do
   def query(cfg_name, query) do
     Searchex.Command.Query.exec(cfg_name, query)
     |> Searchex.Render.Results.to_table
-#    case X.TIO.inspect(Searchex.Command.query(cfg_name, query), color: "green") do
-#      {:error, msg         } -> {:error, msg}
-#      {:ok   , {:ok, state}} -> Searchex.Render.Results.to_table(state)
-#    end
+  end
+
+  @doc """
+  Return output for catalog
+  """
+  def catalog(cfg_name) do
+    frame = Searchex.Command.catalog(cfg_name)
+
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+    end
+  end
+
+  @doc """
+  Index
+  """
+  def index(cfg_name) do
+    frame = Searchex.Command.index(cfg_name)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "index", cfg_name: cfg_name]
+    end
+  end
+
+  @doc """
+  Build
+  """
+  def build(cfg_name) do
+    frame = Searchex.Command.build(cfg_name)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+    end
   end
 
   @doc """

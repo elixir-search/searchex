@@ -11,10 +11,10 @@ defmodule Searchex.Command.Build.Catalog.Doc do
             fields:     %{}  , 
             body:       ""
 
-  def generate_from_catalog(catalog) do
+  def generate_from_catalog(catalog, params) do
     catalog.filescans
     |> extract_docs
-    |> extract_fields(catalog.params.field_defs)
+    |> extract_fields(params.field_defs)
   end
 
   defp extract_docs(filescans) do

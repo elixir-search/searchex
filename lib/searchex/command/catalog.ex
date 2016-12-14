@@ -23,8 +23,7 @@ defmodule Searchex.Command.Catalog do
       cat1 = val
       %Frame{frame | catalog: cat1}
     else
-      cat2 = frame.params
-             |> Searchex.Command.Build.Catalog.create_from_params
+      cat2 = frame |> Searchex.Command.Build.Catalog.create_from_frame
       X.Cache.put_cache(child_digest, cat2)
       %Frame{frame | catalog: cat2}
     end
