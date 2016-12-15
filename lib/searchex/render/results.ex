@@ -9,7 +9,6 @@ defmodule Searchex.Render.Results do
   end
 
   def to_table(frame) do
-    Util.Ext.IO.tins(frame.results.docs, color: "MAGENTA")
     results = frame.results
     docs    = results.docs
     title   = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
