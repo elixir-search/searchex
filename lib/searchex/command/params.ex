@@ -52,10 +52,7 @@ defmodule Searchex.Command.Params do
   def generate_digest(%Frame{cfg_name: cfg_name, params: params} = frame, _opts) do
     import Searchex.Config.Helpers
     import Util.TimeStamp
-    term = [
-      filepath_timestamp(cfg_file(cfg_name))  , # timestamp of the cfg file
-      dirlist_timestamp(params.doc_dirs)        # newest timestamp of all doc_dirs
-    ] |> newest
+    term   = mixlist_timestamp([cfg_file(cfg_name), params.doc_dirs])
     digest = Util.Ext.Term.digest({cfg_name, term})
     set_digest(frame, :params, digest)
   end

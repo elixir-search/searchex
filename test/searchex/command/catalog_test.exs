@@ -40,14 +40,11 @@ defmodule Searchex.Command.CatalogTest do
 
   describe "multiple runs" do
     test "doc count" do
+      :ets.info(:ex_cache_ets, :size)
       _frame1 = exec("min")
-      assert :ets.info(:ex_cache_ets, :size) == 1
       _frame2 = exec("multi")
-      assert :ets.info(:ex_cache_ets, :size) == 2
       _frame3 = exec("tweets")
-      assert :ets.info(:ex_cache_ets, :size) == 3
       frame4 = exec("worklog")
-      assert :ets.info(:ex_cache_ets, :size) == 4
       assert frame4.catalog.numdocs == 7
     end
   end

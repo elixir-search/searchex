@@ -14,11 +14,11 @@ defmodule Searchex.Command.Catalog do
 
   step Searchex.Command.Params
   step :generate_catalog
-  step :generate_digest
+#  step :generate_digest
 
   # check to see if the catalog is in the LRU cache, otherwise regenerate
   def generate_catalog(frame, _opts) do
-    child_digest = Frame.get_digest(frame, :params)
+    child_digest = "cat_" <> Frame.get_digest(frame, :params)
     if val = Util.Cache.get_cache(child_digest) do
       cat1 = val
       %Frame{frame | catalog: cat1}

@@ -14,11 +14,19 @@ defmodule Searchex.Command.Index do
 
   step Searchex.Command.Catalog
   step :generate_index
+#  step :generate_digest
 
-  # TODO: reload the index from cache, if possible
   def generate_index(frame, _opts) do
-    Searchex.Command.Build.Index.create_from_frame(frame)
-    #Util.Cache.put_cache(frame.digests.catalog, arg)
-    %Frame{frame | index: frame.cfg_name}
+    child_digest = "idx_" <> Frame.get_digest(frame, :params)
+    if _map = Util.Cache.get_cache(child_digest) do
+      Searchex.Command.Build.Index.create_from_frame(frame)
+      %Frame{frame | index: frame.cfg_name}
+    else
+      Searchex.Command.Build.Index.create_from_frame(frame)
+      #Util.Cache.put_cache(frame.digests.catalog, arg)
+      %Frame{frame | index: frame.cfg_name}
+    end
   end
 end
+
+# TODO: finish this

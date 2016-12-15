@@ -44,6 +44,18 @@ defmodule Util.TimeStamp do
   end
 
   @doc """
+  Return a timestamp for a mixed list of files and directories.
+  """
+  def mixlist_timestamp(list) do
+    new_list = List.flatten(list)
+    dirs  = Enum.filter(new_list, fn(el) -> File.dir?(el) end) |> List.flatten
+    files = new_list -- dirs
+    newest_file = Enum.map(files, fn(file) -> filepath_timestamp(file) end) |> newest
+    newest_dir  = dirlist_timestamp(dirs)
+    List.flatten([newest_file, newest_dir]) |> newest
+  end
+
+  @doc """
   Timestamp 'newer' comparison predicate
 
   Example:
