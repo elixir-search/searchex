@@ -64,13 +64,6 @@ defmodule Searchex.Command do
     Searchex.Command.Query.exec(cfg_name, query)
   end
 
-  @doc """
-  Display results to stdout
-  """
-  def results do
-    {:ok, Searchex.Command.Results.exec}
-  end
-
   @doc false
   # Show document text
   def show(_cfg_name, _idnum) do

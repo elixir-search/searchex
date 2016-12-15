@@ -27,8 +27,12 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def query(cfg_name, query) do
-    Searchex.Command.Query.exec(cfg_name, query)
-    |> Searchex.Render.Results.to_table
+    frame = Searchex.Command.Query.exec(cfg_name, query)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      Searchex.Render.Results.to_table(frame)
+    end
   end
 
   @doc """
@@ -36,7 +40,6 @@ defmodule Searchex.Render do
   """
   def catalog(cfg_name) do
     frame = Searchex.Command.catalog(cfg_name)
-
     if frame.halted do
       {:error, frame.halt_msg}
     else

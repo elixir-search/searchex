@@ -1,10 +1,9 @@
 ---
 :collection:     "<%= cfg_name %>"
-:file_types:     [<%= file_types %>]
-:max_numfiles:   <%= max_numfiles %>
-:max_file_kb:    <%= max_file_kb  %>
-:cli_style:      "<%= cli_style %>"
-:docsep:         "<%= docsep %>"
-:input_fields:
 :doc_dirs:       [<%= docroot %>]
+:file_types:     [<%= file_types %>]
+:max_numfiles:   50
+:max_file_kb:    100
+:input_fields:
 :display_fields: "doclength docstart body"
+:docsep:

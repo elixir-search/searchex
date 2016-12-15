@@ -9,8 +9,8 @@ defmodule Searchex.Render.Results do
   end
 
   def to_table(frame) do
-    catalog = frame.catalog
-    docs    = catalog.docs
+    results = frame.results
+    docs    = results.docs
     title   = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
     fields  = String.split(get_fields(frame.params))
     {header, rows} = table_data(docs, title: title, fields: fields )
@@ -25,10 +25,7 @@ defmodule Searchex.Render.Results do
   end
 
   defp get_fields(params) do
-    case Map.from_struct(params)[:cli_results_fields] do
-      nil -> ""
-      map -> map[:fields] || ""
-    end
+    Map.from_struct(params)[:display_fields] || ""
   end
 
   @doc "Generate table data from the scan"
