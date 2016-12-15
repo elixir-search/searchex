@@ -31,10 +31,6 @@ defmodule Searchex.Config.Helpers do
     System.cmd("mkdir", ["-p"] ++ Map.values(active_dirs))
   end
 
-  def clean do
-    Util.Cache.clear_cache
-  end
-
   # -----
 
   # TODO: add a test to check validity of config file...

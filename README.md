@@ -94,6 +94,8 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] LRU Registry
+- [ ] Git-like change detection
+- [ ] Incremental add/remove/update
 - [ ] Server mode
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Filesystem watcher

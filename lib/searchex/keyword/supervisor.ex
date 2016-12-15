@@ -11,8 +11,8 @@ defmodule Searchex.Keyword.Supervisor do
   searching.  The application has a single supervisor `Searchex.Keyword.Supervisor` and
   a one worker process for each keyword.
   """
-  def start_link(collection) do
-    Supervisor.start_link(__MODULE__, [], name: Util.Ext.Term.to_atom(collection))
+  def start_link(pt_name) do
+    Supervisor.start_link(__MODULE__, [], name: Util.Ext.Term.to_atom(pt_name))
   end
 
   @doc """
@@ -21,42 +21,42 @@ defmodule Searchex.Keyword.Supervisor do
   Use this function to add a new worker process for a keyword.  An error tuple
   is returned if the child already exists.
   """
-  def add_child(collection, name) do
-    Supervisor.start_child(Util.Ext.Term.to_atom(collection), worker(Searchex.Keyword.Server, [name], id: name))
+  def add_child(pt_name, name) do
+    Supervisor.start_child(Util.Ext.Term.to_atom(pt_name), worker(Searchex.Keyword.Server, [name], id: name))
   end
 
   @doc """
   Creates a child process, and returns the pid.
   """
-  def add_child_and_return_pid(collection, name) do
-    case add_child(Util.Ext.Term.to_atom(collection), name) do
+  def add_child_and_return_pid(pt_name, name) do
+    case add_child(Util.Ext.Term.to_atom(pt_name), name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
       alt                   -> Util.Ext.IO.inspect(PODNAME: alt) ; nil
     end
   end
 
-  def otp_to_term(col) do
-    list = Supervisor.which_children(Util.Ext.Term.to_atom(col))
+  def otp_to_map(pt_name) do
+    list = Supervisor.which_children(Util.Ext.Term.to_atom(pt_name))
     Enum.reduce list, %{}, fn({child, _, _, _}, acc) ->
       vals = GenServer.call(child, :get_ids)
       Map.merge acc, %{child => vals}
     end
   end
 
-  def term_to_otp(col, map) do
-    remove_all_otp_children(Util.Ext.Term.to_atom(col))
+  def map_to_otp(map, pt_name) do
+    remove_all_otp_children(Util.Ext.Term.to_atom(pt_name))
     Map.keys(map)
     |> Enum.each(fn(key) ->
-          srv = Searchex.Keyword.Server.get_keyword_server(col, key)
+          srv = Searchex.Keyword.Server.get_keyword_server(pt_name, key)
           Searchex.Keyword.Server.set_state srv, map[key]
        end)
   end
 
-  def remove_all_otp_children(col) do
-    list = Supervisor.which_children(col)
+  def remove_all_otp_children(pt_name) do
+    list = Supervisor.which_children(pt_name)
     Enum.each list, fn({child, _, _, _}) ->
-      Supervisor.delete_child(col, child)
+      Supervisor.delete_child(pt_name, child)
     end
   end
 

@@ -65,6 +65,7 @@ defmodule Util.Cache do
 
   @doc "Remove all values from cache"
   def clear_cache do
+    start
     :ets.delete_all_objects(:ex_cache_ets)
     save
   end

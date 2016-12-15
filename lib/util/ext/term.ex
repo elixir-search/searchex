@@ -10,6 +10,7 @@ defmodule Util.Ext.Term do
     |> String.downcase
   end
 
+  def to_atom(ele) when is_pid(ele)   , do: ele
   def to_atom(ele) when is_binary(ele), do: String.to_atom(ele)
   def to_atom(ele) when is_atom(ele)  , do: ele
 

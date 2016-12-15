@@ -28,4 +28,10 @@ defmodule Util.Ext.String do
   def present?(string) do
     ! empty?(string)
   end
+
+  def to_atom(elem) when is_binary(elem), do: String.to_atom(elem)
+  def to_atom(elem), do: elem
+
+  def to_chardata(list) when is_list(list), do: list
+  def to_chardata(other), do: to_string(other)
 end

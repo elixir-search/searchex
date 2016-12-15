@@ -77,7 +77,7 @@ defmodule Searchex.Command do
   Removed all cached files.
   """
   def clean do
-    Searchex.Config.Helpers.clean
+    Util.Cache.clear_cache
     {:ok}
   end
 end

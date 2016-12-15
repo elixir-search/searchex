@@ -3,6 +3,7 @@ defmodule Searchex.Command.Index do
   @moduledoc false
 
   use Shake.Module
+  alias Searchex.Command.Build.Index
 
   @doc """
   The API for the module - takes a config name and returns
@@ -14,19 +15,15 @@ defmodule Searchex.Command.Index do
 
   step Searchex.Command.Catalog
   step :generate_index
-#  step :generate_digest
 
   def generate_index(frame, _opts) do
-    child_digest = "idx_" <> Frame.get_digest(frame, :params)
-    if _map = Util.Cache.get_cache(child_digest) do
-      Searchex.Command.Build.Index.create_from_frame(frame)
-      %Frame{frame | index: frame.cfg_name}
+    child_digest = "idx_#{frame.cfg_name}_" <> Frame.get_digest(frame, :params)
+    if map = Util.Cache.get_cache(child_digest) do
+      Index.map_to_otp(map, child_digest)
     else
-      Searchex.Command.Build.Index.create_from_frame(frame)
-      #Util.Cache.put_cache(frame.digests.catalog, arg)
-      %Frame{frame | index: frame.cfg_name}
+      Index.create_from_frame(frame, child_digest)
+      Util.Cache.put_cache(child_digest, Index.otp_to_map(child_digest))
     end
+    %Frame{frame | index: Util.Ext.String.to_atom(child_digest)}
   end
 end
-
-# TODO: finish this

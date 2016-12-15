@@ -28,7 +28,7 @@ defmodule Util.Ext.IO do
   Inspect `item` according to the given options using the IO `device`.
   """
   def dins(device, item, opts) when is_list(opts) do
-    label    = if lbl = opts[:label], do: [to_chardata(lbl), ": "], else: []
+    label    = if lbl = opts[:label], do: [Util.Ext.String.to_chardata(lbl), ": "], else: []
     alt_opts = struct(Inspect.Opts, opts)
     new_item = display(item, opts)
     chardata = Inspect.Algebra.format(Inspect.Algebra.to_doc(new_item, alt_opts), alt_opts.width)
@@ -118,7 +118,7 @@ defmodule Util.Ext.IO do
   defp envize({[label, chardata], options}) do
     default = [dev: :show, prod: :show, test: :hide, eval: :show]
     modlist = Enum.reduce options, default, fn({k, v}, acc) ->
-      if Enum.member?([:test, :prod, :dev], k), do: Keyword.merge(acc, [{k, to_atom(v)}]), else: acc end
+      if Enum.member?([:test, :prod, :dev], k), do: Keyword.merge(acc, [{k, Util.Ext.String.to_atom(v)}]), else: acc end
     case Keyword.get(modlist, Mix.env) do
       :hide  -> {[""   , ""      ], options}
       _      -> {[label, chardata], options}
@@ -136,7 +136,7 @@ defmodule Util.Ext.IO do
   # return strings with ANSI color code
   defp colorcode([label, chardata], color) do
     unless valid_color?(color), do: raise("Unrecognized color #{color}")
-    acolor = to_atom(color)
+    acolor = Util.Ext.String.to_atom(color)
     ansi   = ansicode(acolor)
     [Enum.join([ansi, label]), Enum.join([ansi, chardata])]
   end
@@ -157,15 +157,15 @@ defmodule Util.Ext.IO do
   # list of valid color names
   defp valid_colors do
     words = ~w(red green blue yellow cyan magenta white)
-    atoms = Enum.map(words, fn(x) -> String.to_atom(x) end)
+    atoms = Enum.map(words, fn(x) -> Util.Ext.String.to_atom(x) end)
     words ++ atoms
   end
 
   defp valid_color?(color), do: Enum.member?(valid_colors, color)
 
-  defp to_atom(elem) when is_binary(elem), do: String.to_atom(elem)
-  defp to_atom(elem), do: elem
-
-  defp to_chardata(list) when is_list(list), do: list
-  defp to_chardata(other), do: to_string(other)
+#  defp to_atom(elem) when is_binary(elem), do: String.to_atom(elem)
+#  defp to_atom(elem), do: elem
+#
+#  defp to_chardata(list) when is_list(list), do: list
+#  defp to_chardata(other), do: to_string(other)
 end

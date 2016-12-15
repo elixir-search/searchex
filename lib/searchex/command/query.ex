@@ -13,8 +13,8 @@ defmodule Searchex.Command.Query do
   step :do_query
   step :gen_results
 
-  def do_query(%Frame{cfg_name: cfg_name, query: query} = frame, _opts) do
-    scores = {cfg_name, String.split(query)}
+  def do_query(%Frame{index: index, query: query} = frame, _opts) do
+    scores = {index, String.split(query)}
              |> Searchex.Keyword.Server.do_query
     %Frame{frame | scores: scores}
   end
