@@ -35,10 +35,10 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   defp gen_doc({position, offset}, filescan) do
     body = String.slice(filescan.rawdata, position, offset)
     %Searchex.Command.Build.Catalog.Doc {
-      docid:     Util.Ext.Term.digest(body)                  ,
-      filename:  filescan.input_filename              ,
-      docstart:  position                             ,
-      doclength: offset                               ,
+      docid:     Util.Ext.Term.digest(body)      ,
+      filename:  filescan.input_filename         ,
+      docstart:  position                        ,
+      doclength: offset                          ,
       wordcount: Util.Ext.String.wordcount(body) ,
       wordstems: Util.Ext.String.wordstems(body) ,
       body:      body
@@ -48,6 +48,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   defp extract_fields(docs, input_fields) do
     docs
     |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, input_fields) end)
+    |> Util.Ext.IO.tins(color: "CYAN")
     |> elem(0)
   end
 

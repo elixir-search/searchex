@@ -5,5 +5,5 @@
 :max_numfiles:   50
 :max_file_kb:    100
 :input_fields:
-:display_fields: "doclength docstart body"
+:display_fields: "docstart doclength body"
 :docsep:

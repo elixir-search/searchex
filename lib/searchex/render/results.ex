@@ -9,6 +9,7 @@ defmodule Searchex.Render.Results do
   end
 
   def to_table(frame) do
+    Util.Ext.IO.tins(frame.results.docs, color: "MAGENTA")
     results = frame.results
     docs    = results.docs
     title   = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
@@ -50,10 +51,12 @@ defmodule Searchex.Render.Results do
     [idx] ++ Enum.map headers, &row_item(doc, &1)
   end
 
+  # get fields
   defp row_item(doc, <<"f:" , field_name::binary>>) do
     Map.get(doc.fields, String.to_atom(field_name)) || "TBD"
   end
 
+  # get fields
   defp row_item(doc, header_name) do
     value = Map.get(doc, String.to_atom(header_name)) || "TBD"
     "#{value}"

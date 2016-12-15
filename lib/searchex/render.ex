@@ -92,7 +92,4 @@ defmodule Searchex.Render do
 #    end
     {:error, "EDIT: UNDER CONSTRUCTION"}
   end
-
-
-
 end

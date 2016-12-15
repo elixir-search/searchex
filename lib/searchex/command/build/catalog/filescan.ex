@@ -1,10 +1,10 @@
 defmodule Searchex.Command.Build.Catalog.Filescan do
   @moduledoc false
 
-  defstruct rawdata:           ""                               ,
-            input_filename:    ""                               ,
-            docsep_positions:  []                               ,
-            docsep_offsets:    []                               
+  defstruct rawdata:          ""    ,
+            input_filename:   ""    ,
+            docsep_positions: []    ,
+            docsep_offsets:   []
 
   def generate_filescan(filename, params) do
     %Searchex.Command.Build.Catalog.Filescan{input_filename: filename}
