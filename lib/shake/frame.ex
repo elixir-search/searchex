@@ -1,5 +1,19 @@
 defmodule Shake.Frame do
-  @moduledoc "The Shake Frame"
+  @moduledoc """
+  Defines a struct that is passed up and down the Shake build chain.
+
+        defstruct cfg_name: "",
+                  params:   %{},
+                  catalog:  %{},
+                  index:    %{},
+                  query:    "",
+                  scores:   [],
+                  results:  %{},
+                  halted:   false,
+                  halt_msg: "",
+                  digests:  %{},
+                  assigns:  %{}
+  """
 
   alias Shake.Frame
 
@@ -8,6 +22,7 @@ defmodule Shake.Frame do
   @type catalog  :: map
   @type index    :: map
   @type query    :: String.t
+  @type scores   :: list
   @type results  :: map
   @type halted   :: boolean
   @type halt_msg :: String.t | [String.t]
@@ -20,6 +35,7 @@ defmodule Shake.Frame do
              catalog:   catalog,
              index:     index,
              query:     query,
+             scores:    scores,
              results:   results,
              halted:    halted,
              halt_msg:  halt_msg,
@@ -32,6 +48,7 @@ defmodule Shake.Frame do
             catalog:  %{},
             index:    %{},
             query:    "",
+            scores:   [],
             results:  %{},
             halted:   false,
             halt_msg: "",

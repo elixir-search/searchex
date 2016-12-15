@@ -2,21 +2,21 @@ defmodule Searchex.Command.Build.Catalog.Params do
 
   @moduledoc false
 
-  defstruct collection:   ""                 ,
-            docsep:       ~r/---/            ,
-            doc_dirs:     [ ]                ,
-            file_types:   ~w(txt md js rb ex),
-            field_defs:   %{}                ,
-            max_numfiles: 500                ,
-            max_file_kb:  500                ,
+  defstruct collection:   ""                  ,
+            docsep:       nil                 ,
+            doc_dirs:     []                  ,
+            file_types:   ~w(txt md js exs ex),
+            input_fields: %{}                 ,
+            max_numfiles: 200                 ,
+            max_file_kb:  200                 ,
             cli_format:   %{}
 
   def create_from_cfg(config) do
-    old_docsep = config[:docsep] || "-x-x-"
+    old_docsep = config[:docsep]
     new_docsep = regify(old_docsep)
     new_config = Map.merge(config, %{docsep: new_docsep})
     result = plain_struct()
-             |> Searchex.Util.Map.deep_merge(new_config)
+             |> Util.Ext.Map.deep_merge(new_config)
     Map.merge(%Searchex.Command.Build.Catalog.Params{}, result)
   end
 
@@ -30,11 +30,5 @@ defmodule Searchex.Command.Build.Catalog.Params do
   defp plain_struct do
     Map.from_struct %Searchex.Command.Build.Catalog.Params{}
   end
-
-
-
-
-
-
 end
 

@@ -19,19 +19,19 @@ defmodule Searchex.Command.Catalog do
   # check to see if the catalog is in the LRU cache, otherwise regenerate
   def generate_catalog(frame, _opts) do
     child_digest = Frame.get_digest(frame, :params)
-    if val = X.Cache.get_cache(child_digest) do
+    if val = Util.Cache.get_cache(child_digest) do
       cat1 = val
       %Frame{frame | catalog: cat1}
     else
       cat2 = frame |> Searchex.Command.Build.Catalog.create_from_frame
-      X.Cache.put_cache(child_digest, cat2)
+      Util.Cache.put_cache(child_digest, cat2)
       %Frame{frame | catalog: cat2}
     end
   end
 
   # generate a digest for the catalog and store it in the frame
   def generate_digest(%Frame{cfg_name: cfg_name, catalog: catalog} = frame, _opts) do
-    digest = X.Term.digest({cfg_name, catalog})
+    digest = Util.Ext.Term.digest({cfg_name, catalog})
     set_digest(frame, :catalog, digest)
   end
 end

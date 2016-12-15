@@ -32,7 +32,8 @@ defmodule Searchex.Config.Helpers do
   end
 
   def clean do
-    Enum.each [active_dirs.data, active_dirs.temp], fn(x) ->
+    Enum.each [active_dirs.data], fn(x) ->
+      File.mkdir_p!(x)
       {:ok, files} = File.ls(x)
       Enum.each files, fn(y) -> File.rm("#{x}/#{y}") end
     end

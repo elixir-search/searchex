@@ -1,11 +1,10 @@
 defmodule Searchex.Command.Build.Catalog.Filescan do
   @moduledoc false
 
-  defstruct rawdata:           ""                               ,
-            input_filename:    ""                               ,
-            docsep_positions:  []                               ,
-            docsep_offsets:    []                               
-
+  defstruct rawdata:          ""    ,
+            input_filename:   ""    ,
+            docsep_positions: []    ,
+            docsep_offsets:   []
 
   def generate_filescan(filename, params) do
     %Searchex.Command.Build.Catalog.Filescan{input_filename: filename}
@@ -20,9 +19,13 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
   end
 
   defp gen_docsep_positions(scan, params) do
-    positions = params.docsep
-                |> Regex.scan(scan.rawdata, return: :index )
-                |> Enum.map(fn(x) -> [{beg, fin} | _tail] = x; beg + fin end)
+    positions = if params.docsep do
+                  params.docsep
+                  |> Regex.scan(scan.rawdata, return: :index )
+                  |> Enum.map(fn(x) -> [{beg, fin} | _tail] = x; beg + fin end)
+                else
+                  []
+                end
     %Searchex.Command.Build.Catalog.Filescan{scan | docsep_positions: positions}
   end
 

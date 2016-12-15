@@ -1,7 +1,7 @@
 defmodule Searchex.Mixfile do
   use Mix.Project
 
-  @version "0.0.1-alpha.2"
+  @version "0.0.1-alpha.3"
 
   def project do
     [

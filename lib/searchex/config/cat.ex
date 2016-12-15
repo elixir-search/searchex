@@ -2,7 +2,7 @@ defmodule Searchex.Config.Cat do
   @moduledoc false
 
   import Searchex.Config.Helpers
-  import X.OldValidations
+  import Util.CfgValidations
 
   def exec(path) do
     cfg_name = name_from_path(path)

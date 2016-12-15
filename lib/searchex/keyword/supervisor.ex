@@ -12,7 +12,7 @@ defmodule Searchex.Keyword.Supervisor do
   a one worker process for each keyword.
   """
   def start_link(collection) do
-    Supervisor.start_link(__MODULE__, [], name: X.Term.to_atom(collection))
+    Supervisor.start_link(__MODULE__, [], name: Util.Ext.Term.to_atom(collection))
   end
 
   @doc """
@@ -22,22 +22,22 @@ defmodule Searchex.Keyword.Supervisor do
   is returned if the child already exists.
   """
   def add_child(collection, name) do
-    Supervisor.start_child(X.Term.to_atom(collection), worker(Searchex.Keyword.Server, [name], id: name))
+    Supervisor.start_child(Util.Ext.Term.to_atom(collection), worker(Searchex.Keyword.Server, [name], id: name))
   end
 
   @doc """
   Creates a child process, and returns the pid.
   """
   def add_child_and_return_pid(collection, name) do
-    case add_child(X.Term.to_atom(collection), name) do
+    case add_child(Util.Ext.Term.to_atom(collection), name) do
       {:ok, pid}            -> pid
       {:error, {_msg, pid}} -> pid
-      alt                   -> X.DIO.inspect(PODNAME: alt) ; nil
+      alt                   -> Util.Ext.IO.inspect(PODNAME: alt) ; nil
     end
   end
 
   def otp_to_term(col) do
-    list = Supervisor.which_children(X.Term.to_atom(col))
+    list = Supervisor.which_children(Util.Ext.Term.to_atom(col))
     Enum.reduce list, %{}, fn({child, _, _, _}, acc) ->
       vals = GenServer.call(child, :get_ids)
       Map.merge acc, %{child => vals}
@@ -45,7 +45,7 @@ defmodule Searchex.Keyword.Supervisor do
   end
 
   def term_to_otp(col, map) do
-    remove_all_otp_children(X.Term.to_atom(col))
+    remove_all_otp_children(Util.Ext.Term.to_atom(col))
     Map.keys(map)
     |> Enum.each(fn(key) ->
           srv = Searchex.Keyword.Server.get_keyword_server(col, key)

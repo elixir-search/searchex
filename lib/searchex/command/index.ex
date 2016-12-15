@@ -18,7 +18,7 @@ defmodule Searchex.Command.Index do
   # TODO: reload the index from cache, if possible
   def generate_index(frame, _opts) do
     Searchex.Command.Build.Index.create_from_frame(frame)
-    #X.Cache.put_cache(frame.digests.catalog, arg)
+    #Util.Cache.put_cache(frame.digests.catalog, arg)
     %Frame{frame | index: frame.cfg_name}
   end
 end

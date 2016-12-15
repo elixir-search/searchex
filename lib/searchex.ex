@@ -4,7 +4,7 @@ defmodule Searchex do
 
   @doc "Return the application version"
   def version do
-    {:ok, "#{Searchex.Util.App.version}"}
+    {:ok, "#{Util.Ext.App.version}"}
   end
 
   @doc "Return the applications settings"
@@ -26,7 +26,6 @@ defmodule Searchex do
       cfgs: "test/data/configs"          ,
       docs: "/tmp/searchex_test/docs"    ,
       data: "/tmp/searchex_test/data"    ,
-      temp: "/tmp/searchex_test/temp"
     }
   end
 
@@ -35,7 +34,6 @@ defmodule Searchex do
       cfgs: "~/.searchex/cfgs"   ,
       docs: "~/.searchex/docs"   ,
       data: "~/.searchex/data"   ,
-      temp: "~/.searchex/temp"
     }
   end
 

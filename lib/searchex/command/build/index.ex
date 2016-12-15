@@ -28,7 +28,7 @@ defmodule Searchex.Command.Build.Index do
   end
 
   def start_supervisor(cfg_name) do
-    catom = X.Term.to_atom(cfg_name)
+    catom = Util.Ext.Term.to_atom(cfg_name)
     case Searchex.Keyword.Supervisor.start_link(catom) do
       {:ok,     pid} -> pid
       {:error, _val} -> catom

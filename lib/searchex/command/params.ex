@@ -26,9 +26,9 @@ defmodule Searchex.Command.Params do
   # read the config file and generate params
   def generate_params(frame, _opts) do
     params = frame.cfg_name
-             |> Searchex.Config.cfg_cat
+             |> Searchex.Config.cat
              |> Searchex.Config.Load.to_map
-             |> Searchex.Util.Map.atomify_keys
+             |> Util.Ext.Map.atomify_keys
              |> Searchex.Command.Build.Catalog.Params.create_from_cfg
     %Frame{frame | params: params}
   end
@@ -51,12 +51,12 @@ defmodule Searchex.Command.Params do
   # and all the documents in the doc_dirs
   def generate_digest(%Frame{cfg_name: cfg_name, params: params} = frame, _opts) do
     import Searchex.Config.Helpers
-    import X.TimeStamp
+    import Util.TimeStamp
     term = [
       filepath_timestamp(cfg_file(cfg_name))  , # timestamp of the cfg file
       dirlist_timestamp(params.doc_dirs)        # newest timestamp of all doc_dirs
     ] |> newest
-    digest = X.Term.digest({cfg_name, term})
+    digest = Util.Ext.Term.digest({cfg_name, term})
     set_digest(frame, :params, digest)
   end
 end

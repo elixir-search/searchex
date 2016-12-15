@@ -9,17 +9,17 @@ defmodule Searchex.Render do
   import Searchex.Config.Helpers
 
   @doc """
-  Invoke `Searchex.Command.cfg_edit`, then launch an editor to open the config file.
+  Invoke `Searchex.Command.edit`, then launch an editor to open the config file.
 
-  NOTE: you must define environment variables `EDITOR`.  This will only work with TMUX.
+  NOTE: you must define environment variables `EDITOR`.  This will only work with TMUUtil.
 
   This needs fixing.  See this thread for more info:
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
-  def cfg_edit(cfg_name) do
-    case Searchex.Config.cfg_edit(cfg_name) do
+  def modify(cfg_name) do
+    case Searchex.Config.edit(cfg_name) do
       {:error, msg     } -> {:error, msg}
-      {:ok   , cfg_name} -> X.EditorLaunch.launch_using_tmux(cfg_file(cfg_name))
+      {:ok   , cfg_name} -> Util.EditorLaunch.launch_using_tmux(cfg_file(cfg_name))
     end
   end
 
@@ -27,8 +27,12 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def query(cfg_name, query) do
-    Searchex.Command.Query.exec(cfg_name, query)
-    |> Searchex.Render.Results.to_table
+    frame = Searchex.Command.Query.exec(cfg_name, query)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      Searchex.Render.Results.to_table(frame)
+    end
   end
 
   @doc """
@@ -36,7 +40,6 @@ defmodule Searchex.Render do
   """
   def catalog(cfg_name) do
     frame = Searchex.Command.catalog(cfg_name)
-
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -89,7 +92,4 @@ defmodule Searchex.Render do
 #    end
     {:error, "EDIT: UNDER CONSTRUCTION"}
   end
-
-
-
 end
