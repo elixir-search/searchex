@@ -48,7 +48,6 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   defp extract_fields(docs, input_fields) do
     docs
     |> Enum.reduce({[], %{}}, fn(doc, acc) -> get_fields(doc, acc, input_fields) end)
-    |> Util.Ext.IO.tins(color: "CYAN")
     |> elem(0)
   end
 
