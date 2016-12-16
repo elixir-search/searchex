@@ -18,11 +18,11 @@ defmodule Searchex.Command.Catalog do
 
   def generate_catalog(frame, _opts) do
     child_digest = "cat_#{frame.cfg_name}_" <> Frame.get_digest(frame, :params)
-    if cat1 = Util.Cache.get_cache(child_digest) do
+    if cat1 = Util.Cache.get_cache(frame.cfg_name, child_digest) do
       %Frame{frame | catalog: cat1}
     else
       cat2 = Catalog.create_from_frame(frame)
-      Util.Cache.put_cache(child_digest, cat2)
+      Util.Cache.put_cache(frame.cfg_name, child_digest, cat2)
       %Frame{frame | catalog: cat2}
     end
   end

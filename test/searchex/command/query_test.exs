@@ -6,7 +6,7 @@ defmodule Searchex.Command.QueryTest do
   describe "min collection" do
     test "doc count" do
       frame = Query.exec("min", "jan")
-      pid = Process.whereis(frame.index)
+      pid   = Process.whereis(frame.index)
       assert is_pid(pid)
       assert Supervisor.count_children(pid).active == 69
       assert length(frame.scores) == 7

@@ -19,12 +19,8 @@ defmodule Searchex.Config.Helpers do
     active_dirs.cfgs <> "/"
   end
 
-  def cat_file(cfg_name) do
-    active_dirs.data <> "/" <> cfg_name <> "_cat.yml"
-  end
-
-  def idx_file(cfg_name) do
-    active_dirs.data <> "/" <> cfg_name <> "_idx.yml"
+  def cache_file(cfg_name) do
+    active_dirs.data <> "/" <> cfg_name <> ".dets"
   end
 
   def make_active_dirs() do

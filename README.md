@@ -101,6 +101,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [ ] Filesystem watcher
 - [ ] Typeahead support
 - [ ] Alerting
+- [ ] Multi-collection search
 - [ ] Configuration GUI
 - [ ] Firestorm integration
 - [ ] Phoenix integration

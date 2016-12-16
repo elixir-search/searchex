@@ -9,9 +9,7 @@ defmodule Searchex.Cli do
   is a list of command-line options.
   """
   def main(argv) do
-    Util.Cache.start(path: Searchex.settings[:data] <> "/cache.dets")
     route(argv) |> render
-    Util.Cache.stop 
   end
 
   # List of command options.  The command should be the same as the function
