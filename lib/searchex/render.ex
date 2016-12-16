@@ -27,7 +27,7 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def query(cfg_name, query) do
-    frame = Searchex.Command.Query.exec(cfg_name, query)
+    frame = Searchex.Command.query(cfg_name, query)
     if frame.halted do
       {:error, frame.halt_msg}
     else

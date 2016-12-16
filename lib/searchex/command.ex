@@ -25,9 +25,7 @@ defmodule Searchex.Command do
   The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
   """
   def catalog(cfg_name) do
-    Cache.start(cfg_name)
-    Searchex.Command.Catalog.exec(cfg_name)
-    Cache.save(cfg_name)
+    Searchex.Command.Catalog.exec(cfg_name) |> Cache.save(cfg_name)
   end
 
   @doc """
@@ -38,18 +36,14 @@ defmodule Searchex.Command do
   The index lives in a Process Tree, one worker for each keyword.
   """
   def index(cfg_name) do
-    Cache.start(cfg_name)
-    Searchex.Command.Index.exec(cfg_name)
-    Cache.save(cfg_name)
+    Searchex.Command.Index.exec(cfg_name) |> Cache.save(cfg_name)
   end
 
   @doc """
   Generate both the catalog and the index for `cfg_name` in one step
   """
   def build(cfg_name) do
-    Cache.start(cfg_name)
-    Searchex.Command.Build.exec(cfg_name)
-    Cache.save(cfg_name)
+    Searchex.Command.Build.exec(cfg_name) |> Cache.save(cfg_name)
   end
 
   @doc false
@@ -69,9 +63,7 @@ defmodule Searchex.Command do
   Query the collection
   """
   def query(cfg_name, query) do
-    Cache.start(cfg_name)
-    Searchex.Command.Query.exec(cfg_name, query)
-    Cache.save(cfg_name)
+    Searchex.Command.Query.exec(cfg_name, query) |> Cache.save(cfg_name)
   end
 
   @doc false

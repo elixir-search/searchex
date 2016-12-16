@@ -27,9 +27,16 @@ defmodule Util.Cache do
   @doc "Save the cache data to disk"
   def save(cfg_name) do
     {ets_name, dets_name, dets_path} = expand(cfg_name)
-    :dets.open_file(dets_name, [file: dets_path])
-    :ets.to_dets(ets_name, dets_name)
-    :dets.close(dets_name)
+    if Process.whereis(ets_name) do
+      :dets.open_file(dets_name, [file: dets_path])
+      :ets.to_dets(ets_name, dets_name)
+      :dets.close(dets_name)
+    end 
+  end
+
+  def save(el, cfg_name) do
+    save(cfg_name)
+    el
   end
 
   @doc "Get a value from the cache"
