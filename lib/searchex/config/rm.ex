@@ -8,7 +8,7 @@ defmodule Searchex.Config.Rm do
     cfg_name = name_from_path(path)
     case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
-      {:ok}          -> remove_cfg(cfg_name)
+      {:ok}          -> clean_up(cfg_name)
     end
   end
 
@@ -22,8 +22,9 @@ defmodule Searchex.Config.Rm do
     ]
   end
 
-  defp remove_cfg(cfg_name) do
-    System.cmd("rm", [cfg_file(cfg_name)])
+  defp clean_up(cfg_name) do
+    System.cmd("rm", ["-f", cfg_file(cfg_name)])
+    System.cmd("rm", ["-f", cache_file(cfg_name)])
     {:ok}
   end
 end

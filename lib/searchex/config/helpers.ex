@@ -19,24 +19,12 @@ defmodule Searchex.Config.Helpers do
     active_dirs.cfgs <> "/"
   end
 
-  def cat_file(cfg_name) do
-    active_dirs.data <> "/" <> cfg_name <> "_cat.yml"
-  end
-
-  def idx_file(cfg_name) do
-    active_dirs.data <> "/" <> cfg_name <> "_idx.yml"
+  def cache_file(cfg_name) do
+    active_dirs.data <> "/" <> cfg_name <> ".dets"
   end
 
   def make_active_dirs() do
     System.cmd("mkdir", ["-p"] ++ Map.values(active_dirs))
-  end
-
-  def clean do
-    Enum.each [active_dirs.data], fn(x) ->
-      File.mkdir_p!(x)
-      {:ok, files} = File.ls(x)
-      Enum.each files, fn(y) -> File.rm("#{x}/#{y}") end
-    end
   end
 
   # -----

@@ -22,6 +22,7 @@ defmodule Searchex.Command.Params do
   step :generate_params
   step :validate_doc_dirs
   step :generate_digest
+  step :start_cache
 
   # read the config file and generate params
   def generate_params(frame, _opts) do
@@ -52,11 +53,13 @@ defmodule Searchex.Command.Params do
   def generate_digest(%Frame{cfg_name: cfg_name, params: params} = frame, _opts) do
     import Searchex.Config.Helpers
     import Util.TimeStamp
-    term = [
-      filepath_timestamp(cfg_file(cfg_name))  , # timestamp of the cfg file
-      dirlist_timestamp(params.doc_dirs)        # newest timestamp of all doc_dirs
-    ] |> newest
+    term   = mixlist_timestamp([cfg_file(cfg_name), params.doc_dirs])
     digest = Util.Ext.Term.digest({cfg_name, term})
     set_digest(frame, :params, digest)
+  end
+
+  def start_cache(frame, _opts) do
+    Util.Cache.start(frame.cfg_name)
+    frame
   end
 end

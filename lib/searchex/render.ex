@@ -27,7 +27,7 @@ defmodule Searchex.Render do
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
   def query(cfg_name, query) do
-    frame = Searchex.Command.Query.exec(cfg_name, query)
+    frame = Searchex.Command.query(cfg_name, query)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -72,13 +72,21 @@ defmodule Searchex.Render do
   end
 
   @doc """
+  Info
+  """
+  def info(cfg_name) do
+    frame = Searchex.Command.info(cfg_name)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      [cmd: "info", cfg_name: cfg_name, numdocs: frame.catalog.numdocs]
+    end
+  end
+
+  @doc """
   Invoke `Searchex.Command.results`, then render the results to a table.
   """
   def results(_cfg_name) do
-#    case Searchex.Command.results do
-#      {:error , msg   } -> {:error, msg}
-#      {:ok    , data  } -> Searchex.Render.Results.to_table(data)
-#    end
     {:error, "RESULTS: UNDER CONSTRUCTION"}
   end
 

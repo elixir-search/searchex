@@ -87,18 +87,21 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
 - [x] Middleware framework
-- [ ] CLI Indexing and Query
+- [x] CLI Indexing and Query
 - [ ] LRU Cache
 - [ ] CLI Results Display
 - [ ] Repository for Sample Docs
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] LRU Registry
+- [ ] Git-like change detection
+- [ ] Incremental add/remove/update
 - [ ] Server mode
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Filesystem watcher
 - [ ] Typeahead support
 - [ ] Alerting
+- [ ] Multi-collection search
 - [ ] Configuration GUI
 - [ ] Firestorm integration
 - [ ] Phoenix integration
