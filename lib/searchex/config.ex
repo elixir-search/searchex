@@ -12,8 +12,14 @@ defmodule Searchex.Config do
   end
 
   @doc "Fetch a config from elixir-search/sample_docs"
-  def fetch(_tmp) do
+  def sample_fetch(_tmp) do
     Util.Ext.IO.puts "FETCH : UNDER CONSTRUCTION"
+    {:error, "Pending Implementation"}
+  end
+
+  @doc "Fetch a config from elixir-search/sample_docs"
+  def sample_ls do
+    Util.Ext.IO.puts "LS : UNDER CONSTRUCTION"
     {:error, "Pending Implementation"}
   end
 

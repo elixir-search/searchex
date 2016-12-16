@@ -23,9 +23,9 @@ defmodule Searchex.ConfigTest do
     test "with current relative path"
   end
 
-  describe "#fetch" do
+  describe "#sample_fetch" do
     test "invalid config name" do
-      {cond, _skip} = Searchex.Config.fetch("non*sense")
+      {cond, _skip} = Searchex.Config.sample_fetch("non*sense")
       assert cond == :error
     end
   end

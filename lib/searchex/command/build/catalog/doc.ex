@@ -13,6 +13,8 @@ defmodule Searchex.Command.Build.Catalog.Doc do
             fields:     %{}  , 
             body:       ""
 
+  alias Searchex.Command.Build.Catalog.Doc
+
   def generate_from_catalog(catalog, params) do
     catalog.filescans
     |> extract_docs
@@ -28,16 +30,18 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     positions = filescan.docsep_positions
     offsets   = filescan.docsep_offsets
     pairs     = List.zip([positions, offsets])
-    Enum.reduce setpairs(pairs), [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end
+    inputs    = setpairs(pairs) |> Enum.with_index(1)
+    Enum.reduce inputs, [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end
   end
 
   defp setpairs([]) , do: [{0, 99999999999}]
   defp setpairs(val), do: val
 
-  defp gen_doc({position, offset}, filescan) do
+  defp gen_doc({{position, offset}, idx}, filescan) do
     body = String.slice(filescan.rawdata, position, offset)
-    %Searchex.Command.Build.Catalog.Doc {
+    %Doc {
       docid:     Util.Ext.Term.digest(body)      ,
+      fileid:    idx                             ,
       filename:  filescan.input_filename         ,
       docstart:  position                        ,
       doclength: offset                          ,
@@ -59,7 +63,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
       {field_name, reg_field(input_fields, doc, field_name)}
     end
     new_fields = Map.merge(old_fields, Enum.into(reg_fields, %{}))
-    new_doc    = %Searchex.Command.Build.Catalog.Doc{doc | fields: new_fields}
+    new_doc    = %Doc{doc | fields: new_fields}
     {doclist ++ [new_doc], new_fields}
   end
 
