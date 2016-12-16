@@ -3,6 +3,8 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   @moduledoc false
 
   defstruct docid:      ""   ,
+            catid:      0    ,
+            fileid:     0    ,
             filename:   ""   ,
             docstart:   0    ,
             doclength:  0    ,

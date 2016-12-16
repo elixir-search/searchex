@@ -115,7 +115,15 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "info", cfg_name: cfg_name, numdocs: frame.catalog.numdocs]
+      doc_size   = Util.Ext.File.du_s(frame.params.doc_dirs)
+      cache_size = Util.Ext.File.du_s(Searchex.settings[:data] <> "/#{cfg_name}.dets")
+      [
+        cmd:        "info"                              ,
+        cfg_name:   cfg_name                            ,
+        numdocs:    frame.catalog.numdocs               ,
+        doc_size:   Util.Ext.Integer.format(doc_size  ) ,
+        cache_size: Util.Ext.Integer.format(cache_size)
+      ]
     end
   end
 end
