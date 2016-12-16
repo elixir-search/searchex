@@ -22,6 +22,7 @@ defmodule Searchex.Command.Query do
     else
       scores2 = {index, String.split(query)}
                 |> Searchex.Keyword.Server.do_query
+      Util.Cache.put_cache(frame.cfg_name, "#{frame.cfg_name}_last_query", query)
       Util.Cache.put_cache(frame.cfg_name, child_digest, scores2)
       %Frame{frame | scores: scores2} |> set_digest(:scores, Util.Ext.Term.digest(scores2))
     end
@@ -32,7 +33,9 @@ defmodule Searchex.Command.Query do
     if results1 = Util.Cache.get_cache(frame.cfg_name, child_digest) do
       %Frame{frame | results: results1}
     else
-      %Frame{frame | results: filter_docs_by_scores(catalog, scores)}
+      results = filter_docs_by_scores(catalog, scores)
+      Util.Cache.put_cache(frame.cfg_name, "#{frame.cfg_name}_last_results", results)
+      %Frame{frame | results: results}
     end
   end
 

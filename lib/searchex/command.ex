@@ -66,12 +66,17 @@ defmodule Searchex.Command do
     Searchex.Command.Query.exec(cfg_name, query) |> Cache.save(cfg_name)
   end
 
+  @doc """
+  Show last results
+  """
+  def results(cfg_name) do
+    Searchex.Command.Results.exec(cfg_name)
+  end
+
   @doc false
   # Show document text
-  def show(_cfg_name, _idnum) do
-#    Searchex.Command.Show.exec(idnum)
-#    {:ok}
-    {:error, "SHOW: Under Construction"}
+  def show(cfg_name, tgt_id) do
+    Searchex.Command.Show.exec(cfg_name, tgt_id)
   end
 
   @doc false

@@ -88,7 +88,7 @@ View API documentation at https://hexdocs.pm/searchex
 - [x] BM25 query algorithm
 - [x] Middleware framework
 - [x] CLI Indexing and Query
-- [ ] LRU Cache
+- [x] LRU Cache
 - [ ] CLI Results Display
 - [ ] Repository for Sample Docs
 - [ ] Faceted Search

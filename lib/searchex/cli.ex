@@ -23,6 +23,8 @@ defmodule Searchex.Cli do
     {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
     {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"            },
     {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"           },
+    {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"     },
+    {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"              },
     {"info"    ,   1,   "Render"   , "COLLECTION"           , "status and statistics"           },
     {"version" ,   0,   ""         , ""                     , "show installed version"          },
     {"help"    ,   0,   "Cli"      , ""                     , "this command"                    },
@@ -32,10 +34,9 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity    Module       Argument                Description
-    {"results"     ,   1,   "Render"   , "COLLECTION"          , "results from the last query"              },
-    {"show"        ,   2,   "Command"  , "COLLECTION DOCID"    , "show text of DOCID"                       },
     {"edit"        ,   2,   "Render"   , "COLLECTION DOCID"    , "edit DOCID"                               },
-    {"fetch"       ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
+    {"sample_ls"   ,   0,   "Config"   , ""                    , "list sample collections"                  },
+    {"sample_fetch",   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
     {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
     {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },

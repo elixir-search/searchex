@@ -9,6 +9,8 @@ defmodule Shake.Frame do
                   query:    "",
                   scores:   [],
                   results:  %{},
+                  tgt_id:   nil,
+                  tgt_doc:  %{}
                   halted:   false,
                   halt_msg: "",
                   digests:  %{},
@@ -24,6 +26,8 @@ defmodule Shake.Frame do
   @type query    :: String.t
   @type scores   :: list
   @type results  :: map
+  @type tgt_id   :: integer
+  @type tgt_doc  :: map
   @type halted   :: boolean
   @type halt_msg :: String.t | [String.t]
   @type digests  :: %{atom => String.t}
@@ -37,6 +41,8 @@ defmodule Shake.Frame do
              query:     query,
              scores:    scores,
              results:   results,
+             tgt_id:    tgt_id,
+             tgt_doc:   tgt_doc,
              halted:    halted,
              halt_msg:  halt_msg,
              digests:   digests,
@@ -50,6 +56,8 @@ defmodule Shake.Frame do
             query:    "",
             scores:   [],
             results:  %{},
+            tgt_id:   nil,
+            tgt_doc:  %{},
             halted:   false,
             halt_msg: "",
             digests:  %{},
