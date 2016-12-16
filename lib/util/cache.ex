@@ -31,7 +31,7 @@ defmodule Util.Cache do
       :dets.open_file(dets_name, [file: dets_path])
       :ets.to_dets(ets_name, dets_name)
       :dets.close(dets_name)
-    end 
+    end
   end
 
   def save(el, cfg_name) do

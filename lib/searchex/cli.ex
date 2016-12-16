@@ -23,6 +23,7 @@ defmodule Searchex.Cli do
     {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
     {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"            },
     {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"           },
+    {"info"    ,   1,   "Render"   , "COLLECTION"           , "status and statistics"           },
     {"version" ,   0,   ""         , ""                     , "show installed version"          },
     {"help"    ,   0,   "Cli"      , ""                     , "this command"                    },
   ]
@@ -37,7 +38,6 @@ defmodule Searchex.Cli do
     {"fetch"       ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
     {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
-    {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
     {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
     {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
     {"cfg_commands",   0,   "Cli"      , ""                    , "used for tab completion"                  },

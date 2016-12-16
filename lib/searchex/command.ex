@@ -55,8 +55,8 @@ defmodule Searchex.Command do
   - Average size of documents
   - etc.
   """
-  def info(_cfg_name) do
-    {:ok, "INFO: UNDER CONSTRUCTION"}
+  def info(cfg_name) do
+    Searchex.Command.Info.exec(cfg_name)
   end
 
   @doc """
@@ -79,7 +79,9 @@ defmodule Searchex.Command do
   Removed all cached files.
   """
   def clean do
-    System.cmd("rm", ["-f", Searchex.settings[:data] <> "/*dets"])
+    File.ls(Searchex.settings[:data])
+    |> elem(1)
+    |> Enum.map(fn(x) -> File.rm!(Searchex.settings[:data] <> "/" <> x) end)
     {:ok}
   end
 
