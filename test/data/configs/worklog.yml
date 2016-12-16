@@ -10,5 +10,5 @@
   :date:
     :regex:   "(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])"
     :default: "NA"
-:display_fields: "docstart doclength f:date body"
+:display_fields: "startbyte doclength f:date body"
 
