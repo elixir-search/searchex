@@ -103,7 +103,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      Util.EditorLaunch.launch_using_tmux(frame.tgt_doc.filename)
+      Util.EditorLaunch.launch_using_tmux(frame.tgt_doc.filename, frame.tgt_doc.startline)
     end
   end
 
