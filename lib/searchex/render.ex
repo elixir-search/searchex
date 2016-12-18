@@ -116,7 +116,7 @@ defmodule Searchex.Render do
       {:error, frame.halt_msg}
     else
       doc_size   = Util.Ext.File.du_s(frame.params.doc_dirs)
-      cache_size = Util.Ext.File.du_s(Searchex.settings[:data] <> "/#{cfg_name}.dets")
+      cache_size = Util.Ext.File.du_s(SearchexOld.settings[:data] <> "/#{cfg_name}.dets")
       [
         cmd:        "info"                              ,
         cfg_name:   cfg_name                            ,

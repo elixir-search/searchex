@@ -8,7 +8,7 @@ defmodule Searchex.Config.Helpers do
   end
 
   def active_dirs do
-    Searchex.settings
+    SearchexOld.settings
   end
 
   def cfg_file(cfg_name) do
@@ -36,7 +36,7 @@ defmodule Searchex.Config.Helpers do
 
   def cfg_invalid?(_cfg_name), do: {:ok}
 
-  def cfg_dir_absent?(path \\ Searchex.settings.cfgs) do
+  def cfg_dir_absent?(path \\ SearchexOld.settings.cfgs) do
     err = {:error, "Config dir does not exist (#{path})"}
     if File.dir?(path), do: {:ok}, else: err
   end

@@ -1,4 +1,4 @@
-defmodule Searchex do
+defmodule SearchexOld do
 
   @moduledoc "App settings and metadata"
 

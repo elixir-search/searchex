@@ -1,4 +1,4 @@
-defmodule SearchexOldTest do
+defmodule SearchexTest do
   use ExUnit.Case, async: true
 
     describe "#version" do
@@ -12,11 +12,9 @@ defmodule SearchexOldTest do
       end
     end
 
-    describe "#settings" do
-      test "map values" do
-        assert SearchexOld.settings.cfgs != nil
-        assert SearchexOld.settings.docs != nil
-        assert SearchexOld.settings.data != nil
+    describe "#base_path" do
+      test "value" do
+        refute Searchex.base_path == nil
       end
     end
 end

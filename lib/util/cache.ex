@@ -67,7 +67,7 @@ defmodule Util.Cache do
     cfg_str   = to_string(cfg_name)
     ets_name  = Util.Ext.Term.to_atom("ets_#{cfg_str}")
     dets_name = Util.Ext.Term.to_atom("dets_#{cfg_str}")
-    dets_path = Searchex.settings[:data] <> "/#{cfg_str}.dets"
+    dets_path = SearchexOld.settings[:data] <> "/#{cfg_str}.dets"
                 |> Path.expand
                 |> String.to_charlist
     {ets_name, dets_name, dets_path}
