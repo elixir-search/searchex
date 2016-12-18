@@ -16,6 +16,7 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd      Arity    Module       Argument                 Description
+    {"ls_old"  ,   0,   "Config"   , ""                     , "list collections"                },
     {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
     {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
     {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
@@ -75,7 +76,7 @@ defmodule Searchex.Cli do
         |> Enum.join(" ") 
       end)
     headers     = [rpad("Command", 10), rpad("Arguments", 23), "Description"]
-    {:ok, cfgs} = Searchex.Config.ls
+    {:ok, cfgs} = Searchex.Config.ls_old
     cols  = "Collections: " <> Enum.join(cfgs, ", ")
     value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines, cols]
     {:ok, value}

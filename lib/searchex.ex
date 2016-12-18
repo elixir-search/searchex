@@ -8,7 +8,7 @@ defmodule Searchex do
   end
 
   @core_base_path "~/.searchex"
-  @test_base_path "test/data"
+  @test_base_path "test/adata"
 
   @doc """
   Return the base path
@@ -25,7 +25,7 @@ defmodule Searchex do
 
   TODO: read the base path from ~/.searchexrc (TOML format)
   """
-  def base_path do
+  def base_dir do
     case Mix.env do
       :test -> expand(@test_base_path)
       :eval -> expand(@core_base_path)

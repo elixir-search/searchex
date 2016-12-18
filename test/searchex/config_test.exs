@@ -46,7 +46,7 @@ defmodule Searchex.ConfigTest do
 
   describe "#ls" do
     test "with valid input" do
-      {cond, _skip} = Searchex.Config.ls()
+      {cond, _skip} = Searchex.Config.ls_old()
       assert cond == :ok
     end
   end

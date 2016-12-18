@@ -39,6 +39,11 @@ defmodule Searchex.Config do
   end
 
   @doc "List the configs"
+  def ls_old do
+    Searchex.Config.LsOld.exec
+  end
+
+  @doc "List the configs"
   def ls do
     Searchex.Config.Ls.exec
   end

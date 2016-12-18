@@ -12,9 +12,9 @@ defmodule SearchexTest do
       end
     end
 
-    describe "#base_path" do
+    describe "#base_dir" do
       test "value" do
-        refute Searchex.base_path == nil
+        refute Searchex.base_dir == nil
       end
     end
 end

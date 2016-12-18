@@ -1,4 +1,4 @@
-defmodule Searchex.Config.Ls do
+defmodule Searchex.Config.LsOld do
   @moduledoc false
 
   import Searchex.Config.Helpers

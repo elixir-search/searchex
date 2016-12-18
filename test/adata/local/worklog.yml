@@ -1,0 +1,14 @@
+---
+:collection: worklog
+:docsep:     "---"
+:doc_dirs:
+  - test/data/docs/singledoc
+:file_types: ["txt", "md", "wlog"]
+:max_numfiles: 50
+:max_file_kb:  100
+:input_fields:
+  :date:
+    :regex:   "(?<date>(MON|TUE|WED|THU|FRI|SAT|SUN) [01][0-9]\-[01][0-9]\-[0-3][0-9])"
+    :default: "NA"
+:display_fields: "startbyte doclength f:date body"
+
