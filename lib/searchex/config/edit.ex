@@ -5,11 +5,10 @@ defmodule Searchex.Config.Edit do
   import Searchex.Config.HelpersOld
   import Util.CfgValidations
 
-  def exec(cfg_name) do
-    make_active_dirs()
-    case check_validations(validation_list(cfg_name)) do
+  def exec(cfg_snip) do
+    case check_validations(validation_list(cfg_snip)) do
       {:error, msgs} -> {:error, msgs}
-      {:ok}          -> {:ok, cfg_name}
+      {:ok}          -> {:ok, cfg_snip}
     end
   end
 
@@ -17,9 +16,9 @@ defmodule Searchex.Config.Edit do
 
   defp validation_list(cfg_name) do
     [
-      cfg_name_invalid?(cfg_name)     ,
-      cfg_missing?(cfg_name)          ,
-      cfg_dir_absent?
+       cfg_snip_invalid?(cfg_snip)     ,
+       cfg_ambiguous?(cfg_snip)        ,
+       cfg_nomatch?(cfg_snip)          ,
     ]
   end
 end

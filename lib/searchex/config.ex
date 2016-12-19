@@ -24,23 +24,23 @@ defmodule Searchex.Config do
   end
 
   @doc "Return the contents of a config"
-  def cat_old(cfg_name) do
-    Searchex.Config.CatOld.exec(cfg_name)
+  def cat_old(cfg_snip) do
+    Searchex.Config.CatOld.exec(cfg_snip)
   end
 
   @doc "Return the contents of a config"
-  def cat(cfg_name) do
-    Searchex.Config.Cat.exec(cfg_name)
+  def cat(cfg_snip) do
+    Searchex.Config.Cat.exec(cfg_snip)
   end
 
   @doc "Return information needed to edit the config"
-  def edit(cfg_name) do
-    Searchex.Config.Edit.exec(cfg_name)
+  def edit(cfg_snip) do
+    Searchex.Config.Edit.exec(cfg_snip)
   end
 
   @doc "Remove a config"
-  def rm(cfg_name) do
-    Searchex.Config.Rm.exec(cfg_name)
+  def rm(cfg_snip) do
+    Searchex.Config.Rm.exec(cfg_snip)
   end
 
   @doc "List the configs"
