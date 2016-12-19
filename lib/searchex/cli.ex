@@ -19,6 +19,7 @@ defmodule Searchex.Cli do
     {"ls_old"  ,   0,   "Config"   , ""                     , "list collections"                },
     {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
     {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
+    {"cat_old" ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
     {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
     {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"            },
     {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },

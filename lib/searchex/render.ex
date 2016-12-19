@@ -6,7 +6,7 @@ defmodule Searchex.Render do
   - rendering search-results as a table
   """
 
-  import Searchex.Config.Helpers
+  import Searchex.Config.HelpersOld
 
   @doc """
   Invoke `Searchex.Command.edit`, then launch an editor to open the config file.

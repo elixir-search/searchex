@@ -24,6 +24,11 @@ defmodule Searchex.Config do
   end
 
   @doc "Return the contents of a config"
+  def cat_old(cfg_name) do
+    Searchex.Config.CatOld.exec(cfg_name)
+  end
+
+  @doc "Return the contents of a config"
   def cat(cfg_name) do
     Searchex.Config.Cat.exec(cfg_name)
   end

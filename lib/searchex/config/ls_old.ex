@@ -1,7 +1,7 @@
 defmodule Searchex.Config.LsOld do
   @moduledoc false
 
-  import Searchex.Config.Helpers
+  import Searchex.Config.HelpersOld
 
   def exec do
     make_active_dirs()

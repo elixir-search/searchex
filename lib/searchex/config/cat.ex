@@ -4,8 +4,7 @@ defmodule Searchex.Config.Cat do
   import Searchex.Config.Helpers
   import Util.CfgValidations
 
-  def exec(path) do
-    cfg_name = name_from_path(path)
+  def exec(cfg_name) do
     case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
       {:ok}          -> cfg_contents(cfg_name)
@@ -17,8 +16,8 @@ defmodule Searchex.Config.Cat do
   defp validation_list(cfg_name) do
     [
        cfg_name_invalid?(cfg_name)     ,
-       cfg_missing?(cfg_name)          ,
-       cfg_dir_absent?
+       cfg_ambiguous?(cfg_name)        ,
+       cfg_nomatch?(cfg_name)          ,
     ]
   end
 

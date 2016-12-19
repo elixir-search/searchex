@@ -1,7 +1,7 @@
 defmodule Searchex.Config.New do
   @moduledoc false
 
-  import Searchex.Config.Helpers
+  import Searchex.Config.HelpersOld
   import Util.CfgValidations
 
   @default_cfg File.read("eex/default_cfg.yml.eex")

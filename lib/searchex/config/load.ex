@@ -8,7 +8,7 @@ defmodule Searchex.Config.Load do
   end
 
   def to_map(cfg_name) do
-    {:ok, yaml_data} = Searchex.Config.cat(cfg_name)
+    {:ok, yaml_data} = Searchex.Config.cat_old(cfg_name)
     YamlElixir.read_from_string yaml_data
   end
 end

@@ -1,7 +1,7 @@
 defmodule Searchex.Config.Validations do
 
   import Shake.Frame
-  import Searchex.Config.Helpers
+  import Searchex.Config.HelpersOld
 
   @moduledoc false
 

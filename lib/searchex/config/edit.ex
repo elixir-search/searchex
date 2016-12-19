@@ -2,7 +2,7 @@ defmodule Searchex.Config.Edit do
 
   @moduledoc false
 
-  import Searchex.Config.Helpers
+  import Searchex.Config.HelpersOld
   import Util.CfgValidations
 
   def exec(cfg_name) do
