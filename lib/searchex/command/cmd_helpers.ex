@@ -16,6 +16,10 @@ defmodule Searchex.Command.CmdHelpers do
     cache_dir(frame) <> "/_#{file_base}.dets"
   end
 
+  def cfg_file(frame) do
+    repo_dir(frame) <> "/" <> frame.cfg_name <> ".yml"
+  end
+
   def expanded_file_paths(frame) do
     Enum.map frame.file_paths, fn(path) -> Path.expand(path, repo_dir(frame)) end
   end

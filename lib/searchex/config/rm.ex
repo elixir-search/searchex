@@ -21,9 +21,11 @@ defmodule Searchex.Config.Rm do
     ]
   end
 
-  defp clean_up(cfg_name) do
-    System.cmd("rm", ["-f", cache_file(cfg_name)])
-    System.cmd("rm", ["-f", cfg_file(cfg_name)])
+  defp clean_up(cfg_snip) do
+    Searchex.Command.CmdHelpers
+    frame = Searchex.Command.params(cfg_snip)
+    System.cmd("rm", ["-f", CmdHelpers.cache_file(frame)])
+    System.cmd("rm", ["-f", CmdHelpers.cfg_file(frame)])
     {:ok}
   end
 end
