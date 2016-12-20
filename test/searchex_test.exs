@@ -3,11 +3,11 @@ defmodule SearchexTest do
 
     describe "#version" do
       test "execution" do
-        assert SearchexOld.version != nil
+        assert Searchex.version != nil
       end
 
       test ":ok return value" do
-        {status, _msg} = SearchexOld.version()
+        {status, _msg} = Searchex.version()
         assert  status == :ok
       end
     end

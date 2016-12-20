@@ -19,6 +19,7 @@ defmodule Shake.Frame do
 
   alias Shake.Frame
 
+  @type cfg_snip :: String.t
   @type cfg_name :: String.t
   @type params   :: map
   @type catalog  :: map
@@ -34,6 +35,7 @@ defmodule Shake.Frame do
   @type assigns  :: %{atom => any}
 
   @type t :: %__MODULE__{
+             cfg_snip:  cfg_snip,
              cfg_name:  cfg_name,
              params:    params,
              catalog:   catalog,
@@ -49,7 +51,8 @@ defmodule Shake.Frame do
              assigns:   assigns
            }
              
-  defstruct cfg_name: "",
+  defstruct cfg_snip: "",
+            cfg_name: "",
             params:   %{},
             catalog:  %{},
             index:    %{},

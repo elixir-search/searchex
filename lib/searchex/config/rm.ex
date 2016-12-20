@@ -1,8 +1,8 @@
 defmodule Searchex.Config.Rm do
   @moduledoc false
 
-  import Searchex.Config.Helpers
-  import Util.CfgValidations
+  import Searchex.Config.CfgHelpers
+  import Searchex.Config.CfgValidations
 
   def exec(cfg_snip) do
     case check_validations(validation_list(cfg_snip)) do

@@ -24,7 +24,7 @@ defmodule Searchex.Command.Search.Cache do
   # ----------------------------------------------------
 
   defp cache_file do
-    base_dir = SearchexOld.settings.data
+    base_dir = Searchex.base_dir
     File.mkdir_p!(base_dir)
     base_dir <> "/results.dat"
   end

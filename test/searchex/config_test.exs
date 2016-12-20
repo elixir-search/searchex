@@ -25,7 +25,7 @@ defmodule Searchex.ConfigTest do
 
   describe "#sample_fetch" do
     test "invalid config name" do
-      {cond, _skip} = Searchex.Config.sample_fetch("non*sense")
+      {cond, _skip} = Searchex.Config.fetch("non*sense")
       assert cond == :error
     end
   end
@@ -37,16 +37,16 @@ defmodule Searchex.ConfigTest do
     end
   end
 
-  describe "#edit" do
-    test "invalid file name" do
-      {cond, _skip} = Searchex.Config.edit("non*sense")
-      assert cond == :error
-    end
-  end
+#  describe "#edit" do
+#    test "invalid file name" do
+#      {cond, _skip} = Searchex.Config.edit("non*sense")
+#      assert cond == :error
+#    end
+#  end
 
   describe "#ls" do
     test "with valid input" do
-      {cond, _skip} = Searchex.Config.ls_old()
+      {cond, _skip} = Searchex.Config.ls()
       assert cond == :ok
     end
   end

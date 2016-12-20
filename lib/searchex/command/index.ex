@@ -9,8 +9,8 @@ defmodule Searchex.Command.Index do
   The API for the module - takes a config name and returns
   a frame with Params, Catalog and Index filled.
   """
-  def exec(cfg_name) do
-    call(%Frame{cfg_name: cfg_name}, [])
+  def exec(cfg_snip) do
+    call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
   step Searchex.Command.Catalog

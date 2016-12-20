@@ -2,8 +2,7 @@ defmodule Searchex.Config.Edit do
 
   @moduledoc false
 
-  import Searchex.Config.HelpersOld
-  import Util.CfgValidations
+  import Searchex.Config.CfgValidations
 
   def exec(cfg_snip) do
     case check_validations(validation_list(cfg_snip)) do
@@ -14,7 +13,7 @@ defmodule Searchex.Config.Edit do
 
   # -----
 
-  defp validation_list(cfg_name) do
+  defp validation_list(cfg_snip) do
     [
        cfg_snip_invalid?(cfg_snip)     ,
        cfg_ambiguous?(cfg_snip)        ,

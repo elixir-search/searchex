@@ -39,4 +39,3 @@ defmodule Searchex.Command.Build.Catalog.Params do
     Map.from_struct %Searchex.Command.Build.Catalog.Params{}
   end
 end
-

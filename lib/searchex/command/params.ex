@@ -2,32 +2,40 @@ defmodule Searchex.Command.Params do
 
   @moduledoc false
 
-  alias Searchex.Config.Validations
+  alias Searchex.Config.CfgHelpers
+  alias Searchex.Config.CmdValidations
   use Shake.Module
 
   @doc """
   The API for the module - takes a config name and returns
   a frame with the Params slot filled.
   """
-  def exec(cfg_name) do
-    call(%Frame{cfg_name: cfg_name}, [])
+  def exec(cfg_snip) do
+    call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
   validation_list = [
-    &Validations.cfg_dir_absent?/2   ,
-    &Validations.cfg_missing?/2      ,
+    &CmdValidations.cfg_nomatch?/2        ,
+    &CmdValidations.cfg_ambiguous?/2      ,
   ]
 
+  step :validate, with: [&CmdValidations.cfg_snip_invalid?/2]
   step :validate, with: validation_list
+  step :generate_cfg_name
   step :generate_params
   step :validate_doc_dirs
   step :generate_digest
   step :start_cache
 
+  def generate_cfg_name(frame, _opts) do
+    cfg_name = frame.cfg_snip |> CfgHelpers.cfg_name
+    %Frame{frame | cfg_name: cfg_name}
+  end
+
   # read the config file and generate params
   def generate_params(frame, _opts) do
     params = frame.cfg_name
-             |> Searchex.Config.cat_old
+             |> Searchex.Config.cat
              |> Searchex.Config.Load.to_map
              |> Util.Ext.Map.atomify_keys
              |> Searchex.Command.Build.Catalog.Params.create_from_cfg
@@ -51,7 +59,7 @@ defmodule Searchex.Command.Params do
   # the digest is simply the newest timestamp of the config file
   # and all the documents in the doc_dirs
   def generate_digest(%Frame{cfg_name: cfg_name, params: params} = frame, _opts) do
-    import Searchex.Config.HelpersOld
+    import Searchex.Config.CfgHelpers
     import Util.TimeStamp
     term   = mixlist_timestamp([cfg_file(cfg_name), params.doc_dirs])
     digest = Util.Ext.Term.digest({cfg_name, term})

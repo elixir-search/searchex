@@ -1,11 +1,11 @@
-defmodule Searchex.Config.HelpersTest do
+defmodule Searchex.Config.CfgHelpersTest do
   use ExUnit.Case, async: true
 
-  alias Searchex.Config.Helpers
+  alias Searchex.Config.CfgHelpers
 
   describe "#cfg_file" do
     test "base" do
-      result = Helpers.cfg_file("min")
+      result = CfgHelpers.cfg_file("min")
       assert result != nil
     end
   end

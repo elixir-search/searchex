@@ -6,7 +6,7 @@ defmodule Searchex.Render do
   - rendering search-results as a table
   """
 
-  import Searchex.Config.HelpersOld
+  import Searchex.Config.CfgHelpers
 
   @doc """
   Invoke `Searchex.Command.edit`, then launch an editor to open the config file.
@@ -18,7 +18,7 @@ defmodule Searchex.Render do
   """
   def modify(cfg_snip) do
     case Searchex.Config.edit(cfg_snip) do
-      {:error, msg     } -> {:error, msg}
+      {:errMor, msg     } -> {:error, msg}
       {:ok   , cfg_snip} -> Util.EditorLaunch.launch_using_tmux(cfg_file(cfg_snip))
     end
   end
@@ -116,7 +116,7 @@ defmodule Searchex.Render do
       {:error, frame.halt_msg}
     else
       doc_size   = Util.Ext.File.du_s(frame.params.doc_dirs)
-      cache_size = Util.Ext.File.du_s(SearchexOld.settings[:data] <> "/#{cfg_name}.dets")
+      cache_size = Util.Ext.File.du_s("TBD.dets")
       [
         cmd:        "info"                              ,
         cfg_name:   cfg_name                            ,

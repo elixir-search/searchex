@@ -4,8 +4,8 @@ defmodule Searchex.Command.Build do
 
   use Shake.Module
 
-  def exec(cfg_name) do
-    call(%Frame{cfg_name: cfg_name}, [])
+  def exec(cfg_snip) do
+    call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
   step Searchex.Command.Index

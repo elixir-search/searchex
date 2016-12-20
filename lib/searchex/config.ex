@@ -12,20 +12,9 @@ defmodule Searchex.Config do
   end
 
   @doc "Fetch a config from elixir-search/sample_docs"
-  def sample_fetch(_tmp) do
+  def fetch(_tmp) do
     Util.Ext.IO.puts "FETCH : UNDER CONSTRUCTION"
     {:error, "Pending Implementation"}
-  end
-
-  @doc "Fetch a config from elixir-search/sample_docs"
-  def sample_ls do
-    Util.Ext.IO.puts "LS : UNDER CONSTRUCTION"
-    {:error, "Pending Implementation"}
-  end
-
-  @doc "Return the contents of a config"
-  def cat_old(cfg_snip) do
-    Searchex.Config.CatOld.exec(cfg_snip)
   end
 
   @doc "Return the contents of a config"
@@ -41,11 +30,6 @@ defmodule Searchex.Config do
   @doc "Remove a config"
   def rm(cfg_snip) do
     Searchex.Config.Rm.exec(cfg_snip)
-  end
-
-  @doc "List the configs"
-  def ls_old do
-    Searchex.Config.LsOld.exec
   end
 
   @doc "List the configs"

@@ -6,8 +6,8 @@ defmodule Searchex.Command.Query do
   alias Shake.Frame
 
   @doc "Module API"
-  def exec(cfg_name, query) do
-    call(%Frame{cfg_name: cfg_name, query: query}, [])
+  def exec(cfg_snip, query) do
+    call(%Frame{cfg_snip: cfg_snip, query: query}, [])
   end
 
   step Searchex.Command.Index

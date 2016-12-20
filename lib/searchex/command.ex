@@ -84,9 +84,12 @@ defmodule Searchex.Command do
   Removed all cached files.
   """
   def clean do
-    File.ls(SearchexOld.settings[:data])
+    File.ls(Searchex.base_dir)
     |> elem(1)
-    |> Enum.map(fn(x) -> File.rm!(SearchexOld.settings[:data] <> "/" <> x) end)
+    |> Enum.map(fn(x) ->
+         file = Searchex.base_dir <> "/_" <> x
+         if File.exists?(file), do: File.rm!(file)
+       end)
     {:ok}
   end
 

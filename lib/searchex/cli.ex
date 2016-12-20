@@ -16,10 +16,8 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd      Arity    Module       Argument                 Description
-    {"ls_old"  ,   0,   "Config"   , ""                     , "list collections"                },
     {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
     {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
-    {"cat_old" ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
     {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
     {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"            },
     {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
@@ -37,8 +35,7 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity    Module       Argument                Description
-    {"sample_ls"   ,   0,   "Config"   , ""                    , "list sample collections"                  },
-    {"sample_fetch",   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
+    {"fetch"       ,   1,   "Config"   , "URL"                 , "fetch from elixir-search/sample_docs"     },
     {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
     {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
@@ -77,7 +74,7 @@ defmodule Searchex.Cli do
         |> Enum.join(" ") 
       end)
     headers     = [rpad("Command", 10), rpad("Arguments", 23), "Description"]
-    {:ok, cfgs} = Searchex.Config.ls_old
+    {:ok, cfgs} = Searchex.Config.ls
     cols  = "Collections: " <> Enum.join(cfgs, ", ")
     value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines, cols]
     {:ok, value}
