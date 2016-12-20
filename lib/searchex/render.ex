@@ -86,8 +86,8 @@ defmodule Searchex.Render do
   @doc """
   Show
   """
-  def show(cfg_name, tgt_id) do
-    frame = Searchex.Command.show(cfg_name, tgt_id)
+  def show(cfg_snip, tgt_id) do
+    frame = Searchex.Command.show(cfg_snip, tgt_id)
     if frame.halted do
       {:error, frame.halt_msg}
     else

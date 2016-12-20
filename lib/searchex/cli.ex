@@ -116,6 +116,7 @@ defmodule Searchex.Cli do
   defp render({_, ele})                    , do: lcl_insp(ele)
   defp render(:ok)                         , do: :ok
   defp render({:ok})                       , do: :ok
+  defp render(str) when is_binary(str)     , do: lcl_puts(str)
   defp render(ele)                         , do: lcl_insp(ele)
 
   defp lcl_test(list) do
