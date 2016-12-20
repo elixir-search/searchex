@@ -16,26 +16,26 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd      Arity    Module       Argument                 Description
-    {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
-    {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
-    {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
-    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"            },
-    {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
-    {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"            },
-    {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"           },
-    {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"     },
-    {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"              },
-    {"edit"    ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                      },
-    {"info"    ,   1,   "Render"   , "COLLECTION"           , "status and statistics"           },
-    {"version" ,   0,   ""         , ""                     , "show installed version"          },
-    {"help"    ,   0,   "Cli"      , ""                     , "this command"                    },
+    {"ls"      ,   0,   "Config"   , ""                     , "list collections"                       },
+    {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"         },
+    {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                             },
+    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"                   },
+    {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                          },
+    {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"                   },
+    {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                  },
+    {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"            },
+    {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"                     },
+    {"edit"    ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                             },
+    {"info"    ,   1,   "Render"   , "COLLECTION"           , "status and statistics"                  },
+    {"fetch"   ,   1,   "Config"   , "REPO_URL"             , "fetch repo (eg 'elixir-search/sample')" },
+    {"version" ,   0,   ""         , ""                     , "show installed version"                 },
+    {"help"    ,   0,   "Cli"      , ""                     , "this command"                           },
   ]
   @cmd_opts cmd_opts
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity    Module       Argument             Description
-    {"fetch"       ,   1,   "Config"   , "URL"              , "fetch Searchex repo"                      },
     {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
     {"clean"       ,   1,   "Command"  , "COLLECTION"       , "remove cache for COLLECTION"              },

@@ -24,10 +24,6 @@ document types include:
 - chat rooms and twitter feeds
 - web pages
 
-## Quick Start
-
-TBD
-
 ## Searchex Architecture
 
 A Searchex `DOCUMENT` has two key elements:
@@ -73,13 +69,27 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.1-alpha.2"}]
+  [{:searchex, "~> 0.0.1-alpha.3"}]
 end
 ```
-
 Then run `mix deps.get`
 
 View API documentation at https://hexdocs.pm/searchex
+
+
+## Quick Start
+
+After the `searchex` escript is installed...
+
+1) Fetch a Searchex repository
+ 
+    > searchex fetch elixir-search/sample
+
+2) Run
+
+    > searchex help                         # show help page
+    > searchex ls                           # list collections
+    > searchex query <collection> 'query'   # run a query
 
 ## Roadmap
 
