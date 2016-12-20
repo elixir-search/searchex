@@ -4,7 +4,8 @@ defmodule Searchex.Command.Build.Catalog.Params do
 
   defstruct collection:   ""                  ,
             docsep:       nil                 ,
-            doc_dirs:     []                  ,
+            cache_dir:    "."                 ,
+            file_paths:   []                  ,
             file_types:   ~w(txt md js exs ex),
             input_fields: %{}                 ,
             max_numfiles: 200                 ,
@@ -19,14 +20,14 @@ defmodule Searchex.Command.Build.Catalog.Params do
     new_config = Map.merge(config, %{docsep: new_docsep})
     result = plain_struct()
              |> Util.Ext.Map.deep_merge(new_config)
-    Map.merge(%Searchex.Command.Build.Catalog.Params{}, result)
-    |> expand_doc_dirs
+    Map.merge(%Params{}, result)
+#    |> expand_file_paths
   end
 
-  defp expand_doc_dirs(params) do
-    new_dirs = Enum.map(params.doc_dirs, fn(dir) -> Path.expand(dir) end)
-    %Params{params | doc_dirs: new_dirs}
-  end
+#  defp expand_file_paths(params) do
+#    new_paths = Enum.map(params.file_paths, fn(dir) -> Path.expand(dir, CmdHelpers.repo_dir()) end)
+#    %Params{params | file_paths: new_paths}
+#  end
 
   def regify(elem) when is_map(elem)   , do: elem
   def regify(elem) when is_binary(elem) do

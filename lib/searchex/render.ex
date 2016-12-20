@@ -31,7 +31,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_paths: frame.params.file_paths]
     end
   end
 
@@ -55,7 +55,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, doc_dirs: frame.params.doc_dirs]
+      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_paths: frame.params.file_paths]
     end
   end
 
@@ -115,7 +115,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = Util.Ext.File.du_s(frame.params.doc_dirs)
+      doc_size   = Util.Ext.File.du_s(frame.params.file_paths)
       cache_size = Util.Ext.File.du_s("TBD.dets")
       [
         cmd:        "info"                              ,

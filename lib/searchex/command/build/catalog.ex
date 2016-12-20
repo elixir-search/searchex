@@ -20,7 +20,7 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   defp gen_filescans(catalog, params) do
-    scans = params.doc_dirs
+    scans = params.file_paths
             |> Util.Ext.File.ls_r(params.file_types)
             |> Enum.take(params.max_numfiles)
             |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, params) end)

@@ -8,7 +8,7 @@ defmodule Searchex do
   end
 
   @core_base_path "~/.searchex"
-  @test_base_path "test/adata"
+  @test_base_path "test/data"
 
   @doc """
   Return the base path
