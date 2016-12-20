@@ -21,13 +21,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
     result = plain_struct()
              |> Util.Ext.Map.deep_merge(new_config)
     Map.merge(%Params{}, result)
-#    |> expand_file_paths
   end
-
-#  defp expand_file_paths(params) do
-#    new_paths = Enum.map(params.file_paths, fn(dir) -> Path.expand(dir, CmdHelpers.repo_dir()) end)
-#    %Params{params | file_paths: new_paths}
-#  end
 
   def regify(elem) when is_map(elem)   , do: elem
   def regify(elem) when is_binary(elem) do

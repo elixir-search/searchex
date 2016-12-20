@@ -7,53 +7,53 @@ defmodule Util.CacheTest do
     end
 
     test "after start" do
-      Util.Cache.start("tst")
-      assert Process.whereis(:ets_tst) != nil
-      assert Process.whereis(:dets_tst) == nil
+      Searchex.Command.Params.exec("min")
+      assert Process.whereis(:ets_local_min) != nil
+      assert Process.whereis(:dets_local_min) == nil
     end
 
     test "inter-test process persistence" do
-      assert Process.whereis(:ets_tst) == nil
+      assert Process.whereis(:ets_local_min) == nil
     end
 
     test "up and down" do
-      assert Process.whereis(:ets_tst) == nil
-      Util.Cache.start("tst")
-      refute Process.whereis(:ets_tst) == nil
-      Util.Cache.stop("tst")
-      assert Process.whereis(:ets_tst) == nil
+      frame = Searchex.Command.Params.exec("min")
+      refute Process.whereis(:ets_local_min) == nil
+      Util.Cache.stop(frame)
+      assert Process.whereis(:ets_local_min) == nil
     end
   end
 
   describe "getting and putting values" do
     test "basic ops" do
-      Util.Cache.start("tst")
-      Util.Cache.put_cache("tst", "mykey", "myval")
-      assert Util.Cache.get_cache("tst", "mykey") == "myval"
+      frame = Searchex.Command.Params.exec("min")
+      Util.Cache.put_cache(frame, "mykey", "myval")
+      assert Util.Cache.get_cache(frame, "mykey") == "myval"
     end
 
     test "returns the cache key on put" do
-      Util.Cache.start("tst")
-      assert Util.Cache.put_cache("tst", "mykey", "myval") == "mykey"
+      frame = Searchex.Command.Params.exec("min")
+      assert Util.Cache.put_cache(frame, "mykey", "myval") == "mykey"
     end
   end
 
   describe "disk backup" do
     test "starting with path" do
-      System.cmd "rm", ["-f", "/tmp/*dets"]
-      Util.Cache.start("tst")
-      assert Process.whereis(:ets_tst)  != nil
-      assert Process.whereis(:dets_tst) == nil
+      File.rm_rf("/tmp/searchex")
+      assert File.dir?("/tmp/searchex") == false
+      Searchex.Command.Params.exec("min")
+      assert Process.whereis(:ets_local_min)  != nil
+      assert Process.whereis(:dets_local_min) == nil
     end
 
     test "saving some data" do
-      System.cmd "rm", ["-f", "/tmp/*dets"]
-      Util.Cache.start"tst"
-      Util.Cache.put_cache("tst", "mykey", "myval")
-      Util.Cache.save("tst")
-      Util.Cache.stop("tst")
-      Util.Cache.start("tst")
-      assert Util.Cache.get_cache("tst", "mykey") == "myval"
+      File.rm_rf("/tmp/searchex")
+      frame = Searchex.Command.Params.exec("min")
+      Util.Cache.put_cache(frame, "mykey", "myval")
+      Util.Cache.save(frame)
+      Util.Cache.stop(frame)
+      Util.Cache.start(frame)
+      assert Util.Cache.get_cache(frame, "mykey") == "myval"
     end
   end
 end

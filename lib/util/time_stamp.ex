@@ -76,6 +76,7 @@ defmodule Util.TimeStamp do
   def is_older_than?(ts1, ts2), do: ts1  < ts2
 
   @doc "Returns the newest timestamp in a list."
+  def newest([]), do: {{2000,0,0},{0,0,0}}
   def newest(enum), do: Enum.max(enum)
 
   @doc "Returns the oldest timestamp in a list."

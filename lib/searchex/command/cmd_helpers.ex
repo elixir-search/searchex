@@ -16,6 +16,10 @@ defmodule Searchex.Command.CmdHelpers do
     cache_dir(frame) <> "/_#{file_base}.dets"
   end
 
+  def expanded_file_paths(frame) do
+    Enum.map frame.file_paths, fn(path) -> Path.expand(path, repo_dir(frame)) end
+  end
+
   def file_list(frame) do
     frame.params.file_paths
     |> Enum.map(fn(path) -> Path.expand(path, repo_dir(frame)) end)

@@ -28,6 +28,11 @@ defmodule Util.Ext.File do
       true
 
   """
+  def ls_r(paths) when is_list(paths) do
+    Enum.map(paths, fn(path) -> ls_r(path) end)
+    |> List.flatten
+  end
+
   def ls_r(path) do
     cond do
       File.regular?(path) -> [path]
@@ -124,7 +129,7 @@ defmodule Util.Ext.File do
   end
 
   # eg> glob_filter(["/path1", "path2"], ["txt", "md"])
-  defp glob_filter(paths, globs) do
+  def glob_filter(paths, globs) do
     paths 
     |> Enum.filter(&glob_match?(&1, globs))
   end

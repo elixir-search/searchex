@@ -13,17 +13,19 @@ defmodule Searchex.Command.Build.Catalog do
 
   def create_from_frame(frame) do
     %Catalog{}
-    |> gen_filescans(frame.params)
+    |> gen_filescans(frame)
     |> gen_docs(frame.params)
     |> add_catids
     |> extract_counts
   end
 
-  defp gen_filescans(catalog, params) do
-    scans = params.file_paths
-            |> Util.Ext.File.ls_r(params.file_types)
-            |> Enum.take(params.max_numfiles)
-            |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, params) end)
+  defp gen_filescans(catalog, frame) do
+    scans = frame
+            |> Searchex.Command.CmdHelpers.file_list
+            |> Util.Ext.File.ls_r
+            |> Util.Ext.File.glob_filter(frame.params.file_types)
+            |> Enum.take(frame.params.max_numfiles)
+            |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, frame.params) end)
     %Catalog{catalog | filescans: scans}
   end
 

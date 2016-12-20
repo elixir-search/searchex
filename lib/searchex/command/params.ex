@@ -2,8 +2,7 @@ defmodule Searchex.Command.Params do
 
   @moduledoc false
 
-  alias Searchex.Config.CfgHelpers
-  alias Searchex.Config.CmdValidations
+  alias Searchex.Command.CmdValidations
   use Shake.Module
 
   @doc """
@@ -28,7 +27,7 @@ defmodule Searchex.Command.Params do
   step :start_cache
 
   def generate_cfg_name(frame, _opts) do
-    cfg_name = frame.cfg_snip |> CfgHelpers.cfg_name
+    cfg_name = frame.cfg_snip |> Searchex.Config.CfgHelpers.cfg_name
     %Frame{frame | cfg_name: cfg_name}
   end
 
@@ -42,16 +41,18 @@ defmodule Searchex.Command.Params do
     %Frame{frame | params: params}
   end
 
-  # halt if one or more of the doc dirs is missing
+  # halt if one or more of the file paths is missing
   def validate_file_paths(frame, _opts) do
+    alias Searchex.Command.CmdHelpers
     badpaths = frame.params.file_paths
-               |> Enum.map(fn(path) -> {File.dir?(path), path} end)
+               |> Enum.map(fn(path) -> {Path.expand(path, CmdHelpers.repo_dir(frame)), path} end)
+               |> Enum.map(fn({full_path, path}) -> {File.exists?(full_path), path} end)
                |> Enum.filter(fn(tup) -> ! elem(tup, 0) end)
                |> Enum.map(fn(tup) -> elem(tup, 1) end)
                |> Enum.join(", ")
     case badpaths do
       "" -> frame
-      _  -> halt(frame, "Missing file path (#{badpaths})")
+      _  -> halt(frame, "Missing path (#{badpaths})")
     end
   end
 
@@ -67,7 +68,7 @@ defmodule Searchex.Command.Params do
   end
 
   def start_cache(frame, _opts) do
-    Util.Cache.start(frame.cfg_name)
+    Util.Cache.start(frame)
     frame
   end
 end
