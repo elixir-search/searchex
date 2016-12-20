@@ -16,34 +16,34 @@ defmodule Searchex.Command do
   alias Util.Cache
 
   @doc """
-  Generate the catalog for `cfg_name`
+  Generate the catalog for `cfg_snip`
 
   The catalog is a Map that contains all configuration data, document text and meta-data.
 
-  The catalog is generated from a config file, stored at `~/.Searchex.Configs/<cfg_name>.yml`.
+  The catalog is generated from a config file, stored at `~/.Searchex.Configs/<cfg_snip>.yml`.
 
-  The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
+  The catalog is cached on disk at `~/.searchex/data/<cfg_snip>_cat.dat`.
   """
-  def catalog(cfg_name) do
-    Searchex.Command.Catalog.exec(cfg_name) |> Cache.save(cfg_name)
+  def catalog(cfg_snip) do
+    Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save(cfg_snip)
   end
 
   @doc """
-  Generate the index for `cfg_name`
+  Generate the index for `cfg_snip`
 
   The index is a data structure used for fast search and retrieval.
 
   The index lives in a Process Tree, one worker for each keyword.
   """
-  def index(cfg_name) do
-    Searchex.Command.Index.exec(cfg_name) |> Cache.save(cfg_name)
+  def index(cfg_snip) do
+    Searchex.Command.Index.exec(cfg_snip) |> Cache.save(cfg_snip)
   end
 
   @doc """
-  Generate both the catalog and the index for `cfg_name` in one step
+  Generate both the catalog and the index for `cfg_snip` in one step
   """
-  def build(cfg_name) do
-    Searchex.Command.Build.exec(cfg_name) |> Cache.save(cfg_name)
+  def build(cfg_snip) do
+    Searchex.Command.Build.exec(cfg_snip) |> Cache.save(cfg_snip)
   end
 
   @doc false
@@ -55,41 +55,38 @@ defmodule Searchex.Command do
   - Average size of documents
   - etc.
   """
-  def info(cfg_name) do
-    Searchex.Command.Info.exec(cfg_name)
+  def info(cfg_snip) do
+    Searchex.Command.Info.exec(cfg_snip)
   end
 
   @doc """
   Query the collection
   """
-  def query(cfg_name, query) do
-    Searchex.Command.Query.exec(cfg_name, query) |> Cache.save(cfg_name)
+  def query(cfg_snip, query) do
+    Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save(cfg_snip)
   end
 
   @doc """
   Show last results
   """
-  def results(cfg_name) do
-    Searchex.Command.Results.exec(cfg_name)
+  def results(cfg_snip) do
+    Searchex.Command.Results.exec(cfg_snip)
   end
 
   @doc false
   # Show document text
-  def show(cfg_name, tgt_id) do
-    Searchex.Command.Show.exec(cfg_name, tgt_id)
+  def show(cfg_snip, tgt_id) do
+    Searchex.Command.Show.exec(cfg_snip, tgt_id)
   end
 
   @doc false
   @nodoc """
   Removed all cached files.
   """
-  def clean do
-    File.ls(Searchex.base_dir)
-    |> elem(1)
-    |> Enum.map(fn(x) ->
-         file = Searchex.base_dir <> "/_" <> x
-         if File.exists?(file), do: File.rm!(file)
-       end)
+  def clean(cfg_snip) do
+    frame = Searchex.Command.Params.exec(cfg_snip)
+    file  = Searchex.Command.CmdHelpers.cfg_file(frame)
+    if File.exists?(file), do: File.rm!(file)
     {:ok}
   end
 

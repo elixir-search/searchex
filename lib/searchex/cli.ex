@@ -34,14 +34,14 @@ defmodule Searchex.Cli do
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd          Arity    Module       Argument                Description
-    {"fetch"       ,   1,   "Config"   , "URL"                 , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
-    {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
-    {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
-    {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"      , ""                    , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"      , ""                    , "renders the completion script"            },
+    # Cmd          Arity    Module       Argument             Description
+    {"fetch"       ,   1,   "Config"   , "URL"              , "fetch Searchex repo"                      },
+    {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
+    {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
+    {"clean"       ,   1,   "Command"  , "COLLECTION"       , "remove cache for COLLECTION"              },
+    {"all_commands",   0,   "Cli"      , ""                 , "used for tab completion - lists all cmds" },
+    {"cfg_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"      , ""                 , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
