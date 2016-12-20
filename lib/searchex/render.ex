@@ -62,8 +62,8 @@ defmodule Searchex.Render do
   @doc """
   Invoke `Searchex.Command.search`, then render the results as a table.
   """
-  def query(cfg_name, query) do
-    frame = Searchex.Command.query(cfg_name, query)
+  def query(cfg_snip, query) do
+    frame = Searchex.Command.query(cfg_snip, query)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -74,8 +74,8 @@ defmodule Searchex.Render do
   @doc """
   Invoke `Searchex.Command.results`, then render the results to a table.
   """
-  def results(cfg_name) do
-    frame = Searchex.Command.results(cfg_name)
+  def results(cfg_snip) do
+    frame = Searchex.Command.results(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else

@@ -25,7 +25,7 @@ defmodule Searchex.Command do
   The catalog is cached on disk at `~/.searchex/data/<cfg_snip>_cat.dat`.
   """
   def catalog(cfg_snip) do
-    Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save(cfg_snip)
+    Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
@@ -36,14 +36,14 @@ defmodule Searchex.Command do
   The index lives in a Process Tree, one worker for each keyword.
   """
   def index(cfg_snip) do
-    Searchex.Command.Index.exec(cfg_snip) |> Cache.save(cfg_snip)
+    Searchex.Command.Index.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
   Generate both the catalog and the index for `cfg_snip` in one step
   """
   def build(cfg_snip) do
-    Searchex.Command.Build.exec(cfg_snip) |> Cache.save(cfg_snip)
+    Searchex.Command.Build.exec(cfg_snip) |> Cache.save
   end
 
   @doc false
@@ -63,7 +63,7 @@ defmodule Searchex.Command do
   Query the collection
   """
   def query(cfg_snip, query) do
-    Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save(cfg_snip)
+    Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save
   end
 
   @doc """
@@ -85,7 +85,7 @@ defmodule Searchex.Command do
   """
   def clean(cfg_snip) do
     frame = Searchex.Command.Params.exec(cfg_snip)
-    file  = Searchex.Command.CmdHelpers.cfg_file(frame)
+    file  = Searchex.Command.CmdHelpers.cache_file(frame)
     if File.exists?(file), do: File.rm!(file)
     {:ok}
   end

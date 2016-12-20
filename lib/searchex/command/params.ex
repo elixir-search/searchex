@@ -20,11 +20,16 @@ defmodule Searchex.Command.Params do
 
   step :validate, with: [&CmdValidations.cfg_snip_invalid?/2]
   step :validate, with: validation_list
+  step :debug
   step :generate_cfg_name
   step :generate_params
   step :validate_file_paths
   step :generate_digest
   step :start_cache
+
+  def debug(frame, _opts) do
+    frame
+  end
 
   def generate_cfg_name(frame, _opts) do
     cfg_name = frame.cfg_snip |> Searchex.Config.CfgHelpers.cfg_name

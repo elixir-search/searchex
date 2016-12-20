@@ -76,7 +76,6 @@ Then run `mix deps.get`
 
 View API documentation at https://hexdocs.pm/searchex
 
-
 ## Quick Start
 
 After the `searchex` escript is installed...

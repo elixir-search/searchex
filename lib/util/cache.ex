@@ -28,12 +28,15 @@ defmodule Util.Cache do
 
   @doc "Save the cache data to disk"
   def save(frame) do
-    {ets_name, dets_name, dets_path} = expand(frame)
-    if Process.whereis(ets_name) do
-      :dets.open_file(dets_name, [file: dets_path])
-      :ets.to_dets(ets_name, dets_name)
-      :dets.close(dets_name)
+    unless frame.halted do
+      {ets_name, dets_name, dets_path} = expand(frame)
+      if Process.whereis(ets_name) do
+        :dets.open_file(dets_name, [file: dets_path])
+        :ets.to_dets(ets_name, dets_name)
+        :dets.close(dets_name)
+      end
     end
+    frame
   end
 
   def save(frame, _el) do

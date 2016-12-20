@@ -28,7 +28,7 @@ defmodule Searchex do
   def base_dir do
     case Mix.env do
       :test -> expand(@test_base_path)
-      :eval -> expand(@core_base_path)
+      :eval -> expand("test/data")
       _     -> expand(@core_base_path)
     end
   end
