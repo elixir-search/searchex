@@ -1,5 +1,3 @@
-require IEx
-
 defmodule Searchex.Render.Results do
 
   @moduledoc false

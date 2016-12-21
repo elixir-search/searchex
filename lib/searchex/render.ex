@@ -110,16 +110,26 @@ defmodule Searchex.Render do
   @doc """
   Info
   """
-  def info(cfg_name) do
-    frame = Searchex.Command.info(cfg_name)
+  def info do
+#    {:ok, configs} = Searchex.Config.Ls.exec
+    Searchex.Config.Ls.exec
+    |> elem(1)
+    |> Enum.map(fn(cfg) -> Task.async(fn -> info(cfg) end) end)
+    |> Enum.map(fn(worker) -> Task.await(worker) end)
+    |> Searchex.Render.Info.to_table
+  end
+
+  def info(cfg_snip) do
+    alias Searchex.Command.CmdHelpers
+    frame = Searchex.Command.info(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
       doc_size   = Util.Ext.File.du_s(frame.params.file_paths)
-      cache_size = Util.Ext.File.du_s("TBD.dets")
+      cache_size = Util.Ext.File.du_s(CmdHelpers.cache_file(frame))
       [
         cmd:        "info"                              ,
-        cfg_name:   cfg_name                            ,
+        cfg_name:   frame.cfg_name                      ,
         numdocs:    frame.catalog.numdocs               ,
         doc_size:   Util.Ext.Integer.format(doc_size  ) ,
         cache_size: Util.Ext.Integer.format(cache_size)
