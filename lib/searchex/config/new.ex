@@ -1,19 +1,17 @@
 defmodule Searchex.Config.New do
   @moduledoc false
 
-#  import Searchex.Config.CfgHelpers
   import Searchex.Config.CfgValidations
 
   @default_cfg File.read("eex/default_cfg.yml.eex")
 
   def exec(path) do
-      full_path = Path.expand(path)
-      cfg_name  = name_from_path(path)
-      case check_validations(validation_list(cfg_name)) do
-        {:error, msgs} -> {:error, msgs}
-        {:ok}          -> create_cfg(cfg_name, full_path)
-      end
-    "OK"
+    full_path = Path.expand(path)
+    cfg_name  = name_from_path(path)
+    case check_validations(validation_list(cfg_name)) do
+      {:error, msgs} -> {:error, msgs}
+      {:ok}          -> create_cfg(cfg_name, full_path)
+    end
   end
 
   # -----
