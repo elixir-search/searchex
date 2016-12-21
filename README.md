@@ -10,7 +10,7 @@ problems.
 BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
 build. 
 
-Searchex is UNDER CONSTRUCTION - not yet ready for use.
+Searchex is UNDER CONSTRUCTION - for testing only.
 
 ## About Searchex
 
@@ -69,7 +69,7 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.1-alpha.3"}]
+  [{:searchex, "~> 0.0.1-alpha.4"}]
 end
 ```
 Then run `mix deps.get`
@@ -88,6 +88,7 @@ After the `searchex` escript is installed...
 
     > searchex help                         # show help page
     > searchex ls                           # list collections
+    > searchex info                         # collection stats
     > searchex query <collection> 'query'   # run a query
 
 ## Roadmap
@@ -98,14 +99,14 @@ After the `searchex` escript is installed...
 - [x] Middleware framework
 - [x] CLI Indexing and Query
 - [x] LRU Cache
-- [ ] CLI Results Display
-- [ ] Repository for Sample Docs
+- [x] CLI Results Display
+- [x] Fetchable document repos
+- [ ] Server mode
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] LRU Registry
 - [ ] Git-like change detection
 - [ ] Incremental add/remove/update
-- [ ] Server mode
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Filesystem watcher
 - [ ] Typeahead support
