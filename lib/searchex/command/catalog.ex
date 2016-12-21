@@ -14,6 +14,7 @@ defmodule Searchex.Command.Catalog do
   end
 
   step Searchex.Command.Params
+  step :start_cache
   step :generate_catalog
 
   def generate_catalog(frame, _opts) do
@@ -25,5 +26,11 @@ defmodule Searchex.Command.Catalog do
       Util.Cache.put_cache(frame, child_digest, cat2)
       %Frame{frame | catalog: cat2}
     end
+  end
+
+
+  def start_cache(frame, _opts) do
+    Util.Cache.start(frame)
+    frame
   end
 end

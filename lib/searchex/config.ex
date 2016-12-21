@@ -12,9 +12,8 @@ defmodule Searchex.Config do
   end
 
   @doc "Fetch a config from elixir-search/sample_docs"
-  def fetch(_tmp) do
-    Util.Ext.IO.puts "FETCH : UNDER CONSTRUCTION"
-    {:error, "Pending Implementation"}
+  def fetch(repo) do
+    Searchex.Config.Fetch.exec(repo)
   end
 
   @doc "Return the contents of a config"

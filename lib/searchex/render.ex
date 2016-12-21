@@ -111,11 +111,11 @@ defmodule Searchex.Render do
   Info
   """
   def info do
-#    {:ok, configs} = Searchex.Config.Ls.exec
     Searchex.Config.Ls.exec
     |> elem(1)
-    |> Enum.map(fn(cfg) -> Task.async(fn -> info(cfg) end) end)
-    |> Enum.map(fn(worker) -> Task.await(worker) end)
+#    |> Enum.map(fn(cfg) -> Task.async(fn -> info(cfg) end) end)
+#    |> Enum.map(fn(worker) -> Task.await(worker) end)
+    |> Enum.map(fn(cfg) -> info(cfg) end)
     |> Searchex.Render.Info.to_table
   end
 

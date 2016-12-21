@@ -25,7 +25,6 @@ defmodule Searchex.Command.Params do
   step :generate_params
   step :validate_file_paths
   step :generate_digest
-  step :start_cache
 
   def debug(frame, _opts) do
     frame
@@ -70,10 +69,5 @@ defmodule Searchex.Command.Params do
     term   = mixlist_timestamp([cfg_file(cfg_name), params.file_paths])
     digest = Util.Ext.Term.digest({cfg_name, term})
     set_digest(frame, :params, digest)
-  end
-
-  def start_cache(frame, _opts) do
-    Util.Cache.start(frame)
-    frame
   end
 end
