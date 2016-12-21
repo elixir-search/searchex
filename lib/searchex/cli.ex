@@ -77,7 +77,7 @@ defmodule Searchex.Cli do
     headers     = [rpad("Command", 10), rpad("Arguments", 23), "Description"]
     {:ok, cfgs} = Searchex.Config.ls
     cols  = "Collections: " <> Enum.join(cfgs, ", ")
-    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines, cols]
+    value = [String.upcase(prog) <> " Version #{prog_version} - FOR TESTING ONLY\n",headers, lines, cols]
     {:ok, value}
   end
 

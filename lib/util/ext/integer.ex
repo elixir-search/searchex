@@ -1,4 +1,7 @@
 defmodule Util.Ext.Integer do
+
+  @moduledoc false
+
   def format(number) do
     number
     |> to_charlist
