@@ -1,4 +1,0 @@
-from: @bonehead
-date: Jan 5, 2017
-==
-First tweet from me.

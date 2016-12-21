@@ -9,6 +9,8 @@ defmodule Shake.Frame do
                   query:    "",
                   scores:   [],
                   results:  %{},
+                  tgt_id:   nil,
+                  tgt_doc:  %{}
                   halted:   false,
                   halt_msg: "",
                   digests:  %{},
@@ -17,6 +19,7 @@ defmodule Shake.Frame do
 
   alias Shake.Frame
 
+  @type cfg_snip :: String.t
   @type cfg_name :: String.t
   @type params   :: map
   @type catalog  :: map
@@ -24,12 +27,15 @@ defmodule Shake.Frame do
   @type query    :: String.t
   @type scores   :: list
   @type results  :: map
+  @type tgt_id   :: integer
+  @type tgt_doc  :: map
   @type halted   :: boolean
   @type halt_msg :: String.t | [String.t]
   @type digests  :: %{atom => String.t}
   @type assigns  :: %{atom => any}
 
   @type t :: %__MODULE__{
+             cfg_snip:  cfg_snip,
              cfg_name:  cfg_name,
              params:    params,
              catalog:   catalog,
@@ -37,19 +43,24 @@ defmodule Shake.Frame do
              query:     query,
              scores:    scores,
              results:   results,
+             tgt_id:    tgt_id,
+             tgt_doc:   tgt_doc,
              halted:    halted,
              halt_msg:  halt_msg,
              digests:   digests,
              assigns:   assigns
            }
              
-  defstruct cfg_name: "",
+  defstruct cfg_snip: "",
+            cfg_name: "",
             params:   %{},
             catalog:  %{},
             index:    %{},
             query:    "",
             scores:   [],
             results:  %{},
+            tgt_id:   nil,
+            tgt_doc:  %{},
             halted:   false,
             halt_msg: "",
             digests:  %{},

@@ -1,4 +1,0 @@
-from: @calamari
-date: Feb 5, 2017
-==
-To be or not to be?

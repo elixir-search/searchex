@@ -7,37 +7,35 @@ defmodule Searchex do
     {:ok, "#{Util.Ext.App.version}"}
   end
 
-  @doc "Return the applications settings"
-  def settings do
+  @core_base_path "~/.searchex"
+  @test_base_path "test/data"
 
-    # TODO: read these from ~/.searchexrc (TOML format) and store in a GenServer...
+  @doc """
+  Return the base path
 
+  In production, the base path is typically `~/.searchex`.
+
+  The directory structure organization:
+
+      base_dir > repo_dirs > collection_files
+
+  There is one base dir.  Underneath the base dir there are multiple
+  repo dirs.  In each repo dir, there can be multiple collection files.
+  Collection files are yaml files with collection configuration parameters.
+
+  TODO: read the base path from ~/.searchexrc (TOML format)
+  """
+  def base_dir do
     case Mix.env do
-      :test -> expand(test_settings)
-      :eval -> expand(test_settings)
-      _     -> expand(base_settings)
+      :test -> expand(@test_base_path)
+      :eval -> expand("test/data")
+      _     -> expand(@core_base_path)
     end
   end
 
-  # -----------------------------------------------------------------------------------
+  # -----
 
-  defp test_settings do
-    %{
-      cfgs: "test/data/configs"          ,
-      docs: "/tmp/searchex_test/docs"    ,
-      data: "/tmp/searchex_test/data"    ,
-    }
-  end
-
-  defp base_settings do
-    %{
-      cfgs: "~/.searchex/cfgs"   ,
-      docs: "~/.searchex/docs"   ,
-      data: "~/.searchex/data"   ,
-    }
-  end
-
-  defp expand(map) do
-    Enum.reduce(map, %{}, fn({k,v}, acc) -> Map.merge(acc, %{k => Path.expand(v)}) end)
+  defp expand(path) do
+    Path.expand(path)
   end
 end

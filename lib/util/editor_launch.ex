@@ -17,18 +17,18 @@ defmodule Util.EditorLaunch do
   The editor opens in a split window.  When the editor is closed, the
   split-window disappears.
   """
-  def launch_using_tmux(file_path, _opts \\ []) do
+  def launch_using_tmux(file_path, line \\ 0) do
     cond do
       missing_editor?()         -> {:error, missing_editor_msg()}
       connected_without_tmux?() -> {:error, connected_without_tmux_msg(file_path)}
-      true                      -> tmux_launch(file_path)
+      true                      -> tmux_launch(file_path, line)
     end
   end
 
   # -----
 
-  defp tmux_launch(file_path) do
-    System.cmd "tmux", ["split-window", "vim", file_path]
+  defp tmux_launch(file_path, line) do
+    System.cmd "tmux", ["split-window", "vim", file_path, "+#{line}"]
     {:ok}
   end
 

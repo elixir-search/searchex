@@ -12,24 +12,23 @@ defmodule Searchex.Config do
   end
 
   @doc "Fetch a config from elixir-search/sample_docs"
-  def fetch(_tmp) do
-    Util.Ext.IO.puts "FETCH : UNDER CONSTRUCTION"
-    {:error, "Pending Implementation"}
+  def fetch(repo) do
+    Searchex.Config.Fetch.exec(repo)
   end
 
   @doc "Return the contents of a config"
-  def cat(cfg_name) do
-    Searchex.Config.Cat.exec(cfg_name)
+  def cat(cfg_snip) do
+    Searchex.Config.Cat.exec(cfg_snip)
   end
 
   @doc "Return information needed to edit the config"
-  def edit(cfg_name) do
-    Searchex.Config.Edit.exec(cfg_name)
+  def edit(cfg_snip) do
+    Searchex.Config.Edit.exec(cfg_snip)
   end
 
   @doc "Remove a config"
-  def rm(cfg_name) do
-    Searchex.Config.Rm.exec(cfg_name)
+  def rm(cfg_snip) do
+    Searchex.Config.Rm.exec(cfg_snip)
   end
 
   @doc "List the configs"

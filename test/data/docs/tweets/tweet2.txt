@@ -1,4 +1,0 @@
-from: @meniscus
-date: Jan 5, 2017
-==
-Elixir the the best language.

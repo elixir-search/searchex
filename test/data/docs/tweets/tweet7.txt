@@ -1,4 +1,0 @@
-from: @aLincoln
-date: Jan 5, 1865
-==
-Four score and seven years ago.

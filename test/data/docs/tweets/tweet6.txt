@@ -1,4 +1,0 @@
-from: @lande
-date: Jan 5, 2016
-==
-Take their coats!

@@ -1,4 +1,0 @@
-from: @GenSherman
-date: Jan 5, 1866
-==
-War is hell.

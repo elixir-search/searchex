@@ -12,11 +12,9 @@ defmodule SearchexTest do
       end
     end
 
-    describe "#settings" do
-      test "map values" do
-        assert Searchex.settings.cfgs != nil
-        assert Searchex.settings.docs != nil
-        assert Searchex.settings.data != nil
+    describe "#base_dir" do
+      test "value" do
+        refute Searchex.base_dir == nil
       end
     end
 end

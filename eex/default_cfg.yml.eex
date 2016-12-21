@@ -1,6 +1,6 @@
 ---
 :collection:     "<%= cfg_name %>"
-:doc_dirs:       [<%= docroot %>]
+:file_paths:     [<%= docroot %>]
 :file_types:     [<%= file_types %>]
 :max_numfiles:   50
 :max_file_kb:    100

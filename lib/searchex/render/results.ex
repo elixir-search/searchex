@@ -1,5 +1,3 @@
-require IEx
-
 defmodule Searchex.Render.Results do
 
   @moduledoc false
@@ -11,12 +9,12 @@ defmodule Searchex.Render.Results do
   def to_table(frame) do
     results = frame.results
     docs    = results.docs
-    title   = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
-    fields  = String.split(get_fields(frame.params))
-    {header, rows} = table_data(docs, title: title, fields: fields )
-    if Enum.count(rows) == 0 do
+    if docs == nil || Enum.count(docs) == 0 do
       Util.Ext.IO.puts "NO RESULTS"
     else
+      title  = "Collection '#{frame.cfg_name}' Query '#{frame.query}'"
+      fields = String.split(get_fields(frame.params))
+      {header, rows} = table_data(docs, title: title, fields: fields )
       # Note: TableRex Bug - https://github.com/djm/table_rex/issues/13
       Util.Ext.IO.puts title
       Util.Ext.IO.puts TableRex.quick_render!(rows, header)

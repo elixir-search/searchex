@@ -16,32 +16,33 @@ defmodule Searchex.Cli do
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
     # Cmd      Arity    Module       Argument                 Description
-    {"ls"      ,   0,   "Config"   , ""                     , "list collections"                },
-    {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"  },
-    {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                      },
-    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"            },
-    {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                   },
-    {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"            },
-    {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"           },
-    {"info"    ,   1,   "Render"   , "COLLECTION"           , "status and statistics"           },
-    {"version" ,   0,   ""         , ""                     , "show installed version"          },
-    {"help"    ,   0,   "Cli"      , ""                     , "this command"                    },
+    {"ls"      ,   0,   "Config"   , ""                     , "list collections"                       },
+    {"info"    ,   0,   "Render"   , ""                     , "collection statistics"                  },
+    {"fetch"   ,   1,   "Config"   , "GITHUB_REPO"          , "eg 'fetch elixir-search/sample'"        },
+    {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"         },
+    {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                             },
+    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"                   },
+    {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                          },
+    {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"                   },
+    {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                  },
+    {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"            },
+    {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"                     },
+    {"edit"    ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                             },
+    {"version" ,   0,   ""         , ""                     , "show installed version"                 },
+    {"help"    ,   0,   "Cli"      , ""                     , "this command"                           },
   ]
   @cmd_opts cmd_opts
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd          Arity    Module       Argument                Description
-    {"results"     ,   1,   "Render"   , "COLLECTION"          , "results from the last query"              },
-    {"show"        ,   2,   "Command"  , "COLLECTION DOCID"    , "show text of DOCID"                       },
-    {"edit"        ,   2,   "Render"   , "COLLECTION DOCID"    , "edit DOCID"                               },
-    {"fetch"       ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Render"   , "COLLECTION"          , "build the collection catalog"             },
-    {"index"       ,   1,   "Render"   , "COLLECTION"          , "build the collection index"               },
-    {"clean"       ,   0,   "Command"  , ""                    , "remove all cached assets"                 },
-    {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"      , ""                    , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"      , ""                    , "renders the completion script"            },
+    # Cmd          Arity    Module       Argument             Description
+#    {"info"        ,   1,   "Render"   , "COLLECTION"       , "status and statistics"                    },
+    {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
+    {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
+    {"clean"       ,   1,   "Command"  , "COLLECTION"       , "remove cache for COLLECTION"              },
+    {"all_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
+    {"cfg_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"      , ""                 , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
@@ -76,7 +77,7 @@ defmodule Searchex.Cli do
     headers     = [rpad("Command", 10), rpad("Arguments", 23), "Description"]
     {:ok, cfgs} = Searchex.Config.ls
     cols  = "Collections: " <> Enum.join(cfgs, ", ")
-    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines, cols]
+    value = [String.upcase(prog) <> " Version #{prog_version} - FOR TESTING ONLY\n",headers, lines, cols]
     {:ok, value}
   end
 
@@ -116,6 +117,7 @@ defmodule Searchex.Cli do
   defp render({_, ele})                    , do: lcl_insp(ele)
   defp render(:ok)                         , do: :ok
   defp render({:ok})                       , do: :ok
+  defp render(str) when is_binary(str)     , do: lcl_puts(str)
   defp render(ele)                         , do: lcl_insp(ele)
 
   defp lcl_test(list) do

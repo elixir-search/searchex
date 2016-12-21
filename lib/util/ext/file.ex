@@ -28,6 +28,11 @@ defmodule Util.Ext.File do
       true
 
   """
+  def ls_r(paths) when is_list(paths) do
+    Enum.map(paths, fn(path) -> ls_r(path) end)
+    |> List.flatten
+  end
+
   def ls_r(path) do
     cond do
       File.regular?(path) -> [path]
@@ -79,6 +84,30 @@ defmodule Util.Ext.File do
     |> Enum.filter(&glob_match?(&1, glob))
   end
 
+  @doc """
+  Get size of directories
+  """
+  def du_s(path_list) when is_list(path_list) do
+    path_list
+    |> Enum.map(fn(path) -> du_s(path) end)
+    |> Enum.sum
+  end
+  def du_s(path) do
+    path
+    |> ls_r
+    |> Enum.map(fn(path) -> get_size(path) end)
+    |> Enum.sum
+  end
+
+  defp get_size(path) do
+    if File.exists?(path) do
+      %{size: size} = File.stat!(path)
+      size
+    else
+      0
+    end
+  end
+
   # --------------------------------------------------------------------
 
   # compiles a string (like "txt") into a regex.
@@ -100,7 +129,7 @@ defmodule Util.Ext.File do
   end
 
   # eg> glob_filter(["/path1", "path2"], ["txt", "md"])
-  defp glob_filter(paths, globs) do
+  def glob_filter(paths, globs) do
     paths 
     |> Enum.filter(&glob_match?(&1, globs))
   end
