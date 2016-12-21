@@ -45,6 +45,11 @@ defmodule Searchex.Config.CfgValidations do
     if cfg_name(cfg_snip), do: {:ok}, else: err
   end
 
+  def cfg_present?(cfg_snip) do
+    err = {:error, "Config file exists (#{cfg_snip})"}
+    if cfg_name(cfg_snip), do: err, else: {:ok}
+  end
+
   def cfg_ambiguous?(cfg_snip) do
     list = cfg_filter(cfg_snip)
     msg  = "Multi-match (#{cfg_snip} => [#{Enum.join(list, ", ")}])"
@@ -56,10 +61,5 @@ defmodule Searchex.Config.CfgValidations do
     test = Regex.match?(~r/[^0-9A-Za-z-_\/]/, cfg_snip)
     err  = {:error, "Invalid config name (#{cfg_snip})"}
     if test, do: err, else: {:ok}
-  end
-
-  def cfg_present?(cfg_snip) do
-    err = {:error, "Config already exists (#{cfg_snip})"}
-    if File.exists?(cfg_file(cfg_snip)), do: err, else: {:ok}
   end
 end

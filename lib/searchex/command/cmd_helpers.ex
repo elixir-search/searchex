@@ -17,7 +17,7 @@ defmodule Searchex.Command.CmdHelpers do
   end
 
   def cfg_file(frame) do
-    repo_dir(frame) <> "/" <> frame.cfg_name <> ".yml"
+    Searchex.base_dir <> "/" <> frame.cfg_name <> ".yml"
   end
 
   def expanded_file_paths(frame) do
