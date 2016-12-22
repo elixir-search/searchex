@@ -125,15 +125,30 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = Util.Ext.File.du_s(frame.params.file_paths)
+      doc_size   = Util.Ext.File.du_s(CmdHelpers.expanded_file_paths(frame))
       cache_size = Util.Ext.File.du_s(CmdHelpers.cache_file(frame))
       [
-        cmd:        "info"                              ,
-        cfg_name:   frame.cfg_name                      ,
-        numdocs:    frame.catalog.numdocs               ,
-        doc_size:   Util.Ext.Integer.format(doc_size  ) ,
-        cache_size: Util.Ext.Integer.format(cache_size)
+        cmd:        "info"                                     ,
+        cfg_name:   frame.cfg_name                             ,
+        numdocs:    frame.catalog.numdocs                      ,
+        doc_size:   Util.Ext.Integer.format(doc_size  )        ,
+        cache_size: Util.Ext.Integer.format(cache_size)        ,
+        file_paths: shrink_paths(frame.params.file_paths)
       ]
     end
+  end
+
+  defp shrink_paths(paths) do
+    paths
+    |> Enum.map(fn(path) -> shrink_path(path) end)
+    |> Enum.join(", ")
+  end
+
+  defp shrink_path(path) do
+    path
+    |> String.split("/")
+    |> Enum.split(-2)
+    |> elem(1)
+    |> Enum.join("/")
   end
 end
