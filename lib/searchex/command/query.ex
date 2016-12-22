@@ -20,8 +20,7 @@ defmodule Searchex.Command.Query do
     if scores1 = Util.Cache.get_cache(frame, child_digest) do
       %Frame{frame | scores: scores1}
     else
-      scores2 = {index, String.split(query)}
-                |> Searchex.Keyword.Server.do_query
+      scores2 = {index, String.split(query)} |> exec_query(frame)
       Util.Cache.put_cache(frame, "#{frame.cfg_name}_last_query", query)
       Util.Cache.put_cache(frame, child_digest, scores2)
       %Frame{frame | scores: scores2} |> set_digest(:scores, Util.Ext.Term.digest(scores2))
@@ -46,5 +45,19 @@ defmodule Searchex.Command.Query do
                |> Enum.sort_by(fn(x) -> Enum.find_index(docids, fn(y) -> x == y end) end)
                |> Enum.slice(0, 20)
     %Searchex.Command.Build.Catalog{catalog | docs: new_docs}
+  end
+
+  # -----
+
+  defp exec_query({index, query_list}, frame) do
+    case Enum.at(query_list, 0) do
+      "." -> dump_top(frame)
+      _   -> Searchex.Keyword.Server.do_query({index, query_list})
+    end
+  end
+
+  defp dump_top(frame) do
+    Enum.slice(frame.catalog.docs, 0..20)
+    |> Enum.map(fn(doc) -> {doc.docid, 1.00} end)
   end
 end

@@ -13,7 +13,7 @@ defmodule Searchex.Command.CatalogTest do
   describe "multi collection" do
     test "doc count" do
       frame = Catalog.exec("multi")
-      assert frame.catalog.numdocs == 20
+      assert frame.catalog.numdocs == 21
     end
   end
 
@@ -27,7 +27,7 @@ defmodule Searchex.Command.CatalogTest do
   describe "worklog collection" do
     test "doc count" do
       frame = Catalog.exec("worklog")
-      assert frame.catalog.numdocs == 7
+      assert frame.catalog.numdocs == 8
     end
   end
 
@@ -44,7 +44,7 @@ defmodule Searchex.Command.CatalogTest do
       _frame2 = Catalog.exec("multi")
       _frame3 = Catalog.exec("tweets")
       frame4  = Catalog.exec("worklog")
-      assert frame4.catalog.numdocs == 7
+      assert frame4.catalog.numdocs == 8
     end
   end
 end

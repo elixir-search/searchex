@@ -98,8 +98,8 @@ defmodule Searchex.Render do
   @doc """
   Edit
   """
-  def edit(cfg_name, tgt_id) do
-    frame = Searchex.Command.show(cfg_name, tgt_id)
+  def edit(cfg_snip, tgt_id) do
+    frame = Searchex.Command.show(cfg_snip, tgt_id)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -133,22 +133,22 @@ defmodule Searchex.Render do
         numdocs:    frame.catalog.numdocs                      ,
         doc_size:   Util.Ext.Integer.format(doc_size  )        ,
         cache_size: Util.Ext.Integer.format(cache_size)        ,
-        file_paths: shrink_paths(frame.params.file_paths)
+        file_paths: Util.Ext.Path.shrink_paths(frame.params.file_paths)
       ]
     end
   end
 
-  defp shrink_paths(paths) do
-    paths
-    |> Enum.map(fn(path) -> shrink_path(path) end)
-    |> Enum.join(", ")
-  end
-
-  defp shrink_path(path) do
-    path
-    |> String.split("/")
-    |> Enum.split(-2)
-    |> elem(1)
-    |> Enum.join("/")
+  @doc """
+  Clean
+  """
+  def clean(cfg_snip) do
+    frame = Searchex.Command.Params.exec(cfg_snip)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      file  = Searchex.Command.CmdHelpers.cache_file(frame)
+      if File.exists?(file), do: File.rm!(file)
+      {:ok}
+    end
   end
 end
