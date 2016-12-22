@@ -78,16 +78,4 @@ defmodule Searchex.Command do
   def show(cfg_snip, tgt_id) do
     Searchex.Command.Show.exec(cfg_snip, tgt_id)
   end
-
-  @doc false
-  @nodoc """
-  Removed all cached files.
-  """
-  def clean(cfg_snip) do
-    frame = Searchex.Command.Params.exec(cfg_snip)
-    file  = Searchex.Command.CmdHelpers.cache_file(frame)
-    if File.exists?(file), do: File.rm!(file)
-    {:ok}
-  end
-
 end

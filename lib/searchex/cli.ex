@@ -36,10 +36,9 @@ defmodule Searchex.Cli do
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
     # Cmd          Arity    Module       Argument             Description
-#    {"info"        ,   1,   "Render"   , "COLLECTION"       , "status and statistics"                    },
     {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
-    {"clean"       ,   1,   "Command"  , "COLLECTION"       , "remove cache for COLLECTION"              },
+    {"clean"       ,   1,   "Render"  , "COLLECTION"       , "remove cache for COLLECTION"              },
     {"all_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
     {"cfg_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
     {"completion"  ,   0,   "Cli"      , ""                 , "renders the completion script"            },

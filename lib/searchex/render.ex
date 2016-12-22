@@ -98,8 +98,8 @@ defmodule Searchex.Render do
   @doc """
   Edit
   """
-  def edit(cfg_name, tgt_id) do
-    frame = Searchex.Command.show(cfg_name, tgt_id)
+  def edit(cfg_snip, tgt_id) do
+    frame = Searchex.Command.show(cfg_snip, tgt_id)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -125,15 +125,30 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = Util.Ext.File.du_s(frame.params.file_paths)
+      doc_size   = Util.Ext.File.du_s(CmdHelpers.expanded_file_paths(frame))
       cache_size = Util.Ext.File.du_s(CmdHelpers.cache_file(frame))
       [
-        cmd:        "info"                              ,
-        cfg_name:   frame.cfg_name                      ,
-        numdocs:    frame.catalog.numdocs               ,
-        doc_size:   Util.Ext.Integer.format(doc_size  ) ,
-        cache_size: Util.Ext.Integer.format(cache_size)
+        cmd:        "info"                                     ,
+        cfg_name:   frame.cfg_name                             ,
+        numdocs:    frame.catalog.numdocs                      ,
+        doc_size:   Util.Ext.Integer.format(doc_size  )        ,
+        cache_size: Util.Ext.Integer.format(cache_size)        ,
+        file_paths: Util.Ext.Path.shrink_paths(frame.params.file_paths)
       ]
+    end
+  end
+
+  @doc """
+  Clean
+  """
+  def clean(cfg_snip) do
+    frame = Searchex.Command.Params.exec(cfg_snip)
+    if frame.halted do
+      {:error, frame.halt_msg}
+    else
+      file  = Searchex.Command.CmdHelpers.cache_file(frame)
+      if File.exists?(file), do: File.rm!(file)
+      {:ok}
     end
   end
 end

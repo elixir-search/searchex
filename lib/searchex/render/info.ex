@@ -6,9 +6,8 @@ defmodule Searchex.Render.Info do
     if length(vlist) == 0 do
       Util.Ext.IO.puts "NO COLLECTIONS"
     else
-      fields = ~w(repo/collection numdocs doc_size cache_size)
+      fields = ~w(repo/collection numdocs doc_size cache_size file_paths)
       {header, rows} = table_data(vlist, fields)
-#      Util.Ext.IO.puts TableRex.quick_render!(rows, header)
       Util.Ext.IO.puts table_render(rows, header)
     end
     :ok
@@ -25,7 +24,7 @@ defmodule Searchex.Render.Info do
   defp table_data(vlist, fields) do
     rows = vlist
            |> Enum.sort_by(fn(elem) -> elem[:cfg_name] end)
-           |> Enum.map(fn(elem) -> [elem[:cfg_name], elem[:numdocs], elem[:doc_size], elem[:cache_size]] end)
+           |> Enum.map(fn(elem) -> [elem[:cfg_name], elem[:numdocs], elem[:doc_size], elem[:cache_size], elem[:file_paths]] end)
     {fields, rows}
   end
 end
