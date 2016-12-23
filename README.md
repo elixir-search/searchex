@@ -86,10 +86,13 @@ After the `searchex` escript is installed...
 
 2) Run
 
-    > searchex help                         # show help page
-    > searchex ls                           # list collections
-    > searchex info                         # collection stats
-    > searchex query <collection> 'query'   # run a query
+    > searchex help                        # show help page
+    > searchex ls                          # list collections
+    > searchex info                        # show collection stats
+    > searchex query tiny '.'              # list docs from collection: tiny
+    > searchex show tiny 0                 # show the doc 0 from 'tiny'
+    > searchex show tiny 1                 # show the doc 1 from 'tiny'
+    > searchex query genesis 'adam eve'    # query docs from collection: genesis
 
 ## Roadmap
 
@@ -105,7 +108,7 @@ After the `searchex` escript is installed...
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] LRU Registry
-- [ ] Git-like change detection
+- [ ] Git-based file-change detection
 - [ ] Incremental add/remove/update
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Filesystem watcher
