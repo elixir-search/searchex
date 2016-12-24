@@ -28,7 +28,6 @@ defmodule Searchex.Command.Catalog do
     end
   end
 
-
   def start_cache(frame, _opts) do
     Util.Cache.start(frame)
     frame

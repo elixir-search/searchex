@@ -19,8 +19,10 @@ defmodule Searchex.Command.Index do
   def generate_index(frame, _opts) do
     child_digest = "idx_#{frame.cfg_name}_" <> Frame.get_digest(frame, :params)
     if map = Util.Cache.get_cache(frame, child_digest) do
+      Util.Ext.IO.tins("OLD", color: "GREEN")
       Index.map_to_otp(map, child_digest)
     else
+      Util.Ext.IO.tins("NEW", color: "GREEN")
       Index.create_from_frame(frame, child_digest)
       Util.Cache.put_cache(frame, child_digest, Index.otp_to_map(child_digest))
     end
