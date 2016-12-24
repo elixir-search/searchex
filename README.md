@@ -26,7 +26,7 @@ document types include:
 
 ## Demo
 
-[![asciicast](https://asciinema.org/a/55uva3cv4gkqequqv66jag844.png)](https://asciinema.org/a/55uva3cv4gkqequqv66jag844)
+[![asciicast](https://asciinema.org/a/bt234e6901874mx4rv0jh8ka1.png)](https://asciinema.org/a/bt234e6901874mx4rv0jh8ka1)
 
 ## Searchex Architecture
 
