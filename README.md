@@ -94,6 +94,10 @@ After the `searchex` escript is installed...
     > searchex show tiny 1                 # show the doc 1 from 'tiny'
     > searchex query genesis 'adam eve'    # query docs from collection: genesis
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/55uva3cv4gkqequqv66jag844.png)](https://asciinema.org/a/55uva3cv4gkqequqv66jag844)
+
 ## Roadmap
 
 - [x] Config management 
