@@ -58,7 +58,7 @@ defmodule Searchex.Render.Results do
     value = Map.get(doc, String.to_atom(header_name)) || "TBD"
     "#{value}"
     |> String.slice(0..40)
-    |> String.replace(~r/[\j\n\m\r\e\a\f\t\v]/, " ")
+    |> String.replace(~r/[\j\n\r\e\a\f\t\v]/, " ")
     |> String.replace(~r/[\x80-\xff]/, "")
     |> String.slice(0..30)
   end
