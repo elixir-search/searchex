@@ -135,7 +135,7 @@ After the `searchex` escript is installed...
 
 - Searchex Website: <http://searchex.org>
 - GitHub Source: <https://github.com/elixir-search/searchex> 
-- Sample Document Repository: <https://github.com/elixir-search/sample_docs>
+- Sample Repository: <https://github.com/elixir-search/sample>
 - StemEx: <https://github.com/elixir-search/stem_ex>
 - Hex Package: <https://hex.pm/packages/searchex>
 - API Documentation: <https://hexdocs.pm/searchex>
