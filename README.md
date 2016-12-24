@@ -24,6 +24,10 @@ document types include:
 - chat rooms and twitter feeds
 - web pages
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/55uva3cv4gkqequqv66jag844.png)](https://asciinema.org/a/55uva3cv4gkqequqv66jag844)
+
 ## Searchex Architecture
 
 A Searchex `DOCUMENT` has two key elements:
@@ -94,10 +98,6 @@ After the `searchex` escript is installed...
     > searchex show tiny 1                 # show the doc 1 from 'tiny'
     > searchex query genesis 'adam eve'    # query docs from collection: genesis
 
-## Demo
-
-[![asciicast](https://asciinema.org/a/55uva3cv4gkqequqv66jag844.png)](https://asciinema.org/a/55uva3cv4gkqequqv66jag844)
-
 ## Roadmap
 
 - [x] Config management 
@@ -109,13 +109,13 @@ After the `searchex` escript is installed...
 - [x] CLI Results Display
 - [x] Fetchable document repos
 - [ ] Server mode
+- [ ] Incremental add/remove/update
+- [ ] Git-based file-change detection
+- [ ] Filesystem watcher
+- [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
 - [ ] LRU Registry
-- [ ] Git-based file-change detection
-- [ ] Incremental add/remove/update
-- [ ] Streaming document ingestion (GenStage/Flow)
-- [ ] Filesystem watcher
 - [ ] Typeahead support
 - [ ] Alerting
 - [ ] Multi-collection search
