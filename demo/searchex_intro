@@ -3,24 +3,22 @@ echo "searchex@yourhost" > $PROMPT_FILE
 # starting demo...
 asciinema rec --title="Introduction to Searchex" _search_intro.json
 # Searchex is a new search engine written in pure Elixir.
-# Learn more at http://searchex.org
 searchex help
 # Searchex organizes documents into repositories and collections.
 searchex info
 pause
 # Searchex Repos can be shared on GitHub.
 # See an example Repo at http://github.com/elixir-search/sample
-# Repos can be downloaded to your local host.
 # Searchex Repos can contain one or more collections.
 # Each collection is defined by a 'config file':
 searchex cat genesis
 # Config files define doc paths, separators and meta-data fields.
-# You can query a collection:
+# Query a collection:
 searchex query genesis 'adam eve'
-# You can view results:
-searchex show genesis 0
+# View results:
+searchex show genesis 1
 # Searchex has a CLI and an API.
-# Searchex can be embedded in another Elixir project.
+# Searchex can be embedded in your Elixir project.
 # Searchex is ready for testing but not for production.
 # See http://searchex.org for more info.  :-)
 exit
