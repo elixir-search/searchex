@@ -9,15 +9,13 @@ searchex info
 pause
 # Searchex Repos can be shared on GitHub.
 # Example Repo at http://github.com/elixir-search/sample
-# Searchex Repos can contain one or more collections.
 # Collection 'config files' define paths and meta-data fields.
 searchex cat genesis
 # Query a collection:
 searchex query genesis 'adam eve'
 # View results:
 searchex show genesis 1
-# Searchex has a CLI and an API.
-# Searchex can be embedded in your Elixir project.
+# The Searchex API can be embedded in your Elixir project.
 # Searchex is ready for testing but not yet for production.
 # See http://searchex.org for more info.  :-)
 exit
