@@ -8,39 +8,40 @@ defmodule Searchex.Cli do
   Entry point for the `searchex` executable.  Takes a single argument `argv` which
   is a list of command-line options.
   """
-  def main(argv), do: route(argv) |> render
+  def main(argv) do
+    route(argv) |> render
+  end
 
   # List of command options.  The command should be the same as the function
   # name.  Argument and Description are used to generate help text.
   cmd_opts = [
-    # Cmd        Arity     Module       Argument                 Description
-    {"cfg_new"   ,   1,   "Config"   , "TARGET_PATH"          , "new config for TARGET_PATH"           },
-    {"cfg_cat"   ,   1,   "Config"   , "COLLECTION"           , "cat config"                           },
-    {"cfg_edit"  ,   1,   "Render"   , "COLLECTION"           , "edit config"                          },
-    {"cfg_rm"    ,   1,   "Config"   , "COLLECTION"           , "remove config"                        },
-    {"cfg_ls"    ,   0,   "Config"   , ""                     , "list configs"                         },
-    {"build"     ,   1,   "Command"  , "COLLECTION"           , "build the collection"                 },
-    {"search"    ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                },
-    {"results"   ,   0,   "Render"   , ""                     , "show results from the last search"    },
-    {"show"      ,   1,   "Command"  , "ID"                   , "show text of ID"                      },
-    {"edit"      ,   1,   "Render"   , "ID"                   , "edit ID"                              },
-    {"version"   ,   0,   ""         , ""                     , "show installed version"               },
-    {"help"      ,   0,   "Cli"      , ""                     , "this command"                         },
+    # Cmd      Arity    Module       Argument                 Description
+    {"ls"      ,   0,   "Config"   , ""                     , "list collections"                       },
+    {"info"    ,   0,   "Render"   , ""                     , "collection statistics"                  },
+    {"fetch"   ,   1,   "Config"   , "GITHUB_REPO"          , "eg 'fetch elixir-search/sample'"        },
+    {"new"     ,   1,   "Config"   , "TARGET_PATH"          , "new collection for TARGET_PATH"         },
+    {"cat"     ,   1,   "Config"   , "COLLECTION"           , "cat config"                             },
+    {"modify"  ,   1,   "Render"   , "COLLECTION"           , "edit the config file"                   },
+    {"rm"      ,   1,   "Config"   , "COLLECTION"           , "remove config"                          },
+    {"build"   ,   1,   "Render"   , "COLLECTION"           , "build the collection"                   },
+    {"query"   ,   2,   "Render"   , "COLLECTION '<query>'" , "search the collection"                  },
+    {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"            },
+    {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"                     },
+    {"edit"    ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                             },
+    {"version" ,   0,   ""         , ""                     , "show installed version"                 },
+    {"help"    ,   0,   "Cli"      , ""                     , "this command"                           },
   ]
   @cmd_opts cmd_opts
 
   # These command options are not included in the CLI 'help' output.
   alt_opts = [
-    # Cmd          Arity      Module       Argument               Description
-    {"query"       ,   2,   "Render"   , "COLLECTION '<query>'", "alias for search"                         },
-    {"cfg_fetch"   ,   1,   "Config"   , "SAMPLE"              , "fetch from elixir-search/sample_docs"     },
-    {"catalog"     ,   1,   "Command"  , "COLLECTION"          , "catalog the collection"                   },
-    {"index"       ,   1,   "Command"  , "COLLECTION"          , "index the collection"                     },
-    {"info"        ,   1,   "Command"  , "COLLECTION"          , "show collection status and statistics"    },
-    {"clean"       ,   0,   "Cli"      , ""                    , "remove all cached assets"                 },
-    {"all_commands",   0,   "Cli"      , ""                    , "used for tab completion - lists all cmds" },
-    {"cfg_commands",   0,   "Cli"      , ""                    , "used for tab completion"                  },
-    {"completion"  ,   0,   "Cli"      , ""                    , "renders the completion script"            },
+    # Cmd          Arity    Module       Argument             Description
+    {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
+    {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
+    {"clean"       ,   1,   "Render"  , "COLLECTION"       , "remove cache for COLLECTION"              },
+    {"all_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
+    {"cfg_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
+    {"completion"  ,   0,   "Cli"      , ""                 , "renders the completion script"            },
   ]
   @alt_opts alt_opts
 
@@ -48,7 +49,7 @@ defmodule Searchex.Cli do
 
   # Generate route functions for each command option
   for {cmd, len, mod, _args, _detail} <- cmd_opts ++ alt_opts do
-    modfun = Searchex.Util.Enum.join(["Searchex", mod, cmd], ".")
+    modfun = Util.Ext.Enum.join(["Searchex", mod, cmd], ".")
     {efunc, _} = Code.eval_string("&#{modfun}/#{len}")
     @cmd  cmd
     @func efunc
@@ -65,16 +66,9 @@ defmodule Searchex.Cli do
 
   # ----------------------------------------------------------------------------------------------------
 
-  # Generate a help message
   def help do
-    lines = 
-      Enum.map(@cmd_opts, fn({cmd,_,_,args,detail}) -> 
-        [rpad(cmd,8), rpad("|",1), rpad(args,20), "|", detail <> "\n" ]
-        |> Enum.join(" ") 
-      end)
-    headers = [rpad("Command", 11), rpad("Arguments", 23), "Description"]
-    value = [String.upcase(prog) <> " Version #{prog_version} - NOT READY FOR USE\n",headers, lines]
-    {:ok, value}
+    Searchex.Render.Help.to_table(@cmd_opts)
+    :ok
   end
 
   # Show the tab-completion script
@@ -107,22 +101,28 @@ defmodule Searchex.Cli do
 
   # ----------------------------------------------------------------------------------------------------
 
-  def clean do
-    Searchex.Config.Helpers.clean
-    {:ok, ""}
+  # Render command output to stdout
+  defp render({_, str}) when is_binary(str), do: lcl_puts(str)
+  defp render({_, lst}) when is_list(lst)  , do: lcl_test(lst)
+  defp render({_, ele})                    , do: lcl_insp(ele)
+  defp render(:ok)                         , do: :ok
+  defp render({:ok})                       , do: :ok
+  defp render(str) when is_binary(str)     , do: lcl_puts(str)
+  defp render(ele)                         , do: lcl_insp(ele)
+
+  defp lcl_test(list) do
+    case Enum.all?(List.flatten(list), fn(el) -> is_binary(el) end) do
+      true -> lcl_puts(Enum.join(list, "\n"))
+      _    -> lcl_insp(list)
+    end
   end
 
-  # ----------------------------------------------------------------------------------------------------
-
-  # Render command output to stdout
-  defp render({:ok   , str}) when is_binary(str), do: lcl_puts str
-  defp render({:error, str}) when is_binary(str), do: lcl_puts str
-  defp render({:ok   , list}), do: lcl_puts Enum.join(list, "\n")
-  defp render({:error, list}), do: lcl_puts Enum.join(list, "\n")
-  defp render(_val), do: {:ok}
-
   defp lcl_puts(string) do
-    unless Searchex.Util.String.empty?(string), do: DIO.puts string
+    unless Util.Ext.String.empty?(string), do: Util.Ext.IO.puts string
+  end
+
+  defp lcl_insp(ele) do
+    Util.Ext.IO.inspect(ele, width: 999)
   end
 
   # ----------------------------------------------------------------------------------------------------
@@ -130,9 +130,9 @@ defmodule Searchex.Cli do
   def rpad(string, val), do: String.pad_trailing(string, val)
   def lpad(string, val), do: String.pad_leading(string, val)
 
-  defp prog         , do: Searchex.Util.App.name
+  defp prog         , do: Util.Ext.App.name
 
-  defp prog_version , do: Searchex.Util.App.version
+#  defp prog_version , do: Util.Ext.App.version
 
   defp usage_message, do: "Type '#{prog} help' for usage information."
 

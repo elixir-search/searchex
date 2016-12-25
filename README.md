@@ -10,7 +10,7 @@ problems.
 BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
 build. 
 
-Searchex is UNDER CONSTRUCTION - not yet ready for use.
+Searchex is UNDER CONSTRUCTION - for testing only.
 
 ## About Searchex
 
@@ -24,9 +24,9 @@ document types include:
 - chat rooms and twitter feeds
 - web pages
 
-## Quick Start
+## Demo
 
-TBD
+[![asciicast](https://asciinema.org/a/b2wa0681pf3f5tm4c6rfa0j8v.png)](https://asciinema.org/a/b2wa0681pf3f5tm4c6rfa0j8v)
 
 ## Searchex Architecture
 
@@ -73,28 +73,52 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.1-alpha.2"}]
+  [{:searchex, "~> 0.0.1-alpha.4"}]
 end
 ```
-
 Then run `mix deps.get`
 
 View API documentation at https://hexdocs.pm/searchex
+
+## Quick Start
+
+After the `searchex` escript is installed...
+
+1) Fetch a Searchex repository
+ 
+    > searchex fetch elixir-search/sample
+
+2) Run
+
+    > searchex help                        # show help page
+    > searchex ls                          # list collections
+    > searchex info                        # show collection stats
+    > searchex query tiny '.'              # list docs from collection: tiny
+    > searchex show tiny 0                 # show the doc 0 from 'tiny'
+    > searchex show tiny 1                 # show the doc 1 from 'tiny'
+    > searchex query genesis 'adam eve'    # query docs from collection: genesis
 
 ## Roadmap
 
 - [x] Config management 
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
-- [ ] Simple CLI
-- [ ] Repository for Sample Docs
+- [x] Middleware framework
+- [x] CLI Indexing and Query
+- [x] LRU Cache
+- [x] CLI Results Display
+- [x] Fetchable document repos
+- [ ] Server mode
+- [ ] Incremental add/remove/update
+- [ ] Git-based file-change detection
+- [ ] Filesystem watcher
+- [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Faceted Search
 - [ ] CLI Tab Completion
-- [ ] Server mode
-- [ ] Streaming document ingestion (GenStage/Flow)
-- [ ] Filesystem watcher
+- [ ] LRU Registry
 - [ ] Typeahead support
 - [ ] Alerting
+- [ ] Multi-collection search
 - [ ] Configuration GUI
 - [ ] Firestorm integration
 - [ ] Phoenix integration
@@ -111,7 +135,7 @@ View API documentation at https://hexdocs.pm/searchex
 
 - Searchex Website: <http://searchex.org>
 - GitHub Source: <https://github.com/elixir-search/searchex> 
-- Sample Document Repository: <https://github.com/elixir-search/sample_docs>
+- Sample Repository: <https://github.com/elixir-search/sample>
 - StemEx: <https://github.com/elixir-search/stem_ex>
 - Hex Package: <https://hex.pm/packages/searchex>
 - API Documentation: <https://hexdocs.pm/searchex>

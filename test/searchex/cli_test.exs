@@ -13,7 +13,7 @@ defmodule Searchex.CliTest do
         unless Enum.member?(~w(results), @cmd) do
           refute var == true
         else
-          assert var == true
+          refute var == true
         end
       end
     end

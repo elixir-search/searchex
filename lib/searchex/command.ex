@@ -10,54 +10,40 @@ defmodule Searchex.Command do
   This workflow establishes a dependency chain, with higher level steps
   depending on the outputs of lower level steps.  Each step generates an
   intermediate output which can be cached to minimize re-execution of
-  compute-intensive steps.
-
-  - Read Configuration generates in-memory state
-  - Build Catalog generates an on-disk cache file (~/.searchex/data/<collection>_cat.dat)
-  - Build Index generates an on-disk cache file (~/.searchex/data/<collection>_idx.dat)
-  - Perform Query generates a results file (~/.searchex/temp/results.dat)
-
-  The overall dependency tree starts with on-disk assets:
-
-  [config_file,doc_dirs] < Read Configuration < Build Index < Perform Query
-
-  The `Cmd` system uses the Elixir behavior `ExMake` to manage the dependency chain.
+  compute-intensive steps.  The command structure is based on `Shake`.
   """
 
+  alias Util.Cache
+
   @doc """
-  Generate the catalog for `cfg_name`
+  Generate the catalog for `cfg_snip`
 
   The catalog is a Map that contains all configuration data, document text and meta-data.
 
-  The catalog is generated from a config file, stored at `~/.Searchex.Configs/<cfg_name>.yml`.
+  The catalog is generated from a config file, stored at `~/.Searchex.Configs/<cfg_snip>.yml`.
 
-  The catalog is cached on disk at `~/.searchex/data/<cfg_name>_cat.dat`.
+  The catalog is cached on disk at `~/.searchex/data/<cfg_snip>_cat.dat`.
   """
-  def catalog(cfg_name) do
-    DIO.puts "CATALOG #{cfg_name}"
-    Searchex.Command.Catalog.exec(cfg_name)
+  def catalog(cfg_snip) do
+    Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
-  Generate the index for `cfg_name`
+  Generate the index for `cfg_snip`
 
   The index is a data structure used for fast search and retrieval.
 
-  The index lives in memory as a series of GenServers, one for each keyword.
-
-  The index is cached on disk at `~/.searchex/data/<cfg_name>_index.dat`.
+  The index lives in a Process Tree, one worker for each keyword.
   """
-  def index(cfg_name) do
-    DIO.puts "INDEX #{cfg_name}"
-    Searchex.Command.Index.exec(cfg_name)
+  def index(cfg_snip) do
+    Searchex.Command.Index.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
-  Generate both the catalog and the index for `cfg_name` in one step
+  Generate both the catalog and the index for `cfg_snip` in one step
   """
-  def build(cfg_name) do
-    DIO.puts "BUILD #{cfg_name}"
-    Searchex.Command.Build.exec(cfg_name)
+  def build(cfg_snip) do
+    Searchex.Command.Build.exec(cfg_snip) |> Cache.save
   end
 
   @doc false
@@ -69,43 +55,27 @@ defmodule Searchex.Command do
   - Average size of documents
   - etc.
   """
-  def info(_cfg_name) do
-    {:ok, "INFO: UNDER CONSTRUCTION"}
+  def info(cfg_snip) do
+    Searchex.Command.Info.exec(cfg_snip)
   end
 
   @doc """
-  Search the collection
+  Query the collection
   """
-  def search(cfg_name, query) do
-    {:ok, Searchex.Command.Search.exec(cfg_name, query)}
+  def query(cfg_snip, query) do
+    Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save
   end
 
   @doc """
-  Alias for `search`
+  Show last results
   """
-  def query(cfg_name, query) do
-    search(cfg_name, query)
+  def results(cfg_snip) do
+    Searchex.Command.Results.exec(cfg_snip)
   end
 
-  @doc """
-  Display results to stdout
-  """
-  def results do
-    {:ok, Searchex.Command.Results.exec}
-  end
-
-  @doc """
-  Show document text
-  """
-  def show(idnum) do
-    Searchex.Command.Show.exec(idnum)
-    {:ok}
-  end
-
-  @doc """
-  Edit document text
-  """
-  def edit(idnum) do
-    Searchex.Command.Edit.exec(idnum)
+  @doc false
+  # Show document text
+  def show(cfg_snip, tgt_id) do
+    Searchex.Command.Show.exec(cfg_snip, tgt_id)
   end
 end

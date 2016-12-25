@@ -2,24 +2,22 @@ defmodule Searchex.Config.Edit do
 
   @moduledoc false
 
-  import Searchex.Config.Helpers
-  import ExMake, only: [check_validations: 1]
+  import Searchex.Config.CfgValidations
 
-  def exec(cfg_name) do
-    make_active_dirs()
-    case check_validations(validation_list(cfg_name)) do
+  def exec(cfg_snip) do
+    case check_validations(validation_list(cfg_snip)) do
       {:error, msgs} -> {:error, msgs}
-      {:ok}          -> {:ok, cfg_name}
+      {:ok}          -> {:ok, cfg_snip}
     end
   end
 
   # -----
 
-  defp validation_list(cfg_name) do
+  defp validation_list(cfg_snip) do
     [
-      cfg_name_invalid?(cfg_name)     ,
-      cfg_missing?(cfg_name)          ,
-      cfg_dir_absent?
+       cfg_snip_invalid?(cfg_snip)     ,
+       cfg_ambiguous?(cfg_snip)        ,
+       cfg_nomatch?(cfg_snip)          ,
     ]
   end
 end

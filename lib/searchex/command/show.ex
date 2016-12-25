@@ -1,20 +1,38 @@
 defmodule Searchex.Command.Show do
-  @moduledoc false
-#  use ExMake
 
-  # error checks:
-  # - valid cfg_name
-  # - existing cfg_name
-  # - valid cfg
-  def exec(idnum) do
-    results = elem(Searchex.Command.Search.Cache.read_results,0)
-    docs    = results.docs
-    doc     = Enum.at(docs, String.to_integer(idnum))
-    body = doc.body
-    DIO.puts body
+  @moduledoc false
+
+  use Shake.Module
+  alias Shake.Frame
+
+  @doc "Module API"
+  def exec(cfg_snip, tgt_id) do
+    call(%Frame{cfg_snip: cfg_snip, tgt_id: tgt_id}, [])
   end
 
-  def handle_chain(_cfg_name) do
-    "TBD"
+  step Searchex.Command.Results
+  step :integer_tgt_id?
+  step :valid_tgt_id?
+  step :tgt_doc
+
+  def integer_tgt_id?(%Frame{tgt_id: tgt_id} = frame, _opts) do
+    case Integer.parse(tgt_id) do
+      :error          -> halt(frame, "Not a number (#{tgt_id})")
+      {new_tgt_id, _} -> %Frame{frame | tgt_id: new_tgt_id}
+    end
+  end
+
+  def valid_tgt_id?(%Frame{tgt_id: tgt_id} = frame, _opts) do
+    maxid = length(frame.results.docs)
+    cond do
+      tgt_id < 1     -> halt(frame, "Invalid ID (#{tgt_id})")
+      tgt_id > maxid -> halt(frame, "Invalid ID (#{tgt_id})")
+      true           -> frame
+    end
+  end
+
+  def tgt_doc(%Frame{tgt_id: tgt_id} = frame, _opts) do
+    doc = Enum.at frame.results.docs, (tgt_id - 1)
+    %Frame{frame | tgt_doc: doc}
   end
 end

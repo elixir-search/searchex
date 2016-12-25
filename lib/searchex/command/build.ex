@@ -1,17 +1,13 @@
 defmodule Searchex.Command.Build do
+
   @moduledoc false
 
-#  use ExMake
+  use Shake.Module
 
-  # error checks:
-  # - valid cfg_name
-  # - existing cfg_name
-  # - valid cfg
-  def exec(cfg_name) do
-    Searchex.Command.Index.exec(cfg_name)
+  def exec(cfg_snip) do
+    call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
-  def handle_chain(_cfg_name) do
-    "TBD"
-  end
+  step Searchex.Command.Index
+
 end

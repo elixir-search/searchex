@@ -3,7 +3,7 @@ defmodule Searchex.ConfigTest do
 
   doctest Searchex.Config
 
-  describe "#cfg_new" do
+  describe "#new" do
     @tag :skip
     test "with invalid path name" do
       {cond, _skip} = Searchex.Config.new("bang!")
@@ -23,37 +23,37 @@ defmodule Searchex.ConfigTest do
     test "with current relative path"
   end
 
-  describe "#cfg_fetch" do
-    test "invalid config name" do
-      {cond, _skip} = Searchex.Config.cfg_fetch("non*sense")
-      assert cond == :error
-    end
-  end
+#  describe "#fetch" do
+#    test "invalid config name" do
+#      {cond, _skip} = Searchex.Config.fetch("non*sense")
+#      assert cond == :error
+#    end
+#  end
 
-  describe "#cfg_cat" do
+  describe "#cat" do
     test "missing file name" do
-      {cond, _skip} = Searchex.Config.cfg_cat("does_not_exist")
+      {cond, _skip} = Searchex.Config.cat("does_not_exist")
       assert cond == :error 
     end
   end
 
-  describe "#cfg_edit" do
-    test "invalid file name" do
-      {cond, _skip} = Searchex.Config.cfg_edit("non*sense")
-      assert cond == :error
-    end
-  end
+#  describe "#edit" do
+#    test "invalid file name" do
+#      {cond, _skip} = Searchex.Config.edit("non*sense")
+#      assert cond == :error
+#    end
+#  end
 
-  describe "#cfg_ls" do
+  describe "#ls" do
     test "with valid input" do
-      {cond, _skip} = Searchex.Config.cfg_ls()
+      {cond, _skip} = Searchex.Config.ls()
       assert cond == :ok
     end
   end
 
-  describe "#cfg_rm" do
+  describe "#rm" do
     test "with invalid cfg name" do
-      {cond, _skip} = Searchex.Config.cfg_rm("nonexist")
+      {cond, _skip} = Searchex.Config.rm("nonexist")
       assert cond == :error
     end
   end

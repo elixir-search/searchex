@@ -15,8 +15,8 @@ defmodule Searchex.Keyword.Server do
     GenServer.start_link(__MODULE__, %{}, name: server_name)
   end
 
-  def add_keyword_position(keyword, docid, position) do
-    server = get_keyword_server(keyword)
+  def add_keyword_position(pt_name, keyword, docid, position) do
+    server = get_keyword_server(pt_name, keyword)
     GenServer.cast(server, {:add, docid, position})
   end
 
@@ -31,18 +31,19 @@ defmodule Searchex.Keyword.Server do
   matches_per_term_and_doc looks like:
   %{{"term1", "docid1"} => 23, {"term1", "docid2"} => 4, ...}
   """
-  def do_query(terms) when is_list(terms) do
-    DIO.inspect terms, color: "GREEN", label: "TERMSSS"
-    doc_matches = gen_doc_matches(terms)
+  def do_query({pt_name, terms}) when is_list(terms) do
+    stem_terms               = Enum.map(terms, &(StemEx.stem(&1)))
+    doc_matches              = gen_doc_matches(pt_name, stem_terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
     Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
   end
-  def do_query(terms) when is_binary(terms)       , do: do_query(String.split(terms, " "))
-  def do_query({cat, terms}) when is_list(terms)  , do: {cat, do_query(terms)}
-  def do_query({cat, terms}) when is_binary(terms), do: {cat, do_query(String.split(terms))}
+  def do_query({pt_name, terms}) when is_list(terms)   , do: do_query(pt_name, terms)
+  def do_query({pt_name, terms}) when is_binary(terms) , do: do_query(pt_name, String.split(terms))
+  def do_query({pt_name, terms})                       , do: do_query(pt_name, terms)
+  def do_query(pt_name, terms)   when is_binary(terms) , do: do_query(pt_name, String.split(terms, " "))
 
-  def gen_doc_matches(terms) do
-    Enum.map(terms, fn(term) -> get_ids(term) end)
+  def gen_doc_matches(pt_name, terms) do
+    Enum.map(terms, fn(term) -> get_ids(pt_name, term) end)
   end
 
   def gen_matches_per_term_and_doc(doc_matches) do
@@ -54,14 +55,15 @@ defmodule Searchex.Keyword.Server do
     end
   end
 
+
   @doc """
   Gets the list of ID's for a term.
 
   The returned data structure look like:
   %{"DIOCID1" => [list of positions], "DIOCID2" => [list of positions]}
   """
-  def get_ids(term) do
-    case find_keyword_server(term) do
+  def get_ids(pt_name, term) do
+    case find_keyword_server(pt_name, term) do
       {:ok, server} -> {term, GenServer.call(server, :get_ids)};
       {:error, _  } -> {term, %{}}
     end
@@ -100,20 +102,21 @@ defmodule Searchex.Keyword.Server do
     {:noreply, new_state}
   end
 
-  def get_keyword_server(keyword) do
-    name = if is_atom(keyword), do: keyword, else: keyword_server_name(keyword)
-    Process.whereis(name) || Searchex.Keyword.Supervisor.add_child_and_return_pid(name)
+  def get_keyword_server(pt_name, keyword) do
+    name = if is_atom(keyword), do: keyword, else: keyword_server_name(pt_name, keyword)
+    Process.whereis(name) || Searchex.Keyword.Supervisor.add_child_and_return_pid(pt_name, name)
   end
 
-  def find_keyword_server(keyword) do
-    name = keyword_server_name(keyword)
+  def find_keyword_server(pt_name, keyword) do
+    name = keyword_server_name(pt_name, keyword)
     case Process.whereis(name) do
       nil -> {:error, "Not found"}
       pid -> {:ok, pid}
     end
   end
 
-  def keyword_server_name(keyword) do
-    "kw_" <> keyword |> String.to_atom
+  def keyword_server_name(pt_name, keyword) do
+    new_pt_name = to_string(pt_name)
+    "kw_" <> new_pt_name <> "_" <> keyword |> String.to_atom
   end
 end

@@ -1,0 +1,4 @@
+---
+:collection: min
+:file_paths: ["docs/tweets"]
+:cache_dir:  "/tmp/searchex"
