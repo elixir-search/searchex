@@ -113,7 +113,7 @@ defmodule Util.Ext.File do
   # compiles a string (like "txt") into a regex.
   # the regex matches EOL (eg> ~r/txt!/)
   defp reg_compile(glob) do
-    {:ok, reg} = Regex.compile("#{glob}$")
+    {:ok, reg} = Regex.compile("\\.#{glob}$")
     reg
   end
 
