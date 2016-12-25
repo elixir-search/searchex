@@ -66,18 +66,9 @@ defmodule Searchex.Cli do
 
   # ----------------------------------------------------------------------------------------------------
 
-  # Generate a help message
   def help do
-    lines = 
-      Enum.map(@cmd_opts, fn({cmd,_,_,args,detail}) -> 
-        [rpad(cmd,7), rpad("|",1), rpad(args,20), "|", detail <> "\n" ]
-        |> Enum.join(" ") 
-      end)
-    headers     = [rpad("Command", 10), rpad("Arguments", 23), "Description"]
-    {:ok, cfgs} = Searchex.Config.ls
-    cols  = "Collections: " <> Enum.join(cfgs, ", ")
-    value = [String.upcase(prog) <> " Version #{prog_version} - FOR TESTING ONLY\n",headers, lines, cols]
-    {:ok, value}
+    Searchex.Render.Help.to_table(@cmd_opts)
+    :ok
   end
 
   # Show the tab-completion script
@@ -141,7 +132,7 @@ defmodule Searchex.Cli do
 
   defp prog         , do: Util.Ext.App.name
 
-  defp prog_version , do: Util.Ext.App.version
+#  defp prog_version , do: Util.Ext.App.version
 
   defp usage_message, do: "Type '#{prog} help' for usage information."
 
