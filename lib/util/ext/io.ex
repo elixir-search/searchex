@@ -162,10 +162,4 @@ defmodule Util.Ext.IO do
   end
 
   defp valid_color?(color), do: Enum.member?(valid_colors, color)
-
-#  defp to_atom(elem) when is_binary(elem), do: String.to_atom(elem)
-#  defp to_atom(elem), do: elem
-#
-#  defp to_chardata(list) when is_list(list), do: list
-#  defp to_chardata(other), do: to_string(other)
 end

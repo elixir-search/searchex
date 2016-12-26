@@ -8,8 +8,9 @@ defmodule Searchex.Command.Build.Catalog.Params do
             file_paths:   []                  ,
             file_types:   ~w(txt md js exs ex),
             input_fields: %{}                 ,
-            max_numfiles: 200                 ,
-            max_file_kb:  200                 ,
+            max_numfiles: 100                 ,
+            max_file_kb:  100                 ,
+            path_depth:   2                   ,
             cli_format:   %{}
 
   alias Searchex.Command.Build.Catalog.Params

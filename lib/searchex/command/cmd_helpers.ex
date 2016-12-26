@@ -27,15 +27,15 @@ defmodule Searchex.Command.CmdHelpers do
   def file_list(frame) do
     frame.params.file_paths
     |> Enum.map(fn(path) -> Path.expand(path, repo_dir(frame)) end)
-    |> Enum.map(fn(path) -> expand(path) end)
+    |> Enum.map(fn(path) -> expand(path, frame) end)
     |> List.flatten
   end
 
   # -----
 
-  defp expand(path) do
+  defp expand(path, frame) do
     if File.dir?(path) do
-      Util.Ext.File.ls_r(path)
+      Util.Ext.File.ls_r(path, globs: frame.params.file_types, path_depth: frame.params.path_depth)
     else
       path
     end

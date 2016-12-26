@@ -125,8 +125,8 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = Util.Ext.File.du_s(CmdHelpers.expanded_file_paths(frame))
-      cache_size = Util.Ext.File.du_s(CmdHelpers.cache_file(frame))
+      doc_size   = Util.Ext.FileOld.du_s(CmdHelpers.expanded_file_paths(frame))
+      cache_size = Util.Ext.FileOld.du_s(CmdHelpers.cache_file(frame))
       [
         cmd:        "info"                                     ,
         cfg_name:   frame.cfg_name                             ,

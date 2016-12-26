@@ -26,7 +26,7 @@ defmodule Util.TimeStamp do
   """
   def dirpath_timestamp(dirpath) do
     Path.expand(dirpath)
-    |> Util.Ext.File.ls_r
+    |> Util.Ext.FileOld.ls_r
     |> Enum.map(fn(path) -> filepath_timestamp(path) end)
     |> Enum.max
   end
