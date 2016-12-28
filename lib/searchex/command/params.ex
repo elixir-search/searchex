@@ -23,10 +23,10 @@ defmodule Searchex.Command.Params do
   step :validate, with: validation_list
   step :generate_cfg_name
   step :generate_params
-  step :validate_file_path_presence
-  step :validate_file_paths
+  step :validate_file_root_presence
+  step :validate_file_roots
   step :validate_matching_cfg_names
-  step :expand_file_paths
+  step :expand_file_roots
   step :generate_digest
 
   def generate_cfg_name(frame, _opts) do
@@ -44,18 +44,18 @@ defmodule Searchex.Command.Params do
     %Frame{frame | params: params}
   end
 
-  def validate_file_path_presence(frame, _opts) do
+  def validate_file_root_presence(frame, _opts) do
     alias Searchex.Command.CmdHelpers
-    case length(frame.params.file_paths) do
-      0 -> halt(frame, "No file_paths")
+    case length(frame.params.file_roots) do
+      0 -> halt(frame, "No file_roots")
       _ -> frame
     end
   end
 
-  # halt if one or more of the file paths is missing
-  def validate_file_paths(frame, _opts) do
+  # halt if one or more of the file roots is missing
+  def validate_file_roots(frame, _opts) do
     alias Searchex.Command.CmdHelpers
-    badpaths = frame.params.file_paths
+    badpaths = frame.params.file_roots
                |> Enum.map(fn(path) -> {Path.expand(path, CmdHelpers.repo_dir(frame)), path} end)
                |> Enum.map(fn({full_path, path}) -> {File.exists?(full_path), path} end)
                |> Enum.filter(fn(tup) -> ! elem(tup, 0) end)
@@ -77,21 +77,23 @@ defmodule Searchex.Command.Params do
     end
   end
 
-  def expand_file_paths(frame, _opts) do
+  def expand_file_roots(frame, _opts) do
     alias Searchex.Command.CmdHelpers
-    new_paths  = frame.params.file_paths
-                 |> Enum.map(fn(path) -> Path.expand(path, CmdHelpers.repo_dir(frame)) end)
-    new_params = %Params{frame.params | file_paths: new_paths}
+    new_roots  = CmdHelpers.expanded_file_roots(frame)
+    new_params = %Params{frame.params | file_roots: new_roots}
     %Frame{frame | params: new_params}
   end
 
   # generate a digest for the params
   # the digest is simply the newest timestamp of the config file
-  # and all the documents in the file_paths
-  def generate_digest(%Frame{cfg_name: cfg_name, params: params} = frame, _opts) do
-    import Searchex.Config.CfgHelpers
-    import Util.TimeStamp
-    term   = mixlist_timestamp([cfg_file(cfg_name), params.file_paths])
+  # and all the documents in the file_roots
+  def generate_digest(%Frame{cfg_name: cfg_name} = frame, _opts) do
+    alias Searchex.Config.CfgHelpers
+    alias Searchex.Command.CmdHelpers
+    alias Util.TimeStamp
+    term  = [CfgHelpers.cfg_file(cfg_name)] ++ CmdHelpers.file_list(frame)
+            |> Enum.map(fn(file) -> TimeStamp.filepath_timestamp(file) end)
+            |> TimeStamp.newest
     digest = Util.Ext.Term.digest({cfg_name, term})
     set_digest(frame, :params, digest)
   end

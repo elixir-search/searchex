@@ -19,41 +19,41 @@ defmodule Util.TimeStamp do
     end
   end
 
-  @doc """
-  Return a timestamp for a specific directory.
+#  @doc """
+#  Return a timestamp for a specific directory.
+#
+#  Timestamp is the most recently modified file under the directory.
+#  """
+#  def dirpath_timestamp(dirpath) do
+#    Path.expand(dirpath)
+#    |> Util.Ext.File.ls_r
+#    |> Enum.map(fn(path) -> filepath_timestamp(path) end)
+#    |> Enum.max
+#  end
 
-  Timestamp is the most recently modified file under the directory.
-  """
-  def dirpath_timestamp(dirpath) do
-    Path.expand(dirpath)
-    |> Util.Ext.File.ls_r
-    |> Enum.map(fn(path) -> filepath_timestamp(path) end)
-    |> Enum.max
-  end
+#  @doc """
+#  Return a timestamp for a list of directories.
+#
+#  Timestamp is the most recently modified file for all sub-directories.
+#  """
+#  def dirlist_timestamp(dirlist) do
+#    dirlist
+#    |> Enum.map(fn(x) -> Path.expand(x) end)
+#    |> Enum.map(fn(x) -> dirpath_timestamp(x) end)
+#    |> newest
+#  end
 
-  @doc """
-  Return a timestamp for a list of directories.
-
-  Timestamp is the most recently modified file for all sub-directories.
-  """
-  def dirlist_timestamp(dirlist) do
-    dirlist
-    |> Enum.map(fn(x) -> Path.expand(x) end)
-    |> Enum.map(fn(x) -> dirpath_timestamp(x) end)
-    |> newest
-  end
-
-  @doc """
-  Return a timestamp for a mixed list of files and directories.
-  """
-  def mixlist_timestamp(list) do
-    new_list = List.flatten(list)
-    dirs  = Enum.filter(new_list, fn(el) -> File.dir?(el) end) |> List.flatten
-    files = new_list -- dirs
-    newest_file = Enum.map(files, fn(file) -> filepath_timestamp(file) end) |> newest
-    newest_dir  = dirlist_timestamp(dirs)
-    List.flatten([newest_file, newest_dir]) |> newest
-  end
+#  @doc """
+#  Return a timestamp for a mixed list of files and directories.
+#  """
+#  def mixlist_timestamp(list) do
+#    new_list = List.flatten(list)
+#    dirs  = Enum.filter(new_list, fn(el) -> File.dir?(el) end) |> List.flatten
+#    files = new_list -- dirs
+#    newest_file = Enum.map(files, fn(file) -> filepath_timestamp(file) end) |> newest
+#    newest_dir  = dirlist_timestamp(dirs)
+#    List.flatten([newest_file, newest_dir]) |> newest
+#  end
 
   @doc """
   Timestamp 'newer' comparison predicate

@@ -31,7 +31,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_paths: frame.params.file_paths]
+      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
     end
   end
 
@@ -55,7 +55,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_paths: frame.params.file_paths]
+      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
     end
   end
 
@@ -125,15 +125,15 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = Util.Ext.File.du_s(CmdHelpers.expanded_file_paths(frame))
-      cache_size = Util.Ext.File.du_s(CmdHelpers.cache_file(frame))
+      doc_size   = CmdHelpers.doc_size(frame)
+      cache_size = CmdHelpers.cache_size(frame)
       [
         cmd:        "info"                                     ,
         cfg_name:   frame.cfg_name                             ,
         numdocs:    frame.catalog.numdocs                      ,
         doc_size:   Util.Ext.Integer.format(doc_size  )        ,
         cache_size: Util.Ext.Integer.format(cache_size)        ,
-        file_paths: Util.Ext.Path.shrink_paths(frame.params.file_paths)
+        file_roots: Util.Ext.Path.shrink_paths(frame.params.file_roots)
       ]
     end
   end

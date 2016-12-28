@@ -2,7 +2,7 @@
 :collection: align
 :docsep:     "-----\n"
 :cache_dir:  "/tmp/searchex"
-:file_paths: ["docs/align.txt"]
+:file_roots: ["docs/align.txt"]
 :file_types: ["txt", "md", "wlog"]
 :display_fields: "startbyte doclength body"
 

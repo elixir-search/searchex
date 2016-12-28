@@ -40,6 +40,7 @@ defmodule Searchex.Render.Results do
 
   defp clean_header(header) do
     header
+    |> String.replace("i:", "")
     |> String.replace("f:", "")
     |> String.capitalize
   end
@@ -49,8 +50,12 @@ defmodule Searchex.Render.Results do
   end
 
   # get fields
-  defp row_item(doc, <<"f:" , field_name::binary>>) do
+  defp row_item(doc, <<"i:", field_name::binary>>) do
     Map.get(doc.fields, String.to_atom(field_name)) || "TBD"
+  end
+
+  defp row_item(doc, <<"f:", field_name::binary>>) do
+    funcmap(doc, field_name).()
   end
 
   # get fields
@@ -61,5 +66,24 @@ defmodule Searchex.Render.Results do
     |> String.replace(~r/[\j\n\r\e\a\f\t\v]/, " ")
     |> String.replace(~r/[\x80-\xff]/, "")
     |> String.slice(0..30)
+  end
+
+  defp funcmap(doc, field) do
+    %{
+      "filename1" => fn() -> Map.get(doc, :filename) |> join_path(1) end     ,
+      "filename2" => fn() -> Map.get(doc, :filename) |> join_path(2) end     ,
+      "filename3" => fn() -> Map.get(doc, :filename) |> join_path(3) end     ,
+      "filename4" => fn() -> Map.get(doc, :filename) |> join_path(4) end     ,
+      "filename5" => fn() -> Map.get(doc, :filename) |> join_path(5) end     ,
+    }[field]
+  end
+
+  defp join_path(string, depth) do
+    string
+    |> String.split("/")
+    |> Enum.reverse
+    |> Enum.take(depth)
+    |> Enum.reverse
+    |> Enum.join("/")
   end
 end
