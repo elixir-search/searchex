@@ -2,8 +2,10 @@
 :collection:     "<%= cfg_name %>"
 :file_roots:     [<%= docroot %>]
 :file_types:     [<%= file_types %>]
-:file_maxnum:    50
+:file_maxnum:    100
 :file_maxkb:     100
+:file_skips:     ["^\\..+", "^_"]
+:file_depth:     4
 :input_fields:
 :display_fields: "docstart doclength body"
 :docsep:

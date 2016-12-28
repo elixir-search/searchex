@@ -6,7 +6,7 @@
 :file_types:     ["txt", "md", "wlog"]
 :file_maxnum:    50
 :file_maxkb:     100
-:display_fields: "startbyte doclength f:from f:date f:body"
+:display_fields: "startbyte doclength i:from i:date i:body"
 :input_fields:
   :from:
     :regex:   "from: (?<from>.*)"

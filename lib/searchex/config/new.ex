@@ -7,7 +7,7 @@ defmodule Searchex.Config.New do
 
   def exec(path) do
     full_path = Path.expand(path)
-    cfg_name  = name_from_path(path)
+    cfg_name  = name_from_path(full_path)
     case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
       {:ok}          -> create_cfg(cfg_name, full_path)

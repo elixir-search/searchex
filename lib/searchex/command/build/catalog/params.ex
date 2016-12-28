@@ -23,6 +23,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
   def file_params(params) do
     %{
       types:  params.file_types   ,
+      skips:  params.file_skips   ,
       maxnum: params.file_maxnum  ,
       maxkb:  params.file_maxkb   ,
       depth:  params.file_depth

@@ -46,7 +46,8 @@ defmodule Util.Ext.File do
   defp ls_dir(_path, %{depth: 0} = _opts), do: []
   defp ls_dir(base_path, opts) do
     new_opts = %{opts | depth: opts.depth - 1}
-    if dirglob_match?(base_path, opts.skips) do
+    result = dirglob_match?(base_path, opts.skips)
+    if result do
       []
     else
       base_path
