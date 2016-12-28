@@ -20,10 +20,10 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   defp gen_filescans(catalog, frame) do
+    alias Searchex.Command.Build.Catalog.Params
     scans = frame
             |> Searchex.Command.CmdHelpers.file_list
-            |> Util.Ext.File.ls_r(globs: frame.params.file_types, path_depth: frame.params.path_depth)
-            |> Enum.take(frame.params.max_numfiles)
+            |> Util.Ext.File.ls_r(Params.file_params(frame.params))
             |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, frame.params) end)
     %Catalog{catalog | filescans: scans}
   end

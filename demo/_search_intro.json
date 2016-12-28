@@ -1419,7 +1419,7 @@
     ],
     [
       0.209902,
-      "---\r\n:collection:     \"genesis\"\r\n:file_paths:     [docs/genesis.txt]\r\n:file_types:     [\"txt\"]\r\n:max_numfiles:   10\r\n:max_file_kb:    2000\r\n:cache_dir:      \"cache\"\r\n:display_fields: \"startbyte doclength body\"\r\n:docsep:         \"\\n\"\r\n:input_fields:\r\n\r\n"
+      "---\r\n:collection:     \"genesis\"\r\n:file_paths:     [docs/genesis.txt]\r\n:file_types:     [\"txt\"]\r\n:max_numfiles:   10\r\n:file_maxkb:    2000\r\n:cache_dir:      \"cache\"\r\n:display_fields: \"startbyte doclength body\"\r\n:docsep:         \"\\n\"\r\n:input_fields:\r\n\r\n"
     ],
     [
       0.007796,

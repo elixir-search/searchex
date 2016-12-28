@@ -10,19 +10,20 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
 
   def generate_filescan(filename, params) do
     %Filescan{input_filename: filename}
-    |> read_rawdata(params.max_file_kb)
+    |> read_rawdata(params.file_maxkb)
     |> gen_docsep_positions(params)
     |> gen_docsep_locations
   end
   
-  defp read_rawdata(scan, max_file_kb) do
-    rawdata = File.stream!(scan.input_filename, [], max_file_kb * 1024) |> Enum.at(0)
+  defp read_rawdata(scan, file_maxkb) do
+    rawdata = File.stream!(scan.input_filename, [], file_maxkb * 1024) |> Enum.at(0)
     %Filescan{scan | rawdata: rawdata}
   end
 
   defp gen_docsep_positions(scan, params) do
     positions = if params.docsep do
                   params.docsep
+                  |> Regex.compile |> elem(1)
                   |> Regex.scan(scan.rawdata, return: :index )
                   |> Enum.map(fn(x) -> [{beg, fin} | _tail] = x; beg + fin end)
                 else

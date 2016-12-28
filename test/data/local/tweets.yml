@@ -2,10 +2,10 @@
 :collection:     tweets
 :docsep:         "---"
 :cache_dir:      "/tmp/searchex"
-:file_paths:     ["docs/tweets"]
+:file_roots:     ["docs/tweets"]
 :file_types:     ["txt", "md", "wlog"]
-:max_numfiles:   50
-:max_file_kb:    100
+:file_maxnum:    50
+:file_maxkb:     100
 :display_fields: "startbyte doclength f:from f:date f:body"
 :input_fields:
   :from:

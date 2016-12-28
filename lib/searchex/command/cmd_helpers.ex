@@ -20,24 +20,23 @@ defmodule Searchex.Command.CmdHelpers do
     Searchex.base_dir <> "/" <> frame.cfg_name <> ".yml"
   end
 
-  def expanded_file_paths(frame) do
-    Enum.map frame.params.file_paths, fn(path) -> Path.expand(path, repo_dir(frame)) end
+  def expanded_file_roots(frame) do
+    Enum.map frame.params.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
   end
 
   def file_list(frame) do
-    frame.params.file_paths
-    |> Enum.map(fn(path) -> Path.expand(path, repo_dir(frame)) end)
-    |> Enum.map(fn(path) -> expand(path, frame) end)
-    |> List.flatten
+    alias Searchex.Command.Build.Catalog.Params
+    absolute_roots = expanded_file_roots(frame)
+    Util.Ext.File.ls_r absolute_roots, Params.file_params(frame.params)
   end
 
-  # -----
+  def doc_size(frame) do
+    alias Searchex.Command.Build.Catalog.Params
+    roots = expanded_file_roots(frame)
+    Util.Ext.File.du_s(roots, Params.file_params(frame.params))
+  end
 
-  defp expand(path, frame) do
-    if File.dir?(path) do
-      Util.Ext.File.ls_r(path, globs: frame.params.file_types, path_depth: frame.params.path_depth)
-    else
-      path
-    end
+  def cache_size(frame) do
+    Util.Ext.File.du_s([cache_file(frame)], %{})
   end
 end
