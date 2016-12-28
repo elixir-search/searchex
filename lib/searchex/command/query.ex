@@ -39,11 +39,14 @@ defmodule Searchex.Command.Query do
   end
 
   defp filter_docs_by_scores(catalog, scores) do
+    alias Searchex.Command.Build.Catalog.Doc
     docids   = Enum.map scores, &(elem(&1, 0))
+    scoremap = Enum.into(scores, %{})
     new_docs = catalog.docs
                |> Enum.filter(fn(x) -> Enum.member?(docids, x.docid) end)
-               |> Enum.sort_by(fn(x) -> Enum.find_index(docids, fn(y) -> x == y end) end)
+               |> Enum.sort_by(fn(x) -> -1 * scoremap[x.docid] end)
                |> Enum.slice(0, 20)
+               |> Enum.map(fn(doc) -> %Doc{doc | score: scoremap[doc.docid]} end)
     %Searchex.Command.Build.Catalog{catalog | docs: new_docs}
   end
 
