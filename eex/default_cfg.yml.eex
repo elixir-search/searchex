@@ -7,5 +7,5 @@
 :file_skips:     ["^\\..+", "^_"]
 :file_depth:     4
 :input_fields:
-:display_fields: "docstart doclength body"
+:display_fields: "startbyte doclength body"
 :docsep:
