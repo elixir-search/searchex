@@ -28,6 +28,7 @@ defmodule Searchex.Cli do
     {"results" ,   1,   "Render"   , "COLLECTION"           , "results from the last query"            },
     {"show"    ,   2,   "Render"   , "COLLECTION DOCID"     , "show text of DOCID"                     },
     {"edit"    ,   2,   "Render"   , "COLLECTION DOCID"     , "edit DOCID"                             },
+    {"clean"   ,   1,   "Render"   , "COLLECTION"           , "remove cache for COLLECTION"            },
     {"version" ,   0,   ""         , ""                     , "show installed version"                 },
     {"help"    ,   0,   "Cli"      , ""                     , "this command"                           },
   ]
@@ -38,7 +39,6 @@ defmodule Searchex.Cli do
     # Cmd          Arity    Module       Argument             Description
     {"catalog"     ,   1,   "Render"   , "COLLECTION"       , "build the collection catalog"             },
     {"index"       ,   1,   "Render"   , "COLLECTION"       , "build the collection index"               },
-    {"clean"       ,   1,   "Render"  , "COLLECTION"       , "remove cache for COLLECTION"              },
     {"all_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
     {"cfg_commands",   0,   "Cli"      , ""                 , "used for tab completion"                  },
     {"completion"  ,   0,   "Cli"      , ""                 , "renders the completion script"            },
