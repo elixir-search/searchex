@@ -133,7 +133,7 @@ After the `searchex` escript is installed...
 - [ ] Vim and Emacs plugins
 - [ ] Internationalization
 - [ ] Dockerization
-- [ ] Baysean/ML Classifiers
+- [ ] Bayesian/ML Classifiers
 
 ## Links
 
