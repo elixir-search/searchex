@@ -118,7 +118,6 @@ After the `searchex` escript is installed...
 - [ ] Filesystem watcher
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Faceted Search
-- [ ] CLI Tab Completion
 - [ ] LRU Registry
 - [ ] Typeahead support
 - [ ] Alerting
@@ -128,7 +127,6 @@ After the `searchex` escript is installed...
 - [ ] Phoenix integration
 - [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
 - [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
-- [ ] Community Integration (Elixir Slack, Elixir Forum)
 - [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
 - [ ] Vim and Emacs plugins
 - [ ] Internationalization
