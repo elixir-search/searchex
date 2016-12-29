@@ -1,6 +1,6 @@
 defmodule Shake do
   @moduledoc """
-  A Plug-like build framework optimized for search.
+  A Plug-like middleware optimized for search.
 
   Full-text search is build on layers of dependencies:
 
