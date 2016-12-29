@@ -1,6 +1,6 @@
 defmodule Util.CacheTest do
   use ExUnit.Case
-  
+
   describe "starting and stopping the cache" do
     test "before start" do
       assert Process.whereis(:ets_tst) == nil

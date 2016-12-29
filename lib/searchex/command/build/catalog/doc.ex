@@ -12,7 +12,8 @@ defmodule Searchex.Command.Build.Catalog.Doc do
             wordcount:  0    ,
             wordstems:  []   ,
             fields:     %{}  , 
-            body:       ""
+            body:       ""   ,
+            score:      0
 
   alias Searchex.Command.Build.Catalog.Doc
 

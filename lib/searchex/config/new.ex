@@ -7,7 +7,7 @@ defmodule Searchex.Config.New do
 
   def exec(path) do
     full_path = Path.expand(path)
-    cfg_name  = name_from_path(path)
+    cfg_name  = name_from_path(full_path)
     case check_validations(validation_list(cfg_name)) do
       {:error, msgs} -> {:error, msgs}
       {:ok}          -> create_cfg(cfg_name, full_path)
@@ -44,7 +44,7 @@ defmodule Searchex.Config.New do
       file_types:      quotify(types)              , # file types
       docroot:         Path.expand("~")            ,
       max_numfiles:    500                         ,
-      max_file_kb:     500                         ,
+      file_maxkb:     500                         ,
       docsep:          "NNNN"                      ,
       display_fields:  "startbyte doclength body"  ,
     ]

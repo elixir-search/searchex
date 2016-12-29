@@ -2,19 +2,20 @@ defmodule Shake.Frame do
   @moduledoc """
   Defines a struct that is passed up and down the Shake build chain.
 
-        defstruct cfg_name: "",
-                  params:   %{},
-                  catalog:  %{},
-                  index:    %{},
-                  query:    "",
-                  scores:   [],
-                  results:  %{},
-                  tgt_id:   nil,
-                  tgt_doc:  %{}
-                  halted:   false,
-                  halt_msg: "",
-                  digests:  %{},
-                  assigns:  %{}
+      defstruct cfg_snip: "",
+                cfg_name: "",
+                params:   %{},
+                catalog:  %{},
+                index:    %{},
+                query:    "",
+                scores:   [],
+                results:  %{},
+                tgt_id:   nil,
+                tgt_doc:  %{},
+                halted:   false,
+                halt_msg: "",
+                digests:  %{},
+                assigns:  %{}
   """
 
   alias Shake.Frame

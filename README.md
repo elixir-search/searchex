@@ -2,15 +2,13 @@
 
 ![build status](https://api.travis-ci.org/elixir-search/searchex.svg?branch=dev "Travis CI build status")
 
-A full-text search engine written in pure Elixir.
+A full-text search engine written in pure Elixir.  
 
-The goals: a CLI simple as grep, an API that scales to the biggest search
-problems. 
+Three goals: 1) a CLI simple as grep, 2) an API that scales without limit, and
+3) a simple way to exchange searchable document repos.
 
 BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
 build. 
-
-Searchex is UNDER CONSTRUCTION - for testing only.
 
 ## About Searchex
 
@@ -24,9 +22,16 @@ document types include:
 - chat rooms and twitter feeds
 - web pages
 
+Searchex allows you to create searchable Repos that can be shared over the
+Internet.  There is a sample repo [on GitHub](https://github.com/elixir-search/sample).
+
+Searchex is a new project, usable for testing but not recommended for
+production.  For testing, we're using collections of up to 2,000 documents with
+1MB of raw text.  See the [Roadmap](#roadmap) for development plans.
+
 ## Demo
 
-[![asciicast](https://asciinema.org/a/b2wa0681pf3f5tm4c6rfa0j8v.png)](https://asciinema.org/a/b2wa0681pf3f5tm4c6rfa0j8v)
+[![asciicast](https://asciinema.org/a/26dqlxx2qf878melvc71shpgm.png)](https://asciinema.org/a/26dqlxx2qf878melvc71shpgm)
 
 ## Searchex Architecture
 
@@ -73,7 +78,7 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.1-alpha.4"}]
+  [{:searchex, "~> 0.0.1"}]
 end
 ```
 Then run `mix deps.get`
@@ -93,10 +98,9 @@ After the `searchex` escript is installed...
     > searchex help                        # show help page
     > searchex ls                          # list collections
     > searchex info                        # show collection stats
-    > searchex query tiny '.'              # list docs from collection: tiny
-    > searchex show tiny 0                 # show the doc 0 from 'tiny'
+    > searchex query tiny .                # list docs from collection: tiny
     > searchex show tiny 1                 # show the doc 1 from 'tiny'
-    > searchex query genesis 'adam eve'    # query docs from collection: genesis
+    > searchex query genesis 'cain abel'   # query docs from collection: genesis
 
 ## Roadmap
 
