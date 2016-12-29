@@ -12,7 +12,7 @@ pause
 # Collection 'config files' define paths and meta-data fields.
 searchex cat genesis
 # Query a collection:
-searchex query genesis 'adam eve'
+searchex query genesis 'cain abel'
 # View results:
 searchex show genesis 1
 # The Searchex API can be embedded in your Elixir project.

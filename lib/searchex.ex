@@ -10,6 +10,8 @@ defmodule Searchex do
   @core_base_path "~/.searchex"
   @test_base_path "test/data"
 
+  # TODO: read the base path from ~/.searchexrc (TOML format)
+  
   @doc """
   Return the base path
 
@@ -22,8 +24,6 @@ defmodule Searchex do
   There is one base dir.  Underneath the base dir there are multiple
   repo dirs.  In each repo dir, there can be multiple collection files.
   Collection files are yaml files with collection configuration parameters.
-
-  TODO: read the base path from ~/.searchexrc (TOML format)
   """
   def base_dir do
     case Mix.env do

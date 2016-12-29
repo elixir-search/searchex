@@ -2,15 +2,24 @@ defmodule Searchex.Command do
   @moduledoc """
   Main Searchex workflow
 
-  1. Read Configuration
-  2. Build Catalog
-  3. Build Index
-  4. Perform Query
+      results <- query <- index <- catalog <- params
 
   This workflow establishes a dependency chain, with higher level steps
   depending on the outputs of lower level steps.  Each step generates an
   intermediate output which can be cached to minimize re-execution of
-  compute-intensive steps.  The command structure is based on `Shake`.
+  compute-intensive steps.  The processing middleware is based on `Shake`.
+
+  An LRU Cache is used, with auto-expiration of old keys.  Cache keys are
+  digests of the content produced at each step of the build chain.
+
+  Note that all of these functions take a `cfg_snip` argument.  The `cfg_snip`
+  is a wildcard string which matches against the repo/collection name.  For
+  example, if the repo/collection name is `sample/genesis`, any of these
+  cfg_snips would match (`sample/genesis`, `genesis`, `sampgeni`, `geni`)
+
+  All of these functions return simple Elixir terms with no output formatting.
+  See `Searchex.Render` for a list of functions that perform special handling
+  on command output.
   """
 
   alias Util.Cache
@@ -20,9 +29,7 @@ defmodule Searchex.Command do
 
   The catalog is a Map that contains all configuration data, document text and meta-data.
 
-  The catalog is generated from a config file, stored at `~/.Searchex.Configs/<cfg_snip>.yml`.
-
-  The catalog is cached on disk at `~/.searchex/data/<cfg_snip>_cat.dat`.
+  The catalog is generated from a config file, stored at `~/.searchex/repo/<cfg_snip>.yml`.
   """
   def catalog(cfg_snip) do
     Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save
@@ -60,7 +67,7 @@ defmodule Searchex.Command do
   end
 
   @doc """
-  Query the collection
+  Query the collection, and return query scores.
   """
   def query(cfg_snip, query) do
     Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save
@@ -73,8 +80,9 @@ defmodule Searchex.Command do
     Searchex.Command.Results.exec(cfg_snip)
   end
 
-  @doc false
-  # Show document text
+  @doc """
+  Show document text
+  """
   def show(cfg_snip, tgt_id) do
     Searchex.Command.Show.exec(cfg_snip, tgt_id)
   end

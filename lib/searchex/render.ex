@@ -4,16 +4,17 @@ defmodule Searchex.Render do
 
   - editor launching
   - rendering search-results as a table
+  - mini-views for build steps
   """
 
   import Searchex.Config.CfgHelpers
 
   @doc """
-  Invoke `Searchex.Command.edit`, then launch an editor to open the config file.
+  Invoke `Searchex.Command.modify`, then launch an editor to open the config file.
 
-  NOTE: you must define environment variables `EDITOR`.  This will only work with TMUUtil.
+  NOTE: you must define environment variables `EDITOR`.  This will only work with TMUX
 
-  This needs fixing.  See this thread for more info:
+  Editor-launch in Elixir needs fixing.  See this thread for more info:
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
   def modify(cfg_snip) do
@@ -24,43 +25,43 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Return output for catalog
+  Return processing summary for catalog generation.
   """
-  def catalog(cfg_name) do
-    frame = Searchex.Command.catalog(cfg_name)
+  def catalog(cfg_snip) do
+    frame = Searchex.Command.catalog(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "catalog", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
+      [cmd: "catalog", cfg_name: frame.cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
     end
   end
 
   @doc """
-  Index
+  Return processing summary for index generation.
   """
-  def index(cfg_name) do
-    frame = Searchex.Command.index(cfg_name)
+  def index(cfg_snip) do
+    frame = Searchex.Command.index(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "index", cfg_name: cfg_name]
+      [cmd: "index", cfg_name: frame.cfg_name]
     end
   end
 
   @doc """
-  Build
+  Return processing summary for build.  (Catalog + Index)
   """
-  def build(cfg_name) do
-    frame = Searchex.Command.build(cfg_name)
+  def build(cfg_snip) do
+    frame = Searchex.Command.build(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      [cmd: "build", cfg_name: cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
+      [cmd: "build", cfg_name: frame.cfg_name, numdocs: frame.catalog.numdocs, file_roots: frame.params.file_roots]
     end
   end
 
   @doc """
-  Invoke `Searchex.Command.search`, then render the results as a table.
+  Invoke `Searchex.Command.query`, then render the results as a table.
   """
   def query(cfg_snip, query) do
     frame = Searchex.Command.query(cfg_snip, query)
@@ -84,7 +85,7 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Show
+  Show document text.
   """
   def show(cfg_snip, tgt_id) do
     frame = Searchex.Command.show(cfg_snip, tgt_id)
@@ -96,7 +97,15 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Edit
+  Edit a document.  
+
+  For files which contain multiple documents, this command attempts to launch
+  the editor on the right line.
+
+  NOTE: you must define environment variables `EDITOR`.  This will only work with TMUX
+
+  Editor-launch in Elixir needs fixing.  See this thread for more info:
+  https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
   def edit(cfg_snip, tgt_id) do
     frame = Searchex.Command.show(cfg_snip, tgt_id)
@@ -108,18 +117,16 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Info
+  Show statistics for all collections.
   """
   def info do
     Searchex.Config.Ls.exec
     |> elem(1)
-#    |> Enum.map(fn(cfg) -> Task.async(fn -> info(cfg) end) end)
-#    |> Enum.map(fn(worker) -> Task.await(worker) end)
     |> Enum.map(fn(cfg) -> info(cfg) end)
     |> Searchex.Render.Info.to_table
   end
 
-  def info(cfg_snip) do
+  defp info(cfg_snip) do
     alias Searchex.Command.CmdHelpers
     frame = Searchex.Command.info(cfg_snip)
     if frame.halted do
@@ -139,7 +146,7 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Clean
+  Remove the cache file for a collection.
   """
   def clean(cfg_snip) do
     frame = Searchex.Command.Params.exec(cfg_snip)
