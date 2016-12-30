@@ -1,14 +1,14 @@
 # Searchex Readme
 
 ![build status](https://api.travis-ci.org/elixir-search/searchex.svg?branch=dev "Travis CI build status")
+[![hex.pm](http://img.shields.io/hexpm/v/searchex.svg?style=flat)](https://hex.pm/packages/searchex)
+[![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://hexdocs.pm/searchex/)
 
 A full-text search engine written in pure Elixir.  
 
-Three goals: 1) a CLI simple as grep, 2) an API that scales without limit, and
-3) a simple way to exchange searchable document repos.
+Three goals: 1) a simple CLI, 2) a scalable API, and 3) shareable document repos.
 
-BEAM, OTP, GenStage and Flow gives us the best possible foundation on which to
-build. 
+BEAM, OTP, and GenStage give us the best possible foundation on which to build. 
 
 ## About Searchex
 
@@ -23,11 +23,11 @@ document types include:
 - web pages
 
 Searchex allows you to create searchable Repos that can be shared over the
-Internet.  There is a sample repo [on GitHub](https://github.com/elixir-search/sample).
+Internet.  See a sample repo [on GitHub](https://github.com/elixir-search/sample).
 
-Searchex is a new project, usable for testing but not recommended for
-production.  For testing, we're using collections of up to 2,000 documents with
-1MB of raw text.  See the [Roadmap](#roadmap) for development plans.
+Searchex is a new project, usable for testing but not for production.  For
+testing, we're using collections of up to 2,000 documents with 1MB of raw text.
+See the [Roadmap](#roadmap) for development plans.
 
 ## Demo
 
@@ -66,7 +66,7 @@ indexes, and perform searches.
 
 If you have Elixir 1.3+ enter this at the console:
 
-<pre><sub>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</sub></pre>
+<pre>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</pre>
 
 Make sure `~/.mix/escripts` is on your path!
 
