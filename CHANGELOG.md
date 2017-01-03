@@ -1,5 +1,10 @@
 # Searchex Changelog
 
+## 17-01-02 - Version 0.0.2
+
+* Update Documentation
+* Update Confusing Help Text
+
 ## 16-12-28 - Version 0.0.1
 
 * Config Management
