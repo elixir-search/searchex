@@ -113,10 +113,10 @@ After the `searchex` escript is installed...
 - [x] LRU Cache
 - [x] CLI Results Display
 - [x] Fetchable document repos
-- [ ] Server mode
 - [ ] Incremental add/remove/update
 - [ ] Git-based file-change detection
-- [ ] Filesystem watcher
+- [ ] Server mode
+- [ ] Phoenix/Firestorm integration
 - [ ] Streaming document ingestion (GenStage/Flow)
 - [ ] Faceted Search
 - [ ] LRU Registry
@@ -124,12 +124,10 @@ After the `searchex` escript is installed...
 - [ ] Alerting
 - [ ] Multi-collection search
 - [ ] Configuration GUI
-- [ ] Firestorm integration
-- [ ] Phoenix integration
 - [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
 - [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
 - [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
-- [ ] Vim and Emacs plugins
+- [ ] Output formatting plugins (Vim, Emacs, etc.)
 - [ ] Internationalization
 - [ ] Dockerization
 - [ ] Bayesian/ML Classifiers
