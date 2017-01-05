@@ -79,7 +79,7 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.2"}]
+  [{:searchex, "~> 0.0.3"}]
 end
 ```
 Then run `mix deps.get`
