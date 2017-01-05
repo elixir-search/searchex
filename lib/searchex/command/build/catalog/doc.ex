@@ -25,10 +25,14 @@ defmodule Searchex.Command.Build.Catalog.Doc do
 
   defp extract_docs(filescans) do
     filescans
-    |> Enum.flat_map(fn(filescan) -> gen_docs(filescan) end)
+    |> Task.async_stream(__MODULE__, :gen_docs, [])
+    |> Enum.to_list
+    |> Enum.map(fn(el) -> elem(el, 1) end)
+    |> List.flatten
+#    |> Enum.flat_map(fn(filescan) -> gen_docs(filescan) end)
   end
 
-  defp gen_docs(filescan) do
+  def gen_docs(filescan) do
     pairs     = filescan.docsep_locations
     inputs    = pairs |> Enum.with_index(1)
     Enum.reduce(inputs, [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end)

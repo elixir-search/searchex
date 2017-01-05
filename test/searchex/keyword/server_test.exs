@@ -6,7 +6,7 @@ defmodule Searchex.Keyword.ServerTest do
 
   describe "#start_link" do
     test "using default name" do
-      pid = case start_link do
+      pid = case start_link() do
         {:ok, pid} -> pid
         _          -> :error
       end

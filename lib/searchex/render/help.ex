@@ -4,7 +4,7 @@ defmodule Searchex.Render.Help do
 
   def to_table(cmd_opts) do
     {:ok, cfgs} = Searchex.Config.ls
-    title       = String.upcase(prog) <> " Version #{prog_version} - FOR TESTING ONLY"
+    title       = String.upcase(prog()) <> " Version #{prog_version()} - FOR TESTING ONLY"
     header      = ~w(Command Arguments Description)
     rows        = table_data(cmd_opts)
     footer      = "Collections: " <> Enum.join(cfgs, ", ")
