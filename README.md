@@ -67,7 +67,7 @@ indexes, and perform searches.
 
 If you have Elixir 1.3+ enter this at the console:
 
-<pre>mix escript.install https://raw.githubusercontent.com/elixir-search/searchex/master/searchex</pre>
+<pre>mix escript.install hex searchex</pre>
 
 Make sure `~/.mix/escripts` is on your path!
 
