@@ -12,7 +12,7 @@
   "httpotion": {:hex, :httpotion, "3.0.2", "525b9bfeb592c914a61a8ee31fdde3871e1861dfe805f8ee5f711f9f11a93483", [:mix], [{:ibrowse, "~> 4.2", [hex: :ibrowse, optional: false]}]},
   "ibrowse": {:hex, :ibrowse, "4.2.2", "b32b5bafcc77b7277eff030ed32e1acc3f610c64e9f6aea19822abcadf681b4b", [:rebar3], []},
   "lru_cache": {:hex, :lru_cache, "0.1.1", "5bd850535a69a07c702099a3f09d1fc0d982f347735d4d733de2cdd97e4dd91b", [:mix], []},
-  "stem_ex": {:hex, :stem_ex, "0.0.1", "75aa862d0341a6047f8afc9d332779db0001956aee64bec28c346bd1c72ce21e", [:mix], []},
+  "stem_ex": {:hex, :stem_ex, "0.0.2", "e304f883563bc54671bca2774ca235677046e0f803976e72b6653cc7173307ba", [:mix], []},
   "table_rex": {:hex, :table_rex, "0.8.3", "1c68dfc6886d6f118f5047b0449d6402ae0ac5709064789e578c2f4659f4064b", [:mix], []},
   "yamerl": {:hex, :yamerl, "0.3.2", "9eac1537d251e926f47763ab1db0d9e6e8f2397646c290d58aa6ceebc6832fb7", [:rebar3], []},
   "yaml_elixir": {:hex, :yaml_elixir, "1.2.1", "4a8ee3b25598100c710ff11dde4d79b6335608ac092d69aab45cc7475b5abc4d", [:mix], [{:yamerl, "~> 0.3.2", [hex: :yamerl, optional: false]}]}}

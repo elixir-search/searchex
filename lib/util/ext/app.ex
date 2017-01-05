@@ -6,7 +6,7 @@ defmodule Util.Ext.App do
   Return the application version
   """
   def version do
-    appsym = symbol
+    appsym = symbol()
     appver = fn
         [{_app, _desc, vsn}] -> vsn
         _                    -> "NA"
@@ -37,7 +37,7 @@ defmodule Util.Ext.App do
       "searchex"
   """
   def name do
-    Atom.to_string(symbol)
+    Atom.to_string(symbol())
   end
 end
 
