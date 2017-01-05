@@ -7,7 +7,7 @@ defmodule Util.Registry.ServerTest do
 
   describe "server #start_link" do
     test "using default server name" do
-      {:ok, pid} = start_link
+      {:ok, pid} = start_link()
       assert is_pid(pid)
     end
 
