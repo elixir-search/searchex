@@ -7,7 +7,7 @@ defmodule Searchex.Mixfile do
     [
       app:     :searchex,
       version: @version,
-      elixir:  "~> 1.4",
+      elixir:  "~> 1.4.0", 
       escript: [main_module: Searchex.Cli],
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
