@@ -161,5 +161,5 @@ defmodule Util.Ext.IO do
     words ++ atoms
   end
 
-  defp valid_color?(color), do: Enum.member?(valid_colors, color)
+  defp valid_color?(color), do: Enum.member?(valid_colors(), color)
 end

@@ -17,19 +17,19 @@ defmodule Searchex.Command.Build.Index do
     start_supervisor(pt_name)
     add_supervisor_to_lru_registry(pt_name)
     frame.catalog.docs
-    |> Enum.map(fn(doc) -> process_doc(doc, pt_name) end)
-    |> Enum.map(fn(x)   -> Task.await(x, 5_000) end)
+    |> Task.async_stream(__MODULE__, :process_doc, [pt_name])
+    |> Enum.to_list
+    |> Enum.map(fn(el) -> elem(el, 1) end)
+#    |> Enum.map(fn(doc) -> process_doc(doc, pt_name) end)
     :ok
   end
 
-  defp process_doc(doc, pt_name) do
-    Task.async fn() ->
-      docid = doc.docid
-      doc.wordstems
-      |> Enum.with_index(1)
-      |> Enum.map(fn({word, pos}) -> {pt_name, docid, word, pos} end)
-      |> Enum.map(&process_word/1)
-    end
+  def process_doc(doc, pt_name) do
+    docid = doc.docid
+    doc.wordstems
+    |> Enum.with_index(1)
+    |> Enum.map(fn({word, pos}) -> {pt_name, docid, word, pos} end)
+    |> Enum.map(&process_word/1)
   end
 
   defp process_word({pt_name, docid, word, position}) do

@@ -33,7 +33,7 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
   end
 
   defp gen_docsep_locations(scan) do
-    dlen = String.length(scan.rawdata)
+    dlen = Util.Ext.String.len(scan.rawdata)
     pos1 = scan.docsep_positions
     [_h|tail] = pos1
     pos2 = tail ++ [dlen]

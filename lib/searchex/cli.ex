@@ -61,7 +61,7 @@ defmodule Searchex.Cli do
     end
   end
 
-  def route([])  , do: help
+  def route([])  , do: help()
   def route(argv), do: error(argv)
 
   # ----------------------------------------------------------------------------------------------------
@@ -134,12 +134,12 @@ defmodule Searchex.Cli do
 
 #  defp prog_version , do: Util.Ext.App.version
 
-  defp usage_message, do: "Type '#{prog} help' for usage information."
+  defp usage_message, do: "Type '#{prog()} help' for usage information."
 
   defp error(argv) do
     str = """
-    ERROR unrecognized command (#{prog} #{Enum.join(argv, " ")})
-    #{usage_message}
+    ERROR unrecognized command (#{prog()} #{Enum.join(argv, " ")})
+    #{usage_message()}
     """
     {:error, str}
   end

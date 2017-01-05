@@ -6,10 +6,10 @@ defmodule Util.Ext.AppTest do
   import Util.Ext.App
 
   test "#symbol" do
-    assert symbol == :searchex
+    assert symbol() == :searchex
   end
 
   test "#name" do
-    assert name == "searchex"
+    assert name() == "searchex"
   end
 end

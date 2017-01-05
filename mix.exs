@@ -1,13 +1,13 @@
 defmodule Searchex.Mixfile do
   use Mix.Project
 
-  @version "0.0.2"
+  @version "0.0.3"
 
   def project do
     [
       app:     :searchex,
       version: @version,
-      elixir:  "~> 1.3",
+      elixir:  "~> 1.4",
       escript: [main_module: Searchex.Cli],
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -36,7 +36,7 @@ defmodule Searchex.Mixfile do
     [
       {:yaml_elixir, "~> 1.1"                },  # yaml parser
       {:table_rex  , "~> 0.8"                },  # table formatter
-      {:stem_ex    , "~> 0.0.1"              },  # word-stem generator
+      {:stem_ex    , "~> 0.0.2"              },  # word-stem generator
       {:lru_cache  , "~> 0.1.0"              },  # ETS-based LRU cache
       {:git_cli    , "~> 0.2"                },  # Git CLI
       {:dialyxir   , "~> 0.4.0", only: :dev  },  #

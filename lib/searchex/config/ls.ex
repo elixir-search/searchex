@@ -2,13 +2,13 @@ defmodule Searchex.Config.Ls do
   @moduledoc false
 
   def exec do
-    make_base
-    {:ok, uniq}
+    make_base()
+    {:ok, uniq()}
   end
 
   def uniq do
-    make_base
-    repo_dirs
+    make_base()
+    repo_dirs()
     |> repo_files
     |> cfg_files
     |> file_parts
@@ -17,8 +17,8 @@ defmodule Searchex.Config.Ls do
   end
 
   def full do
-    make_base
-    repo_dirs
+    make_base()
+    repo_dirs()
     |> repo_files
     |> cfg_files
     |> file_parts

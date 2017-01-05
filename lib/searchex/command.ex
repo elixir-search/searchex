@@ -53,10 +53,8 @@ defmodule Searchex.Command do
     Searchex.Command.Build.exec(cfg_snip) |> Cache.save
   end
 
-  @doc false
-  @altdoc """
+  @doc """
   Return info about the collection
-
   - Number of documents
   - Generation date
   - Average size of documents

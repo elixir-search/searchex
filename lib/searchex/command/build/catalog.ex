@@ -24,7 +24,10 @@ defmodule Searchex.Command.Build.Catalog do
     scans = frame
             |> Searchex.Command.CmdHelpers.file_list
             |> Util.Ext.File.ls_r(Params.file_params(frame.params))
-            |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, frame.params) end)
+            |> Task.async_stream(Filescan, :generate_filescan, [frame.params])
+            |> Enum.to_list()
+            |> Enum.map(fn(el) -> elem(el, 1) end)
+#            |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, frame.params) end)
     %Catalog{catalog | filescans: scans}
   end
 

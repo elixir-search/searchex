@@ -49,7 +49,7 @@ defmodule Util.EditorLaunch do
   def has_editor?()            , do: editor() != nil
   def missing_editor?()        , do: ! has_editor?()
   def connected_using_tmux?()  , do: System.get_env("TMUX") != nil
-  def connected_without_tmux?(), do: ! connected_using_tmux?
+  def connected_without_tmux?(), do: ! connected_using_tmux?()
 
   # TODO: build out error conditions
   #    - {:error, "File not found"}

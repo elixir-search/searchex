@@ -7,6 +7,7 @@ defmodule Util.Ext.String do
     |> String.replace(~r/[^A-Za-z0-9]/, " ", global: true)
     |> String.downcase
     |> String.split
+    |> Enum.map(fn(word) -> String.slice(word, 0, 15) end)
   end
 
   def wordcount(string) do
@@ -21,6 +22,14 @@ defmodule Util.Ext.String do
     |> Enum.map(&StemEx.stem/1)
   end
 
+  def len(string) do
+    cond do
+      empty?(string) -> 0
+      true           -> String.length(string)
+    end
+  end
+
+  def empty?(nil), do: true
   def empty?(string) do
     String.length(string) == 0
   end
