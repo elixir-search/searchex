@@ -1,5 +1,10 @@
 # Searchex Changelog
 
+## 17-01-05 - Version 0.0.3
+
+* Upgraded to Elixir 1.4
+* Use `Task.async_stream` for concurrent catalog generation
+
 ## 17-01-02 - Version 0.0.2
 
 * Update Documentation
