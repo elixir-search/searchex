@@ -102,6 +102,9 @@ After the `searchex` escript is installed...
     > searchex show tiny 1                 # show the doc 1 from 'tiny'
     > searchex query genesis 'cain abel'   # query docs from collection: genesis
 
+Note: the first time you run a query, Searchex will build a catalog and index.
+This can take a minute or two.  After that, queries will run sub-second.
+
 ## Roadmap
 
 - [x] Config management 
