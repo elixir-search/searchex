@@ -1,5 +1,9 @@
 # Searchex Changelog
 
+## 17-01-06 - Version 0.0.4
+
+* Fixed a timeout bug
+
 ## 17-01-05 - Version 0.0.3
 
 * Upgraded to Elixir 1.4

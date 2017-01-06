@@ -11,8 +11,8 @@
 3. Update mix.exs
 4. `mix test`
 5. `test/bats/run`
+8. `g c -am'Msg'; g push`
 6. `g tag -a v0.0.x -m"v0.0.x"`
 7. `g push origin v0.0.x`
-8. `g co -am'Msg'; g push`
 9. mix hex.publish
 

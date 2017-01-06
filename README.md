@@ -64,7 +64,7 @@ indexes, and perform searches.
 
 ### Escript Installation
 
-If you have Elixir 1.3+ enter this at the console:
+If you have Elixir 1.4+ enter this at the console:
 
 <pre>mix escript.install hex searchex</pre>
 
@@ -78,7 +78,7 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.3"}]
+  [{:searchex, "~> 0.0.4"}]
 end
 ```
 Then run `mix deps.get`
@@ -112,6 +112,7 @@ After the `searchex` escript is installed...
 - [x] LRU Cache
 - [x] CLI Results Display
 - [x] Fetchable document repos
+- [ ] Docsource Adapters (filesys, ecto)
 - [ ] Incremental add/remove/update
 - [ ] Git-based file-change detection
 - [ ] Server mode
@@ -123,7 +124,6 @@ After the `searchex` escript is installed...
 - [ ] Alerting
 - [ ] Multi-collection search
 - [ ] Configuration GUI
-- [ ] Docsource Adapters (filesys, fn, DB, twitter, etc)
 - [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
 - [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
 - [ ] Output formatting plugins (Vim, Emacs, etc.)

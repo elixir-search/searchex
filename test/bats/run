@@ -2,10 +2,10 @@
 
 cd ~/zz/searchex
 
-mix escript.build
-echo "y" | mix escript.install
+mix escript.build               > /dev/null 2>&1
+echo "y" | mix escript.install  > /dev/null 2>&1
 
-sudo rm -r ~/.searchex/sample
+sudo rm -rf ~/.searchex/sample
 
 searchex version
 
