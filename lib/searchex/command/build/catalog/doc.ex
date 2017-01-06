@@ -25,7 +25,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
 
   defp extract_docs(filescans) do
     filescans
-    |> Task.async_stream(__MODULE__, :gen_docs, [])
+    |> Task.async_stream(__MODULE__, :gen_docs, [], timeout: 600_000) # ten minutes...
     |> Enum.to_list
     |> Enum.map(fn(el) -> elem(el, 1) end)
     |> List.flatten

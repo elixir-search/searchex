@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+cd ~/zz/searchex
+
+mix escript.build
+echo "y" | mix escript.install
+
+sudo rm -r ~/.searchex/sample
+
+searchex version
+
+searchex fetch elixir-search/sample > /dev/null 2>&1
+
+list=`searchex ls`
+
+echo "COLLECTION LIST"
+echo $list
+
+for file in $list; do
+  COLL=$file bats test/bats/base.bats
+done
+
+searchex info
+
