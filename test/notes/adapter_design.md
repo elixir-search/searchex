@@ -68,8 +68,7 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 | Slack         |                      |
 | Twitter       |                      |
 | Facebook      |                      |
-| Facebook      |                      |
-| Searchex      |                      |
+| Searchex      | (P2P)                |
 
 ## Config File
 
