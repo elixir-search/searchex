@@ -55,7 +55,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     %Doc{
       docid:     Util.Ext.Term.digest(body)      ,
       fileid:    idx                             ,
-      filename:  filescan.input_filename         ,
+      filename:  filescan.bucket_id         ,
       startbyte: position                        ,
       doclength: offset                          ,
       wordcount: Util.Ext.String.wordcount(body) ,

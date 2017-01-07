@@ -9,7 +9,7 @@ defmodule Searchex.Command.Build.Catalog do
 
   alias Searchex.Command.Build.Catalog
   alias Searchex.Command.Build.Catalog.Doc
-  alias Searchex.Command.Build.Catalog.Filescan
+  alias Searchex.Command.Build.Catalog.Bucketscan
 
   def create_from_frame(frame) do
     %Catalog{}
@@ -24,10 +24,10 @@ defmodule Searchex.Command.Build.Catalog do
     scans = frame
             |> Searchex.Command.CmdHelpers.file_list
             |> Util.Ext.File.ls_r(Params.file_params(frame.params))
-            |> Task.async_stream(Filescan, :generate_filescan, [frame.params])
+            |> Task.async_stream(Bucketscan, :generate_filescan, [frame.params])
             |> Enum.to_list()
             |> Enum.map(fn(el) -> elem(el, 1) end)
-#            |> Enum.map(fn(filename) -> Filescan.generate_filescan(filename, frame.params) end)
+#            |> Enum.map(fn(filename) -> Bucketscan.generate_filescan(filename, frame.params) end)
     %Catalog{catalog | filescans: scans}
   end
 

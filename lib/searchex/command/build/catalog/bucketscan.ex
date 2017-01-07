@@ -1,23 +1,23 @@
-defmodule Searchex.Command.Build.Catalog.Filescan do
+defmodule Searchex.Command.Build.Catalog.Bucketscan do
   @moduledoc false
 
   defstruct rawdata:          ""    ,
-            input_filename:   ""    ,
+            bucket_id:        ""    ,
             docsep_positions: []    ,
             docsep_locations: []
 
-  alias Searchex.Command.Build.Catalog.Filescan
+  alias Searchex.Command.Build.Catalog.Bucketscan
 
   def generate_filescan(filename, params) do
-    %Filescan{input_filename: filename}
+    %Bucketscan{bucket_id: filename}
     |> read_rawdata(params.file_maxkb)
     |> gen_docsep_positions(params)
     |> gen_docsep_locations
   end
   
   defp read_rawdata(scan, file_maxkb) do
-    rawdata = File.stream!(scan.input_filename, [], file_maxkb * 1024) |> Enum.at(0)
-    %Filescan{scan | rawdata: rawdata}
+    rawdata = File.stream!(scan.bucket_id, [], file_maxkb * 1024) |> Enum.at(0)
+    %Bucketscan{scan | rawdata: rawdata}
   end
 
   defp gen_docsep_positions(scan, params) do
@@ -29,7 +29,7 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
                 else
                   [0]
                 end
-    %Filescan{scan | docsep_positions: [0] ++ positions}
+    %Bucketscan{scan | docsep_positions: [0] ++ positions}
   end
 
   defp gen_docsep_locations(scan) do
@@ -40,6 +40,6 @@ defmodule Searchex.Command.Build.Catalog.Filescan do
     locs = Enum.zip(pos1, pos2)
            |> Enum.map(fn({beg, fin}) -> {beg, fin - beg} end)
            |> Enum.filter(fn({_beg, len}) -> len > 0 end)
-    %Filescan{scan | docsep_locations: locs}
+    %Bucketscan{scan | docsep_locations: locs}
   end
 end
