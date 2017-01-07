@@ -10,13 +10,13 @@ defmodule Searchex.Command.Build.Catalog.Bucketscan do
 
   def generate_filescan(filename, params) do
     %Bucketscan{bucket_id: filename}
-    |> read_rawdata(params.file_maxkb)
+    |> read_rawdata(params.bucket_maxkb)
     |> gen_docsep_positions(params)
     |> gen_docsep_locations
   end
   
-  defp read_rawdata(scan, file_maxkb) do
-    rawdata = File.stream!(scan.bucket_id, [], file_maxkb * 1024) |> Enum.at(0)
+  defp read_rawdata(scan, bucket_maxkb) do
+    rawdata = File.stream!(scan.bucket_id, [], bucket_maxkb * 1024) |> Enum.at(0)
     %Bucketscan{scan | rawdata: rawdata}
   end
 

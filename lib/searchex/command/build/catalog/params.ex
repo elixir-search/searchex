@@ -7,7 +7,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
             file_roots:   []                        ,
             file_types:   ~w(txt md js exs ex)      ,
             file_maxnum:  100                       ,
-            file_maxkb:   100                       ,
+            bucket_maxkb:   100                       ,
             file_depth:   2                         ,
             file_skips:   ~w(^\\..+ ^\_ deps docs)  ,
             docsep:       nil                       ,
@@ -26,7 +26,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
       types:  params.file_types   ,
       skips:  params.file_skips   ,
       maxnum: params.file_maxnum  ,
-      maxkb:  params.file_maxkb   ,
+      maxkb:  params.bucket_maxkb   ,
       depth:  params.file_depth
     }
   end

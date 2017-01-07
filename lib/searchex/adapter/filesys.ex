@@ -5,7 +5,7 @@
             file_roots:   []                        ,
             file_types:   ~w(txt md js exs ex)      ,
             file_maxnum:  100                       ,
-            file_maxkb:   100                       ,
+            bucket_maxkb:   100                       ,
             file_depth:   2                         ,
             file_skips:   ~w(^\\..+ ^\_ deps docs)
 
@@ -21,6 +21,6 @@
   def rawdata(_bucket_id) do
   end
 
-  def validate(params) do
+  def validate(_params) do
   end
  end

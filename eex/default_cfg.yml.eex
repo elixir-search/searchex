@@ -3,7 +3,7 @@
 :file_roots:     [<%= docroot %>]
 :file_types:     [<%= file_types %>]
 :file_maxnum:    100
-:file_maxkb:     100
+:bucket_maxkb:     100
 :file_skips:     ["^\\..+", "^_"]
 :file_depth:     4
 :input_fields:

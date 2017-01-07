@@ -8,6 +8,6 @@
   - docs/datelines
 :file_types: ["txt", "md", "wlog"]
 :file_maxnum: 50
-:file_maxkb:  100
+:bucket_maxkb:  100
 :display_fields: "startbyte doclength body"
 

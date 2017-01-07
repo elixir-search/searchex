@@ -3,7 +3,6 @@ defmodule Searchex.Command.Params do
   @moduledoc false
 
   alias Searchex.Command.CmdValidations
-  alias Searchex.Command.Build.Catalog.Params
   use Shake.Module
 
   @doc """
@@ -23,10 +22,7 @@ defmodule Searchex.Command.Params do
   step :validate, with: validation_list
   step :generate_cfg_name
   step :generate_params
-  step :validate_file_root_presence
-  step :validate_file_roots
   step :validate_matching_cfg_names
-  step :expand_file_roots
   step :generate_digest
 
   def generate_cfg_name(frame, _opts) do
@@ -44,29 +40,6 @@ defmodule Searchex.Command.Params do
     %Frame{frame | params: params}
   end
 
-  def validate_file_root_presence(frame, _opts) do
-    alias Searchex.Command.CmdHelpers
-    case length(frame.params.file_roots) do
-      0 -> halt(frame, "No file_roots")
-      _ -> frame
-    end
-  end
-
-  # halt if one or more of the file roots is missing
-  def validate_file_roots(frame, _opts) do
-    alias Searchex.Command.CmdHelpers
-    badpaths = frame.params.file_roots
-               |> Enum.map(fn(path) -> {Path.expand(path, CmdHelpers.repo_dir(frame)), path} end)
-               |> Enum.map(fn({full_path, path}) -> {File.exists?(full_path), path} end)
-               |> Enum.filter(fn(tup) -> ! elem(tup, 0) end)
-               |> Enum.map(fn(tup) -> elem(tup, 1) end)
-               |> Enum.join(", ")
-    case badpaths do
-      "" -> frame
-      _  -> halt(frame, "Missing path (#{badpaths})")
-    end
-  end
-
   def validate_matching_cfg_names(frame, _opts) do
     alias Searchex.Command.CmdHelpers
     frame_name = String.split(frame.cfg_name, "/") |> Enum.at(1)
@@ -75,13 +48,6 @@ defmodule Searchex.Command.Params do
       true -> frame
       _    -> halt(frame, "Mismatched collection name ('#{frame_name}' vs '#{coll_name}')")
     end
-  end
-
-  def expand_file_roots(frame, _opts) do
-    alias Searchex.Command.CmdHelpers
-    new_roots  = CmdHelpers.expanded_file_roots(frame)
-    new_params = %Params{frame.params | file_roots: new_roots}
-    %Frame{frame | params: new_params}
   end
 
   # generate a digest for the params
