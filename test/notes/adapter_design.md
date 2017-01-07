@@ -83,16 +83,25 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 
 ## Adapter Behavior
 
-- Adapter is a GenServer
+### Basics
+
 - State: params, last_event_id
 - API
   - init(params, state) -> :ok | {:error, [validation messages]}
   - pull
   - events(after: EventID, maxnum: count, before: EventID)
   - rawdata(BucketID)
+  - validate(params)
 
 - Pull can be invoked from upstream or downstream middlewares
-- Each adapter must validate the params during the init call
+- Params must be validated in the Indexing middleware
+
+### OTP
+
+- Adapter runs as GenServer
+- Start Registry and Supervisor at program init
+- One adapter per collection
+- Adapter process key like {:adapter, :collection_name}
 
 ## Processing Direction
 
@@ -158,7 +167,14 @@ A: Maybe.  Probably.
 -- git controlled directories
 -- file watcher - copy from 
 
+- ecto adapter
+-- validations
+-- pull on callback after database transaction
+
 ### Other Changes
 
 - rename 'filescan' to 'bucketscan'
 - use EventID instead of digest
+- use process tree for catalog
+- incremental doc add/remove
+- start the proocess registry at startup

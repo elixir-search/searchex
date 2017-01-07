@@ -1,19 +1,26 @@
  defmodule Searchex.Adapter.Filesys do
 #   use Searchex.Adapter
 
-  def init(_args) do
+  defstruct collection:   ""                        ,
+            file_roots:   []                        ,
+            file_types:   ~w(txt md js exs ex)      ,
+            file_maxnum:  100                       ,
+            file_maxkb:   100                       ,
+            file_depth:   2                         ,
+            file_skips:   ~w(^\\..+ ^\_ deps docs)
 
+  def init(_args) do
   end
 
   def pull do
-
   end
 
-  def events(args) do
-
+  def events(_args) do
   end
 
-  def rawdata(bucket_id) do
+  def rawdata(_bucket_id) do
+  end
 
+  def validate(params) do
   end
  end

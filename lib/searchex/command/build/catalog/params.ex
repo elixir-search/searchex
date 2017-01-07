@@ -11,6 +11,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
             file_depth:   2                         ,
             file_skips:   ~w(^\\..+ ^\_ deps docs)  ,
             docsep:       nil                       ,
+            adapter:      %{}                       ,
             input_fields: %{}                       ,
             cli_format:   %{}
 
