@@ -8,18 +8,19 @@ defmodule Searchex.Command.Build.Catalog.Bucketscan do
 
   alias Searchex.Command.Build.Catalog.Bucketscan
 
-  def generate_filescan(filename, params) do
+  def generate_bucketscan(filename, frame) do
     %Bucketscan{bucket_id: filename}
-    |> read_rawdata(params.bucket_maxkb)
-    |> gen_docsep_positions(params)
+    |> read_rawdata(frame)
+    |> gen_docsep_positions(frame.params)
     |> gen_docsep_locations
   end
-  
-  defp read_rawdata(scan, bucket_maxkb) do
-    rawdata = File.stream!(scan.bucket_id, [], bucket_maxkb * 1024) |> Enum.at(0)
-    %Bucketscan{scan | rawdata: rawdata}
-  end
 
+  defp read_rawdata(bucketscan, frame) do
+    adapter = Searchex.Adapter.adapter_module(frame)
+    rawdata = adapter.rawdata(bucketscan.bucket_id, frame)
+    %Bucketscan{bucketscan | rawdata: rawdata}
+  end
+  
   defp gen_docsep_positions(scan, params) do
     positions = if params.docsep do
                   params.docsep

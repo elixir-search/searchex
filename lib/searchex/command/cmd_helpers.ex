@@ -21,7 +21,7 @@ defmodule Searchex.Command.CmdHelpers do
   end
 
   def expanded_file_roots(frame) do
-    Enum.map frame.params.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
+    Enum.map frame.params.adapter.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
   end
 
   def file_list(frame) do

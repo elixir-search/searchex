@@ -4,7 +4,7 @@ defmodule Searchex.Command.Build.Catalog do
 
   defstruct numdocs:       0                                         ,
             avg_wordcount: 0                                         ,
-            filescans:     []                                        ,
+            bucketscans:   []                                        ,
             docs:          []
 
   alias Searchex.Command.Build.Catalog
@@ -13,22 +13,20 @@ defmodule Searchex.Command.Build.Catalog do
 
   def create_from_frame(frame) do
     %Catalog{}
-    |> gen_filescans(frame)
+    |> gen_bucketscans(frame)
     |> gen_docs(frame.params)
     |> add_catids
     |> extract_counts
   end
 
-  defp gen_filescans(catalog, frame) do
-    alias Searchex.Command.Build.Catalog.Params
+  defp gen_bucketscans(catalog, frame) do
+    adapter = Searchex.Adapter.adapter_module(frame)
     scans = frame
-            |> Searchex.Command.CmdHelpers.file_list
-            |> Util.Ext.File.ls_r(Params.file_params(frame.params))
-            |> Task.async_stream(Bucketscan, :generate_filescan, [frame.params])
+            |> adapter.events(frame)
+            |> Task.async_stream(Bucketscan, :generate_bucketscan, [frame])
             |> Enum.to_list()
             |> Enum.map(fn(el) -> elem(el, 1) end)
-#            |> Enum.map(fn(filename) -> Bucketscan.generate_filescan(filename, frame.params) end)
-    %Catalog{catalog | filescans: scans}
+    %Catalog{catalog | bucketscans: scans}
   end
 
   defp gen_docs(catalog, params) do

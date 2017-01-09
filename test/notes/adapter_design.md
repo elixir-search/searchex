@@ -87,14 +87,25 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 
 - State: params, last_event_id
 - API
-  - init(params, state) -> :ok | {:error, [validation messages]}
-  - pull
-  - events(after: EventID, maxnum: count, before: EventID)
-  - rawdata(BucketID)
-  - validate(params)
+  - cursor -> {:digest, value} | {:lastevent, value}
+  - events(after: EventID, maxnum: count, before: EventID) -> eventlog
+  - rawdata(BucketID) -> string
+  - validate(frame) -> :ok | {:error, [messages]}
+  - init(frame)
 
-- Pull can be invoked from upstream or downstream middlewares
-- Params must be validated in the Indexing middleware
+The adapter is called from various steps in the indexing middleware:
+
+| Function | Caller Step |
+|----------|-------------|
+| validate | docsource   |
+| init     | docsource   |
+| cursor   | catalog     |
+| events   | catalog     |
+| rawdata  | catalog     |
+
+If an incremental event log can not be generated, use a :digest cursor.  This
+will force the catalog and all upstream steps to be rebuilt from scratch.  Only
+usable for small datasets.
 
 ### OTP
 

@@ -18,24 +18,24 @@ defmodule Searchex.Command.Build.Catalog.Doc do
   alias Searchex.Command.Build.Catalog.Doc
 
   def generate_from_catalog(catalog, params) do
-    catalog.filescans
+    catalog.bucketscans
     |> extract_docs
     |> extract_fields(params.input_fields)
   end
 
-  defp extract_docs(filescans) do
-    filescans
+  defp extract_docs(bucketscans) do
+    bucketscans
     |> Task.async_stream(__MODULE__, :gen_docs, [], timeout: 600_000) # ten minutes...
     |> Enum.to_list
     |> Enum.map(fn(el) -> elem(el, 1) end)
     |> List.flatten
-#    |> Enum.flat_map(fn(filescan) -> gen_docs(filescan) end)
+#    |> Enum.flat_map(fn(bucketscan) -> gen_docs(bucketscan) end)
   end
 
-  def gen_docs(filescan) do
-    pairs     = filescan.docsep_locations
+  def gen_docs(bucketscan) do
+    pairs     = bucketscan.docsep_locations
     inputs    = pairs |> Enum.with_index(1)
-    Enum.reduce(inputs, [], fn(pair, acc) -> acc ++ [gen_doc(pair, filescan)] end)
+    Enum.reduce(inputs, [], fn(pair, acc) -> acc ++ [gen_doc(pair, bucketscan)] end)
     |> Enum.reduce({[], 0}, fn(doc, acc) -> setline(doc, acc) end )
     |> elem(0)
   end
@@ -50,12 +50,12 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     Regex.scan(~r/\n/, string) |> Enum.count
   end
 
-  defp gen_doc({{position, offset}, idx}, filescan) do
-    body = String.slice(filescan.rawdata, position, offset)
+  defp gen_doc({{position, offset}, idx}, bucketscan) do
+    body = String.slice(bucketscan.rawdata, position, offset)
     %Doc{
       docid:     Util.Ext.Term.digest(body)      ,
       fileid:    idx                             ,
-      filename:  filescan.bucket_id         ,
+      filename:  bucketscan.bucket_id         ,
       startbyte: position                        ,
       doclength: offset                          ,
       wordcount: Util.Ext.String.wordcount(body) ,
