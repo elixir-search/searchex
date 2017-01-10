@@ -6,6 +6,7 @@
   def default_settings do
     %{
       type:         "Filesys"                 ,
+      module:       __MODULE__                ,
       file_roots:   []                        ,
       file_types:   ~w(txt md js exs ex)      ,
       file_maxnum:  100                       ,
@@ -21,7 +22,7 @@
   def events(frame) do
     frame
     |> file_list
-    |> Util.Ext.File.ls_r(file_params(frame.params))
+    |> Util.Ext.File.ls_r(frame.params.adapter)
   end
 
   def rawdata(filename, frame) do
@@ -38,17 +39,6 @@
   defp file_list(frame) do
     alias Searchex.Command.CmdHelpers
     absolute_roots = CmdHelpers.expanded_file_roots(frame)
-    Util.Ext.File.ls_r absolute_roots, file_params(frame.params)
-  end
-
-  # TODO: GET RID OF THIS - JUST USE params.adapter map directly...
-  def file_params(params) do
-    %{
-      types:  params.adapter.file_types   ,
-      skips:  params.adapter.file_skips   ,
-      maxnum: params.adapter.file_maxnum  ,
-      depth:  params.adapter.file_depth   ,
-      maxkb:  params.adapter.file_maxkb
-    }
+    Util.Ext.File.ls_r absolute_roots, frame.params.adapter
   end
 end

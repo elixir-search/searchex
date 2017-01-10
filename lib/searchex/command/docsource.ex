@@ -17,7 +17,6 @@ defmodule Searchex.Command.Docsource do
   step :type_specific_adapter_params
   step :type_specific_adapter_shake
   step :start_adapter
-  step :pull_adapter
 
   def basic_adapter_validation(frame, opts) do
     Searchex.Adapter.validate(frame, opts)
@@ -30,15 +29,10 @@ defmodule Searchex.Command.Docsource do
   end
 
   def type_specific_adapter_shake(frame, opts) do
-    adapter_module = Searchex.Adapter.adapter_module(frame)
-    adapter_module.shake(frame, opts)
+    frame.params.adapter.module.shake(frame, opts)
   end
 
   def start_adapter(frame, _opts) do
-    frame
-  end
-
-  def pull_adapter(frame, _opts) do
     frame
   end
 end

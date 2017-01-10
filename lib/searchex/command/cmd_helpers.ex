@@ -26,7 +26,7 @@ defmodule Searchex.Command.CmdHelpers do
 
   def doc_size(frame) do
     roots = expanded_file_roots(frame)
-    Util.Ext.File.du_s(roots, Searchex.Adapter.Type.Filesys.file_params(frame.params))
+    Util.Ext.File.du_s(roots, frame.params.adapter)
   end
 
   def cache_size(frame) do
