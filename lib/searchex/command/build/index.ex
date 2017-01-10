@@ -20,7 +20,6 @@ defmodule Searchex.Command.Build.Index do
     |> Task.async_stream(__MODULE__, :process_doc, [pt_name])
     |> Enum.to_list
     |> Enum.map(fn(el) -> elem(el, 1) end)
-#    |> Enum.map(fn(doc) -> process_doc(doc, pt_name) end)
     :ok
   end
 

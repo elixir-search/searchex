@@ -102,22 +102,24 @@ After the `searchex` escript is installed...
     > searchex show tiny 1                 # show the doc 1 from 'tiny'
     > searchex query genesis 'cain abel'   # query docs from collection: genesis
 
+Note: the first time you run a query, Searchex will build a catalog and index.
+This can take a minute or two.  After that, queries will run sub-second.
+
 ## Roadmap
 
 - [x] Config management 
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
-- [x] Middleware framework
-- [x] CLI Indexing and Query
+- [x] Indexing Middleware
 - [x] LRU Cache
-- [x] CLI Results Display
+- [x] Basic CLI
 - [x] Fetchable document repos
-- [ ] Docsource Adapters (filesys, ecto)
+- [ ] Adapter Middleware (filesys, ecto)
 - [ ] Incremental add/remove/update
-- [ ] Git-based file-change detection
 - [ ] Server mode
 - [ ] Phoenix/Firestorm integration
 - [ ] Streaming document ingestion (GenStage/Flow)
+- [ ] Git-based file-change detection
 - [ ] Faceted Search
 - [ ] LRU Registry
 - [ ] Typeahead support
@@ -127,6 +129,7 @@ After the `searchex` escript is installed...
 - [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
 - [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
 - [ ] Output formatting plugins (Vim, Emacs, etc.)
+- [ ] P2P Streaming
 - [ ] Internationalization
 - [ ] Dockerization
 - [ ] Bayesian/ML Classifiers
