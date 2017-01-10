@@ -29,7 +29,6 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     |> Enum.to_list
     |> Enum.map(fn(el) -> elem(el, 1) end)
     |> List.flatten
-#    |> Enum.flat_map(fn(bucketscan) -> gen_docs(bucketscan) end)
   end
 
   def gen_docs(bucketscan) do
@@ -55,7 +54,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
     %Doc{
       docid:     Util.Ext.Term.digest(body)      ,
       fileid:    idx                             ,
-      filename:  bucketscan.bucket_id         ,
+      filename:  bucketscan.bucket_id            ,
       startbyte: position                        ,
       doclength: offset                          ,
       wordcount: Util.Ext.String.wordcount(body) ,

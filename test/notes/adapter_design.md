@@ -123,8 +123,8 @@ Sometimes processing is initiated by Searchex, sometimes by the Source.
 For example:
 
 **Filesys** - updates come SEARCHEX, initiated by user action
-- query processed by the indexing middleware 
-- indexing middleware invokes `Searchex.Adapter.Type.pull`
+- query processed by the command middleware 
+- command middleware invokes `Searchex.Adapter.Type.pull`
 - Searchex incremental-updates the index
 - query results are generated
 

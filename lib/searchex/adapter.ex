@@ -4,7 +4,7 @@ defmodule Searchex.Adapter do
     import Shake.Frame
     cond do
       adapter_missing?(frame)        ->
-        halt(frame, "No adapter specified for config (#{frame.collection})")
+        halt(frame, "No adapter specified for config (#{frame.cfg_name})")
       adapter_type_missing?(frame)   ->
         halt(frame, "Adapter type not specified")
       adapter_type_unrecognized?(frame) ->
@@ -21,22 +21,25 @@ defmodule Searchex.Adapter do
   end
 
   def adapter_type(frame) do
-    get_in(frame, [:params, :adapter, :type])
+    # an abomination - really feel let down here...
+    get_in(Map.from_struct(frame), [:params, Access.key(:adapter, nil), Access.key(:type, nil)])
   end
 
   def adapter_module(frame) do
-    type = "Searchex.Adapter.Type." <> String.capitalize(frame.params.adapter.type)
+    type = "Searchex.Adapter.Type." <> frame.params.adapter.type
            |> Regex.compile!
-    :application.get_key(:searchex, :module)
+    :application.get_key(:searchex, :modules)
+    |> elem(1)
     |> Enum.map(&(Atom.to_string(&1)))
     |> Enum.find(&(Regex.match?(type, &1)))
-    |> Util.Ext.IO.tins(color: "RED")
+    |> Util.Ext.String.to_atom
   end
 
   # -----
 
   defp adapter_missing?(frame) do
-    get_in(frame, [:params, :adapter]) == nil
+    # TODO: fix this awful code - caused because Structs don't implment Access...
+    get_in(frame, [Access.key(:params, nil), Access.key(:adapter, nil)]) == nil
   end
 
   defp adapter_type_missing?(frame) do

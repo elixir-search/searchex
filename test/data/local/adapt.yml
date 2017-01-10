@@ -1,9 +1,9 @@
 ---
-:collection:     tweets
+:collection:     adapt
 :docsep:         "---"
 :cache_dir:      "/tmp/searchex"
 :adapter:
-  :type:         "filesys"
+  :type:         "Filesys"
   :file_roots:   ["docs/tweets"]
   :file_types:   ["txt", "md", "wlog"]
   :file_maxnum:  50

@@ -5,7 +5,7 @@ defmodule Util.Ext.FileTest do
   
   describe "#ls_r" do
     test "limit with options" do
-      opts = %{depth: 2, types: ~w(md), skips: ~w(^\\..+ ^\_ deps)}
+      opts = %{file_depth: 2, file_types: ~w(md), file_skips: ~w(^\\..+ ^\_ deps)}
       results = File.ls_r ".", opts
       assert length(results) == 3
     end

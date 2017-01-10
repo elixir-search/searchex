@@ -1,4 +1,4 @@
-defmodule Searchex.Adapter.Type.Validate.Filesys do
+defmodule Searchex.Adapter.Shake.Filesys do
 
   use Shake.Module
 
@@ -33,7 +33,7 @@ defmodule Searchex.Adapter.Type.Validate.Filesys do
     alias Searchex.Command.CmdHelpers
     alias Searchex.Command.Build.Catalog.Params
     new_roots  = CmdHelpers.expanded_file_roots(frame)
-    new_params = %Params{frame.params | file_roots: new_roots}
+    new_params = put_in(frame.params, [Access.key(:adapter, nil), :file_roots], new_roots)
     %Frame{frame | params: new_params}
   end
 end

@@ -15,7 +15,7 @@ defmodule Searchex.Command.Docsource do
 
   step :basic_adapter_validation
   step :type_specific_adapter_params
-  step :type_specific_adapter_validation
+  step :type_specific_adapter_shake
   step :start_adapter
   step :pull_adapter
 
@@ -24,14 +24,14 @@ defmodule Searchex.Command.Docsource do
   end
 
   def type_specific_adapter_params(%Frame{params: params} = frame, _opts) do
-    mod     = Searchex.Adapter.adapter_module(frame)
-    adapter = Map.merge(params[:adapter], mod.default_params())
-    put_in(frame, [:adapter], adapter)
+    adapter_mod      = Searchex.Adapter.adapter_module(frame)
+    adapter_settings = Map.merge(adapter_mod.default_settings(), params.adapter)
+    put_in(frame, [Access.key(:params, nil), Access.key(:adapter, nil)], adapter_settings)
   end
 
-  def type_specific_adapter_validation(frame, opts) do
+  def type_specific_adapter_shake(frame, opts) do
     adapter_module = Searchex.Adapter.adapter_module(frame)
-    adapter_module.validate(frame, opts)
+    adapter_module.shake(frame, opts)
   end
 
   def start_adapter(frame, _opts) do
