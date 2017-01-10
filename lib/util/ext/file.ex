@@ -20,7 +20,7 @@ defmodule Util.Ext.File do
     paths
     |> Enum.map(fn(path) -> ls_process(path, lcl_opts) end)
     |> List.flatten
-    |> Enum.take(lcl_opts.maxnum)
+    |> Enum.take(lcl_opts.file_maxnum)
   end
 
   def ls_r(path, opts), do: ls_r([path], opts)
@@ -29,10 +29,10 @@ defmodule Util.Ext.File do
 
   defp default_opts(opts) do
     defaults = %{
-      types:    []    ,
-      skips:    []    ,
-      maxnum:   1000  ,
-      depth:    10    ,
+      file_types:    []    ,
+      file_skips:    []    ,
+      file_maxnum:   1000  ,
+      file_depth:    10    ,
     }
     Map.merge(defaults, opts)
   end
@@ -43,10 +43,10 @@ defmodule Util.Ext.File do
 
   # --------------------------------------------------------------------
 
-  defp ls_dir(_path, %{depth: 0} = _opts), do: []
+  defp ls_dir(_path, %{file_depth: 0} = _opts), do: []
   defp ls_dir(base_path, opts) do
-    new_opts = %{opts | depth: opts.depth - 1}
-    result = dirglob_match?(base_path, opts.skips)
+    new_opts = %{opts | file_depth: opts.file_depth - 1}
+    result = dirglob_match?(base_path, opts.file_skips)
     if result do
       []
     else
@@ -58,7 +58,7 @@ defmodule Util.Ext.File do
   end
 
   defp ls_file(path, opts) do
-    if fileglob_match?(path, opts.types), do: [path], else: []
+    if fileglob_match?(path, opts.file_types), do: [path], else: []
   end
 
   # --------------------------------------------------------------------

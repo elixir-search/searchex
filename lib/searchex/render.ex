@@ -139,8 +139,8 @@ defmodule Searchex.Render do
         cfg_name:   frame.cfg_name                             ,
         numdocs:    frame.catalog.numdocs                      ,
         doc_size:   Util.Ext.Integer.format(doc_size  )        ,
-        cache_size: Util.Ext.Integer.format(cache_size)        ,
-        file_roots: Util.Ext.Path.shrink_paths(frame.params.file_roots)
+        cache_size: Util.Ext.Integer.format(cache_size)      #  ,
+#        file_roots: Util.Ext.Path.shrink_paths(frame.params.file_roots)
       ]
     end
   end

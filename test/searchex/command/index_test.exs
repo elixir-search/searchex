@@ -24,7 +24,7 @@ defmodule Searchex.Command.IndexTest do
       frame = Index.exec("multi")
       pid   = Process.whereis(frame.index)
       assert is_pid(pid)
-      assert Supervisor.count_children(pid).active == 281
+      assert Supervisor.count_children(pid).active == 286
     end
   end
 end

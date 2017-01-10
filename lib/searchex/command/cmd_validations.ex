@@ -1,7 +1,6 @@
 defmodule Searchex.Command.CmdValidations do
 
   import Shake.Frame
-#  import Searchex.Config.CfgHelpers
   alias  Searchex.Config.CfgValidations
 
   @moduledoc false

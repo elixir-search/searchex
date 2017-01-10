@@ -21,19 +21,14 @@ defmodule Searchex.Command.CmdHelpers do
   end
 
   def expanded_file_roots(frame) do
-    Enum.map frame.params.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
-  end
-
-  def file_list(frame) do
-    alias Searchex.Command.Build.Catalog.Params
-    absolute_roots = expanded_file_roots(frame)
-    Util.Ext.File.ls_r absolute_roots, Params.file_params(frame.params)
+    Enum.map frame.params.adapter.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
   end
 
   def doc_size(frame) do
     alias Searchex.Command.Build.Catalog.Params
     roots = expanded_file_roots(frame)
-    Util.Ext.File.du_s(roots, Params.file_params(frame.params))
+#    Util.Ext.File.du_s(roots, Params.file_params(frame.params))
+    Util.Ext.File.du_s(roots, Searchex.Adapter.Type.Filesys.file_params(frame.params))
   end
 
   def cache_size(frame) do

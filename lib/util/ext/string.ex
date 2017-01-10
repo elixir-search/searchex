@@ -38,6 +38,7 @@ defmodule Util.Ext.String do
     ! empty?(string)
   end
 
+  def to_atom(elem) when elem == nil,     do: nil
   def to_atom(elem) when is_binary(elem), do: String.to_atom(elem)
   def to_atom(elem), do: elem
 

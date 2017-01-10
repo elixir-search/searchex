@@ -1427,7 +1427,7 @@
     ],
     [
       0.208928,
-      "---\r\n:collection:     \"genesis\"\r\n:file_roots:     [docs/genesis.txt]\r\n:file_types:     [\"txt\"]\r\n:file_maxnum:    10\r\n:file_maxkb:     1000\r\n:cache_dir:      \"cache\"\r\n:display_fields: \"score startbyte doclength body\"\r\n:docsep:         \"\\n\"\r\n:input_fields:\r\n\r\n"
+      "---\r\n:collection:     \"genesis\"\r\n:file_roots:     [docs/genesis.txt]\r\n:file_types:     [\"txt\"]\r\n:file_maxnum:    10\r\n:bucket_maxkb:     1000\r\n:cache_dir:      \"cache\"\r\n:display_fields: \"score startbyte doclength body\"\r\n:docsep:         \"\\n\"\r\n:input_fields:\r\n\r\n"
     ],
     [
       0.009282,

@@ -10,7 +10,7 @@ defmodule Searchex.Config do
       :file_roots:     ["file.txt", "/home/user/sub"]  # a list of dirs and/or files
       :file_types:     ["txt", "md", "js"]             # leave blank for 'all files'
       :file_maxnum:    100                             # max number of files to load
-      :file_maxkb:     100                             # max size of files to read
+      :bucket_maxkb:     100                             # max size of files to read
       :file_skips:     ["^_", "deps", "doc"]           # directories to skip
       :file_depth:     4                               # max recursive file levels
       :cache_dir:      "/tmp/testcache"                # location of the cache file
