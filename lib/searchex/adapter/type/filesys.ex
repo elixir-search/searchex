@@ -39,9 +39,9 @@
     alias Searchex.Command.CmdHelpers
     absolute_roots = CmdHelpers.expanded_file_roots(frame)
     Util.Ext.File.ls_r absolute_roots, file_params(frame.params)
-#    Util.Ext.File.ls_r absolute_roots, frame.params.adapter
   end
 
+  # TODO: GET RID OF THIS - JUST USE params.adapter map directly...
   def file_params(params) do
     %{
       types:  params.adapter.file_types   ,
