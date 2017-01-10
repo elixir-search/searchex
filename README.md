@@ -1,5 +1,6 @@
 # Searchex Readme
 
+![build status](https://api.travis-ci.org/elixir-search/searchex.svg?branch=dev "Travis CI build status")
 [![hex.pm](http://img.shields.io/hexpm/v/searchex.svg?style=flat)](https://hex.pm/packages/searchex)
 [![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://hexdocs.pm/searchex/)
 [![gitter](https://badges.gitter.im/elixir-search/searchex.svg)](https://gitter.im/elixir-search/searchex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
