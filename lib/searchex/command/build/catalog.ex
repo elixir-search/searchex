@@ -20,9 +20,8 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   defp gen_bucketscans(catalog, frame) do
-    adapter = Searchex.Adapter.adapter_module(frame)
     scans = frame
-            |> adapter.events
+            |> Util.Adapter.event_ids(:create)
             |> Task.async_stream(Bucketscan, :generate_bucketscan, [frame])
             |> Enum.to_list()
             |> Enum.map(fn(el) -> elem(el, 1) end)

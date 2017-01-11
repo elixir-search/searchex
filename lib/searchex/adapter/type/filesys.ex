@@ -20,7 +20,7 @@
   end
 
   def cursor(%Frame{cfg_name: cfg_name} = frame) do
-    term   = events(frame)
+    term   = Util.Adapter.event_ids(frame, :create)
              |> Enum.map(fn(file) -> TimeStamp.filepath_timestamp(file) end)
              |> TimeStamp.newest
     digest = Util.Ext.Term.digest({cfg_name, term})
@@ -28,9 +28,11 @@
   end
 
   def events(frame) do
-    frame
-    |> file_list
-    |> Util.Ext.File.ls_r(frame.params.adapter)
+    list = frame
+           |> file_list
+           |> Util.Ext.File.ls_r(frame.params.adapter)
+           |> Enum.map(fn(elem) -> {:create, elem} end)
+    [{:files, list}]
   end
 
   def rawdata(filename, frame) do
