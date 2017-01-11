@@ -31,7 +31,6 @@ defmodule Searchex.Command.Params do
     %Frame{frame | cfg_name: cfg_name}
   end
 
-  # read the config file and generate params
   def generate_params(frame, _opts) do
     params = frame.cfg_name
              |> Searchex.Config.cat
