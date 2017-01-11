@@ -1,5 +1,8 @@
  defmodule Searchex.Adapter.Type.Filesys do
 
+   alias Shake.Frame
+   alias Util.TimeStamp
+
   def init(_args) do
   end
 
@@ -16,7 +19,12 @@
       }
   end
 
-  def cursor(_frame) do
+  def cursor(%Frame{cfg_name: cfg_name} = frame) do
+    term   = events(frame)
+             |> Enum.map(fn(file) -> TimeStamp.filepath_timestamp(file) end)
+             |> TimeStamp.newest
+    digest = Util.Ext.Term.digest({cfg_name, term})
+    {:digest, digest}
   end
 
   def events(frame) do

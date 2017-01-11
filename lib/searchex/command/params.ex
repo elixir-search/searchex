@@ -42,7 +42,6 @@ defmodule Searchex.Command.Params do
   end
 
   def validate_matching_cfg_names(frame, _opts) do
-#    alias Searchex.Command.CmdHelpers
     frame_name = String.split(frame.cfg_name, "/") |> Enum.at(1)
     coll_name  = frame.params.collection
     case frame_name == coll_name do
@@ -51,21 +50,11 @@ defmodule Searchex.Command.Params do
     end
   end
 
-  # generate a digest for the params
-  # the digest is simply the newest timestamp of the config file
-  # and all the documents in the file_roots
-
-  # TODO: USE THE CURSOR FROM THE ADAPTER!!
-  # ALSO: SEPARATE DIGESTS FOR DOCSOURCE AND PARAMS!!
   def generate_digest(%Frame{cfg_name: cfg_name} = frame, _opts) do
-#    alias Searchex.Config.CfgHelpers
-#    alias Searchex.Command.CmdHelpers
-#    alias Util.TimeStamp
-#    term  = [CfgHelpers.cfg_file(cfg_name)] ++ CmdHelpers.file_list(frame)
-#            |> Enum.map(fn(file) -> TimeStamp.filepath_timestamp(file) end)
-#            |> TimeStamp.newest
-    term = "HELLO WORLD"
-    digest = Util.Ext.Term.digest({cfg_name, term})
+    alias Searchex.Config.CfgHelpers
+    alias Util.TimeStamp
+    term   = TimeStamp.filepath_timestamp(CfgHelpers.cfg_file(cfg_name))
+    digest = Util.Ext.Term.digest({cfg_name, term, get_digest(frame, :docsource)})
     set_digest(frame, :params, digest)
   end
 end

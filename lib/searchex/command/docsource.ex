@@ -17,6 +17,7 @@ defmodule Searchex.Command.Docsource do
   step :type_specific_adapter_params
   step :type_specific_adapter_shake
   step :start_adapter
+  step :generate_digest
 
   def basic_adapter_validation(frame, opts) do
     Searchex.Adapter.validate(frame, opts)
@@ -32,7 +33,13 @@ defmodule Searchex.Command.Docsource do
     frame.params.adapter.module.shake(frame, opts)
   end
 
+  # TODO: finish this!
   def start_adapter(frame, _opts) do
     frame
+  end
+
+  def generate_digest(%Frame{params: params} = frame, _opts) do
+    digest = params.adapter.module.cursor(frame)
+    set_digest(frame, :docsource, digest)
   end
 end
