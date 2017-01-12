@@ -25,7 +25,6 @@ defmodule Searchex.Command.CmdHelpers do
   end
 
   def doc_size(frame) do
-    alias Searchex.Command.Build.Catalog.Params
     roots = expanded_file_roots(frame)
 #    Util.Ext.File.du_s(roots, Params.file_params(frame.params))
     Util.Ext.File.du_s(roots, Searchex.Adapter.Type.Filesys.file_params(frame.params))
