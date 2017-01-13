@@ -57,10 +57,11 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 | Adapter       | BucketID             |
 |---------------|----------------------|
 | FileSys       | FileName             |
+| FileGit       | FileName             |
 | FileWatch     | FileName             |
-| Archive       | ArchiveName/FileName |
 | Ecto          | Type/RecordID        |
 | Amqp/Rabbitmq | Channel/MsgID        |
+| Archive       | ArchiveName/FileName |
 | Couchdb       |                      |
 | Kafka         |                      |
 | Ejabberd      |                      |

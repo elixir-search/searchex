@@ -1,8 +1,13 @@
 # starting script...
 echo "searchex@yourhost" > $PROMPT_FILE
+# remove old executable
+rm -f ~/.mix/escripts/searchex
 # starting demo...
 asciinema rec --title="Introduction to Searchex" _search_intro.json
 # Searchex is a new search engine written in pure Elixir.
+# Installation is simple:
+mix escript.install hex searchex
+# View options:
 searchex help
 # Searchex organizes documents into repositories and collections.
 searchex info
