@@ -31,7 +31,6 @@ defmodule Searchex.Adapter.Shake.Filesys do
 
   def expand_file_roots(frame, _opts) do
     alias Searchex.Command.CmdHelpers
-    alias Searchex.Command.Build.Catalog.Params
     new_roots  = CmdHelpers.expanded_file_roots(frame)
     new_params = put_in(frame.params, [Access.key(:adapter, nil), :file_roots], new_roots)
     %Frame{frame | params: new_params}
