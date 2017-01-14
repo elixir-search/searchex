@@ -115,6 +115,31 @@ usable for small datasets.
 - One adapter per collection
 - Adapter process key like {:adapter, :collection_name}
 
+### Nested Sources
+
+database -> encrypted tar file -> json file -> document
+
+How to handle?  Some ideas:
+
+1. specify nesting in config file
+
+    adapter:
+      type: Archive
+      adapter: 
+        type: Filesys
+        file_types: ["json"]
+
+2. auto-detected 'mime types'
+
+encode the asset type in the tuple?
+
+    {:create, :archive, "/home/mydir/archive.tar.gz"}
+    {:update, :ecto, "/users?id=2342"}
+
+3. mime-type return in init call
+
+    Searchex.Adapter.Filesys.init(params)  # -> {:mime-type, :ecto}
+
 ## Processing Direction
 
 Sometimes processing is initiated by Searchex, sometimes by the Source.
