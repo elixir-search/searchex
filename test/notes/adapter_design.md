@@ -138,6 +138,8 @@ encode the asset type in the tuple?
 
 3. mime-type return in init call
 
+maybe use something like a type-system ?
+
     Searchex.Adapter.Filesys.init(params)  # -> {:mime-type, :ecto}
 
 ## Processing Direction
