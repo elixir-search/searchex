@@ -2,7 +2,7 @@ defmodule Searchex.Request.ParamsTest do
   use ExUnit.Case
 
   alias Searchex.Request.Params
-  alias Shake.Frame
+  alias Shreq.Frame
 
   describe "error condition" do
     test "missing cfg" do

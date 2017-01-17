@@ -1,7 +1,7 @@
 defmodule Searchex.Adapter do
 
   def validate(frame, _opts) do
-    import Shake.Frame
+    import Shreq.Frame
     cond do
       adapter_missing?(frame)        ->
         halt(frame, "No adapter specified for config (#{frame.cfg_name})")

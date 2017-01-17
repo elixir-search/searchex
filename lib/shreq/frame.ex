@@ -1,6 +1,6 @@
-defmodule Shake.Frame do
+defmodule Shreq.Frame do
   @moduledoc """
-  Defines a struct that is passed up and down the Shake build chain.
+  Defines a struct that is passed up and down the Shreq build chain.
 
       defstruct cfg_snip: "",
                 cfg_name: "",
@@ -18,7 +18,7 @@ defmodule Shake.Frame do
                 assigns:  %{}
   """
 
-  alias Shake.Frame
+  alias Shreq.Frame
 
   @type cfg_snip :: String.t
   @type cfg_name :: String.t
@@ -68,7 +68,7 @@ defmodule Shake.Frame do
             assigns:  %{}
 
   @doc """
-  Halts the Shake job by preventing downstream steps 
+  Halts the Shreq job by preventing downstream steps
   from being invoked.  Optional `halt_msg` can be a 
   String or list of Strings.
   """

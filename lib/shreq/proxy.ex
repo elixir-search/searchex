@@ -1,12 +1,12 @@
-defmodule Shake.Proxy do
-  use Shake.Module
+defmodule Shreq.Proxy do
+  use Shreq.Module
 
   @moduledoc false
 
   #  With this module, you can invoke custom middleware
   #  from the config file.
   #
-  #      :command:
+  #      :request_module:
   #        :results: "MyIndex"
   #
   #  Where "MyIndex" is mapped to `Searchex.Request.MyIndex`.
@@ -31,7 +31,7 @@ defmodule Shake.Proxy do
 
   def summon(frame, type) do
     case modmap(frame)[type] do
-      nil -> halt(frame, "No command module (#{type})")
+      nil -> halt(frame, "No request module (#{type})")
       mod -> call_if_loaded(frame, mod)
     end
   end
@@ -39,11 +39,20 @@ defmodule Shake.Proxy do
   def call_if_loaded(frame, module) do
     cond do
       Code.ensure_loaded?(module) -> module.call(frame, [])
-      true                        -> halt(frame, "Module not found (#{module})")
+      true                        -> halt(frame, "Request module not found (#{module})")
     end
   end
 
   defp modmap(frame) do
-    Map.merge(defaults(), frame.params.command)
+    Map.merge(defaults(), custom_modules(frame))
+  end
+
+  defp custom_modules(frame) do
+    frame.params.req_module
+    |> Enum.reduce(%{}, fn({k,v}, acc) -> Map.merge(acc, %{k => xatom(v)})end)
+  end
+
+  defp xatom(string) do
+    "Searchex.Request.#{string}" |> String.to_atom
   end
 end

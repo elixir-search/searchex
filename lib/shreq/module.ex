@@ -1,4 +1,4 @@
-defmodule Shake.Module do
+defmodule Shreq.Module do
 
   @moduledoc false
 
@@ -6,7 +6,7 @@ defmodule Shake.Module do
 
   defmacro __using__(opts) do
     quote do
-      @behaviour Shake
+      @behaviour Shreq
       @step_module_opts unquote(opts)
 
       def init(opts) do
@@ -19,14 +19,14 @@ defmodule Shake.Module do
 
       defoverridable [init: 1, call: 2]
 
-      use Shake.Validate
+      use Shreq.Validate
 
-      alias  Shake.Frame
-      import Shake.Frame
-      import Shake.Module, only: [step: 1, step: 2]
+      alias  Shreq.Frame
+      import Shreq.Frame
+      import Shreq.Module, only: [step: 1, step: 2]
 
       Module.register_attribute(__MODULE__, :steps, accumulate: true)
-      @before_compile Shake.Module
+      @before_compile Shreq.Module
     end
   end
 
@@ -34,7 +34,7 @@ defmodule Shake.Module do
     steps       = Module.get_attribute(env.module, :steps)
     module_opts = Module.get_attribute(env.module, :step_module_opts)
 
-    {frame, body} = Shake.Module.compile(env, steps, module_opts)
+    {frame, body} = Shreq.Module.compile(env, steps, module_opts)
 
     quote do
       defp step_module_call(unquote(frame), _), do: unquote(body)
@@ -81,17 +81,17 @@ defmodule Shake.Module do
     call = quote_step_call(step_type, step, opts)
 
     error_message = case step_type do
-      :module   -> "expected #{inspect step}.call/2 to return a Shake.Frame"
-      :function -> "expected #{step}/2 to return a Shake.Frame"
+      :module   -> "expected #{inspect step}.call/2 to return a Shreq.Frame"
+      :function -> "expected #{step}/2 to return a Shreq.Frame"
     end <> ", all steps must receive a frame and return a frame"
 
     {fun, meta, [arg, [do: clauses]]} =
       quote do
         case unquote(compile_guards(call, guards)) do
-          %Shake.Frame{halted: true} = frame ->
+          %Shreq.Frame{halted: true} = frame ->
             unquote(log_halt(step_type, step, env, module_opts))
             frame
-          %Shake.Frame{} = frame ->
+          %Shreq.Frame{} = frame ->
             unquote(acc)
           _ ->
             raise unquote(error_message)
@@ -142,7 +142,7 @@ defmodule Shake.Module do
 
       quote do
         require Logger
-        # Matching, to make Dialyzer happy on code executing Shake.Builder.compile/3
+        # Matching, to make Dialyzer happy on code executing Shreq.Builder.compile/3
         _ = Logger.unquote(level)(unquote(message))
       end
     else

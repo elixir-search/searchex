@@ -7,7 +7,7 @@ defmodule Searchex.Request do
   This workflow establishes a dependency chain, with higher level steps
   depending on the outputs of lower level steps.  Each step generates an
   intermediate output which can be cached to minimize re-execution of
-  compute-intensive steps.  The processing middleware is based on `Shake`.
+  compute-intensive steps.  The processing middleware is based on `Shreq`.
 
   An LRU Cache is used, with auto-expiration of old keys.  Cache keys are
   digests of the content produced at each step of the build chain.

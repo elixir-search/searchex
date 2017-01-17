@@ -29,7 +29,7 @@ defmodule Searchex.Request.Build.Catalog do
   end
 
   defp gen_docs(catalog, params) do
-    docs = Searchex.Request.Build.Catalog.Doc.generate_from_catalog(catalog, params)
+    docs = Doc.generate_from_catalog(catalog, params)
     %Catalog{catalog | docs: docs}
   end
 

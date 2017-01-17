@@ -1,6 +1,6 @@
  defmodule Searchex.Adapter.Type.Filesys do
 
-   alias Shake.Frame
+   alias Shreq.Frame
    alias Util.TimeStamp
 
   def init(_args) do
@@ -41,7 +41,7 @@
   end
 
   def shake(frame, opts) do
-    Searchex.Adapter.Shake.Filesys.call(frame, opts)
+    Searchex.Adapter.Shreq.Filesys.call(frame, opts)
   end
 
   # -----

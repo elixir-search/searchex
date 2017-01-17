@@ -1,11 +1,11 @@
-defmodule Shake.Validate do
+defmodule Shreq.Validate do
 
   @moduledoc false
 
   defmacro __using__(_opts) do
     quote do
 
-      import Shake.Frame
+      import Shreq.Frame
 
       def validate(frame, opts) do
         case Keyword.split(opts, [:with]) do
@@ -28,8 +28,8 @@ defmodule Shake.Validate do
           newframe = newfunc.(acc, opts)
           if newframe.halt_msg != halt_msg do
             case halt_msg do
-              "" -> %Shake.Frame{newframe | halt_msg: [newframe.halt_msg]}
-              _  -> %Shake.Frame{newframe | halt_msg: halt_msg ++ [newframe.halt_msg]}
+              "" -> %Shreq.Frame{newframe | halt_msg: [newframe.halt_msg]}
+              _  -> %Shreq.Frame{newframe | halt_msg: halt_msg ++ [newframe.halt_msg]}
             end
           else
             newframe

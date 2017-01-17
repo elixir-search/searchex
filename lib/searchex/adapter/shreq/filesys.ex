@@ -1,6 +1,6 @@
-defmodule Searchex.Adapter.Shake.Filesys do
+defmodule Searchex.Adapter.Shreq.Filesys do
 
-  use Shake.Module
+  use Shreq.Module
 
   step :validate_file_root_presence
   step :validate_file_roots

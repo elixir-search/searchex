@@ -1,6 +1,7 @@
-defmodule Reqm do
+defmodule Shreq do
   @moduledoc """
-  A Plug-like middleware optimized for search.
+  Shreq (SearcH REQuest) middlware is a Plug-like framework 
+  optimized for handling search requests.
 
   Full-text search is build on layers of dependencies:
 
@@ -12,37 +13,36 @@ defmodule Reqm do
   At every step of the build chain, you want parameter validation and caching
   so you don't have to re-generate everything from scratch.
 
-  As we go forward, other types of intermediate data structures and indexes
-  will be introduced.  We need a data-processing abstraction that is flexible,
-  pluggable and composable.
+  Custom middleware modules can be added to handle different languages or 
+  custom indexing requirements.  Shreq middleware is flexible and composable.
 
-  That's the idea of Shake.
+  That's the idea of Shreq.
 
   ## Inspired by Plug
 
-  The architecture of Shake is inspired by Plug.  Here are some differences between
-  Shake and Plug...
+  The architecture of Shreq is inspired by Plug.  Here are some differences between
+  Shreq and Plug...
 
   ### Terminology
 
-  | Plug         | Shake        |
+  | Plug         | Shreq        |
   |--------------|--------------|
-  | Plug.Builder | Shake.Module |
-  | Plug.Conn    | Shake.Frame  |
+  | Plug.Builder | Shreq.Module |
+  | Plug.Conn    | Shreq.Frame  |
   | plug         | step         |
   | pipeline     | job          |
   | conn         | frame        |
   | call         | call         |
 
-  ### The Shake Frame
+  ### The Shreq Frame
 
-  Plug is centered around a the Conn struct.  Shake uses the Frame struct.
+  Plug is centered around a the Conn struct.  Shreq uses the Frame struct.
 
-  See the documentation for `Shake.Frame` for more info.
+  See the documentation for `Shreq.Frame` for more info.
 
   ### Search Focus
 
-  Shake omits Plug's HTTP-oriented helpers, and adds search-specific helpers:
+  Shreq omits Plug's HTTP-oriented helpers, and adds search-specific helpers:
 
   - validate - a method to perform data validations
   - digest - to create content digests
@@ -107,5 +107,5 @@ defmodule Reqm do
   @type opts :: binary | tuple | atom | integer | float | [opts] | %{opts => opts}
 
   @callback init(opts) :: opts
-  @callback call(Shake.Job.t, opts) :: Shake.Job.t
+  @callback call(Shreq.Job.t, opts) :: Shreq.Job.t
 end

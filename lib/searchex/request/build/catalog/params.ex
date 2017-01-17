@@ -8,7 +8,7 @@ defmodule Searchex.Request.Build.Catalog.Params do
             adapter:      %{}                       ,
             input_fields: %{}                       ,
             cli_format:   %{}                       ,
-            command:      %{}
+            req_module:   %{}
 
   alias Searchex.Request.Build.Catalog.Params
 
