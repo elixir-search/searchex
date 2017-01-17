@@ -127,13 +127,13 @@ defmodule Searchex.Render do
   end
 
   defp info(cfg_snip) do
-    alias Searchex.Command.CmdHelpers
+    alias Searchex.Command.Util.Helpers
     frame = Searchex.Command.info(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      doc_size   = CmdHelpers.doc_size(frame)
-      cache_size = CmdHelpers.cache_size(frame)
+      doc_size   = Helpers.doc_size(frame)
+      cache_size = Helpers.cache_size(frame)
       [
         cmd:        "info"                                     ,
         cfg_name:   frame.cfg_name                             ,
@@ -153,7 +153,7 @@ defmodule Searchex.Render do
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      file  = Searchex.Command.CmdHelpers.cache_file(frame)
+      file  = Searchex.Command.Util.Helpers.cache_file(frame)
       if File.exists?(file), do: File.rm!(file)
       {:ok}
     end

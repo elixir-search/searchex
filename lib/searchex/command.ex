@@ -2,7 +2,7 @@ defmodule Searchex.Command do
   @moduledoc """
   Main Searchex workflow
 
-      results <- query <- index <- catalog <- params
+      results <- query <- index <- catalog <- params <- docsrc
 
   This workflow establishes a dependency chain, with higher level steps
   depending on the outputs of lower level steps.  Each step generates an

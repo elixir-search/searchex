@@ -8,8 +8,8 @@ defmodule Util.Cache do
   def start(frame, size \\ 50) do
     {ets_name, dets_name, dets_path} = expand(frame)
     unless Process.whereis(ets_name) do
-      alias Searchex.Command.CmdHelpers
-      File.mkdir_p(CmdHelpers.cache_dir(frame))
+      alias Searchex.Command.Util.Helpers
+      File.mkdir_p(Helpers.cache_dir(frame))
       LruCache.start_link(ets_name, size)
       :dets.open_file(dets_name, [file: dets_path])
       :ets.from_dets(ets_name, dets_name)
@@ -69,11 +69,11 @@ defmodule Util.Cache do
   end
 
   defp expand(frame) do
-    alias Searchex.Command.CmdHelpers
+    alias Searchex.Command.Util.Helpers
     cfg_str   = to_string(frame.cfg_name) |> String.replace("/", "_")
     ets_name  = Util.Ext.Term.to_atom("ets_#{cfg_str}")
     dets_name = Util.Ext.Term.to_atom("dets_#{cfg_str}")
-    dets_path = CmdHelpers.cache_file(frame) |> String.to_charlist
+    dets_path = Helpers.cache_file(frame) |> String.to_charlist
     {ets_name, dets_name, dets_path}
   end
 end

@@ -2,7 +2,7 @@ defmodule Searchex.Command.Params do
 
   @moduledoc false
 
-  alias Searchex.Command.CmdValidations
+  alias Searchex.Command.Util.Validations
   use Shake.Module
 
   @doc """
@@ -14,11 +14,11 @@ defmodule Searchex.Command.Params do
   end
 
   validation_list = [
-    &CmdValidations.cfg_nomatch?/2        ,
-    &CmdValidations.cfg_ambiguous?/2      ,
+    &Validations.cfg_nomatch?/2        ,
+    &Validations.cfg_ambiguous?/2      ,
   ]
 
-  step :validate, with: [&CmdValidations.cfg_snip_invalid?/2]
+  step :validate, with: [&Validations.cfg_snip_invalid?/2]
   step :validate, with: validation_list
   step :generate_cfg_name
   step :generate_params

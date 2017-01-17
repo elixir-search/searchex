@@ -47,8 +47,8 @@
   # -----
 
   defp file_list(frame) do
-    alias Searchex.Command.CmdHelpers
-    absolute_roots = CmdHelpers.expanded_file_roots(frame)
+    alias Searchex.Command.Util.Helpers
+    absolute_roots = Helpers.expanded_file_roots(frame)
     Util.Ext.File.ls_r absolute_roots, frame.params.adapter
   end
 end
