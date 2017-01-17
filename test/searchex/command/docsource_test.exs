@@ -1,11 +1,11 @@
-defmodule Searchex.Command.DocsourceTest do
+defmodule Searchex.Command.DocsrcTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Docsource
+  alias Searchex.Command.Docsrc
 
   describe "error condition" do
     test "missing cfg" do
-      frame = Docsource.exec("unknown")
+      frame = Docsrc.exec("unknown")
       assert frame.halted
     end
   end

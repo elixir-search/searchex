@@ -7,7 +7,8 @@ defmodule Searchex.Command.Build.Catalog.Params do
             docsep:       nil                       ,
             adapter:      %{}                       ,
             input_fields: %{}                       ,
-            cli_format:   %{}
+            cli_format:   %{}                       ,
+            command:      %{}
 
   alias Searchex.Command.Build.Catalog.Params
 

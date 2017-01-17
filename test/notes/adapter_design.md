@@ -167,7 +167,7 @@ For example:
 Misc
 - Adapters can be chained
 - Searchex itself is an adapter -> P2P document streaming
-- Docsources can be nested
+- Docsrcs can be nested
 
     Database <- Archive <- Document
 
