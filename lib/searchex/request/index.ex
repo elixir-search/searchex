@@ -1,9 +1,9 @@
-defmodule Searchex.Command.Index do
+defmodule Searchex.Request.Index do
 
   @moduledoc false
 
   use Shake.Module
-  alias Searchex.Command.Build.Index
+  alias Searchex.Request.Build.Index
 
   @doc """
   The API for the module - takes a config name and returns
@@ -13,7 +13,7 @@ defmodule Searchex.Command.Index do
     call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
-  step Searchex.Command.Catalog
+  step Searchex.Request.Catalog
   step :generate_index
 
   def generate_index(frame, _opts) do

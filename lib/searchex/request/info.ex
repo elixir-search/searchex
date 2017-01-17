@@ -1,13 +1,14 @@
-defmodule Searchex.Command.Build do
+defmodule Searchex.Request.Info do
 
   @moduledoc false
 
   use Shake.Module
 
+  @doc "Module API"
   def exec(cfg_snip) do
     call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
-  step Searchex.Command.Index
+  step Searchex.Request.Index
 
 end

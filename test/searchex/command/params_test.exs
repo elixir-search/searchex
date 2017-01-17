@@ -1,7 +1,7 @@
-defmodule Searchex.Command.ParamsTest do
+defmodule Searchex.Request.ParamsTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Params
+  alias Searchex.Request.Params
   alias Shake.Frame
 
   describe "error condition" do

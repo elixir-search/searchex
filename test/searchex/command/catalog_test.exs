@@ -1,7 +1,7 @@
-defmodule Searchex.Command.CatalogTest do
+defmodule Searchex.Request.CatalogTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Catalog
+  alias Searchex.Request.Catalog
 
   describe "min collection" do
     test "doc count" do

@@ -10,7 +10,7 @@ defmodule Searchex.Render do
   import Searchex.Config.CfgHelpers
 
   @doc """
-  Invoke `Searchex.Command.modify`, then launch an editor to open the config file.
+  Invoke `Searchex.Request.modify`, then launch an editor to open the config file.
 
   NOTE: you must define environment variables `EDITOR`.  This will only work with TMUX
 
@@ -28,7 +28,7 @@ defmodule Searchex.Render do
   Return processing summary for catalog generation.
   """
   def catalog(cfg_snip) do
-    frame = Searchex.Command.catalog(cfg_snip)
+    frame = Searchex.Request.catalog(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -40,7 +40,7 @@ defmodule Searchex.Render do
   Return processing summary for index generation.
   """
   def index(cfg_snip) do
-    frame = Searchex.Command.index(cfg_snip)
+    frame = Searchex.Request.index(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -52,7 +52,7 @@ defmodule Searchex.Render do
   Return processing summary for build.  (Catalog + Index)
   """
   def build(cfg_snip) do
-    frame = Searchex.Command.build(cfg_snip)
+    frame = Searchex.Request.build(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -61,10 +61,10 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Invoke `Searchex.Command.query`, then render the results as a table.
+  Invoke `Searchex.Request.query`, then render the results as a table.
   """
   def query(cfg_snip, query) do
-    frame = Searchex.Command.query(cfg_snip, query)
+    frame = Searchex.Request.query(cfg_snip, query)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -73,10 +73,10 @@ defmodule Searchex.Render do
   end
 
   @doc """
-  Invoke `Searchex.Command.results`, then render the results to a table.
+  Invoke `Searchex.Request.results`, then render the results to a table.
   """
   def results(cfg_snip) do
-    frame = Searchex.Command.results(cfg_snip)
+    frame = Searchex.Request.results(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -88,7 +88,7 @@ defmodule Searchex.Render do
   Show document text.
   """
   def show(cfg_snip, tgt_id) do
-    frame = Searchex.Command.show(cfg_snip, tgt_id)
+    frame = Searchex.Request.show(cfg_snip, tgt_id)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -108,7 +108,7 @@ defmodule Searchex.Render do
   https://elixirforum.com/t/how-to-launch-an-editor-from-escript/2094/1
   """
   def edit(cfg_snip, tgt_id) do
-    frame = Searchex.Command.show(cfg_snip, tgt_id)
+    frame = Searchex.Request.show(cfg_snip, tgt_id)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -127,8 +127,8 @@ defmodule Searchex.Render do
   end
 
   defp info(cfg_snip) do
-    alias Searchex.Command.Util.Helpers
-    frame = Searchex.Command.info(cfg_snip)
+    alias Searchex.Request.Util.Helpers
+    frame = Searchex.Request.info(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
@@ -149,11 +149,11 @@ defmodule Searchex.Render do
   Remove the cache file for a collection.
   """
   def clean(cfg_snip) do
-    frame = Searchex.Command.Params.exec(cfg_snip)
+    frame = Searchex.Request.Params.exec(cfg_snip)
     if frame.halted do
       {:error, frame.halt_msg}
     else
-      file  = Searchex.Command.Util.Helpers.cache_file(frame)
+      file  = Searchex.Request.Util.Helpers.cache_file(frame)
       if File.exists?(file), do: File.rm!(file)
       {:ok}
     end

@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Results do
+defmodule Searchex.Request.Results do
 
   @moduledoc false
 
@@ -10,7 +10,7 @@ defmodule Searchex.Command.Results do
     call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
-  step Searchex.Command.Index
+  step Searchex.Request.Index
   step :retrieve_query
   step :retrieve_results
 

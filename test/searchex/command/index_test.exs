@@ -1,7 +1,7 @@
-defmodule Searchex.Command.IndexTest do
+defmodule Searchex.Request.IndexTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Index
+  alias Searchex.Request.Index
 
   describe "min collection" do
     test "starts min keyword supervisor" do

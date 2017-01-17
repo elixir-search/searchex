@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.FieldDef do
+defmodule Searchex.Request.Build.Catalog.FieldDef do
 
   @moduledoc false
 

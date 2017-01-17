@@ -1,7 +1,7 @@
-defmodule Searchex.Command.QueryTest do
+defmodule Searchex.Request.QueryTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Query
+  alias Searchex.Request.Query
 
   describe "min collection" do
     test "doc count" do

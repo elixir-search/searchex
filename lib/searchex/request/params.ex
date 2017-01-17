@@ -1,8 +1,8 @@
-defmodule Searchex.Command.Params do
+defmodule Searchex.Request.Params do
 
   @moduledoc false
 
-  alias Searchex.Command.Util.Validations
+  alias Searchex.Request.Util.Validations
   use Shake.Module
 
   @doc """
@@ -36,7 +36,7 @@ defmodule Searchex.Command.Params do
              |> Searchex.Config.cat
              |> Searchex.Config.Load.to_map
              |> Util.Ext.Map.atomify_keys
-             |> Searchex.Command.Build.Catalog.Params.create_from_cfg
+             |> Searchex.Request.Build.Catalog.Params.create_from_cfg
     %Frame{frame | params: params}
   end
 

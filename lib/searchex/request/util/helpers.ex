@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Util.Helpers do
+defmodule Searchex.Request.Util.Helpers do
 
   @moduledoc false
 

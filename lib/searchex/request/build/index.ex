@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Index do
+defmodule Searchex.Request.Build.Index do
 
   @moduledoc false
 

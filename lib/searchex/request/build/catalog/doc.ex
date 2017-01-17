@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.Doc do
+defmodule Searchex.Request.Build.Catalog.Doc do
 
   @moduledoc false
 
@@ -15,7 +15,7 @@ defmodule Searchex.Command.Build.Catalog.Doc do
             body:       ""   ,
             score:      0
 
-  alias Searchex.Command.Build.Catalog.Doc
+  alias Searchex.Request.Build.Catalog.Doc
 
   def generate_from_catalog(catalog, params) do
     catalog.bucketscans

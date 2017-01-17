@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Docsrc do
+defmodule Searchex.Request.Docsrc do
 
   @moduledoc false
 

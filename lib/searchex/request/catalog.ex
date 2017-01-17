@@ -1,9 +1,9 @@
-defmodule Searchex.Command.Catalog do
+defmodule Searchex.Request.Catalog do
 
   @moduledoc false
 
   use Shake.Module
-  alias Searchex.Command.Build.Catalog
+  alias Searchex.Request.Build.Catalog
 
   @doc """
   The API for the module - takes a config name and returns
@@ -13,7 +13,7 @@ defmodule Searchex.Command.Catalog do
     call(%Frame{cfg_snip: cfg_snip}, [])
   end
 
-  step Searchex.Command.Params
+  step Searchex.Request.Params
   step :start_cache
   step :generate_catalog
 

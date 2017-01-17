@@ -1,4 +1,4 @@
-defmodule Searchex.Command do
+defmodule Searchex.Request do
   @moduledoc """
   Main Searchex workflow
 
@@ -32,7 +32,7 @@ defmodule Searchex.Command do
   The catalog is generated from a config file, stored at `~/.searchex/repo/<cfg_snip>.yml`.
   """
   def catalog(cfg_snip) do
-    Searchex.Command.Catalog.exec(cfg_snip) |> Cache.save
+    Searchex.Request.Catalog.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
@@ -43,14 +43,14 @@ defmodule Searchex.Command do
   The index lives in a Process Tree, one worker for each keyword.
   """
   def index(cfg_snip) do
-    Searchex.Command.Index.exec(cfg_snip) |> Cache.save
+    Searchex.Request.Index.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
   Generate both the catalog and the index for `cfg_snip` in one step
   """
   def build(cfg_snip) do
-    Searchex.Command.Build.exec(cfg_snip) |> Cache.save
+    Searchex.Request.Build.exec(cfg_snip) |> Cache.save
   end
 
   @doc """
@@ -61,27 +61,27 @@ defmodule Searchex.Command do
   - etc.
   """
   def info(cfg_snip) do
-    Searchex.Command.Info.exec(cfg_snip)
+    Searchex.Request.Info.exec(cfg_snip)
   end
 
   @doc """
   Query the collection, and return query scores.
   """
   def query(cfg_snip, query) do
-    Searchex.Command.Query.exec(cfg_snip, query) |> Cache.save
+    Searchex.Request.Query.exec(cfg_snip, query) |> Cache.save
   end
 
   @doc """
   Show last results
   """
   def results(cfg_snip) do
-    Searchex.Command.Results.exec(cfg_snip)
+    Searchex.Request.Results.exec(cfg_snip)
   end
 
   @doc """
   Show document text
   """
   def show(cfg_snip, tgt_id) do
-    Searchex.Command.Show.exec(cfg_snip, tgt_id)
+    Searchex.Request.Show.exec(cfg_snip, tgt_id)
   end
 end

@@ -1,38 +1,38 @@
-defmodule Searchex.CommandTest do
+defmodule Searchex.RequestTest do
   use ExUnit.Case
 
   describe "#catalog" do
     test "basic operation" do
-      result = Searchex.Command.catalog("worklog")
+      result = Searchex.Request.catalog("worklog")
       assert result != nil
     end
   end
 
   describe "#index" do
     test "basic operation" do
-      result = Searchex.Command.index("worklog")
+      result = Searchex.Request.index("worklog")
       assert result != nil
     end
   end
 
   describe "#query" do
     test "single word search" do
-      result = Searchex.Command.query("worklog", "monit")
+      result = Searchex.Request.query("worklog", "monit")
       assert result != nil
     end
 
     test "two word search" do
-      result = Searchex.Command.query("worklog", "monit notes")
+      result = Searchex.Request.query("worklog", "monit notes")
       assert result != nil
     end
 
     test "no results" do
-      result = Searchex.Command.query("worklog", "unrecognizedyoyoyo")
+      result = Searchex.Request.query("worklog", "unrecognizedyoyoyo")
       assert result != nil
     end
 
     test "blank query" do
-      result = Searchex.Command.query("worklog", "")
+      result = Searchex.Request.query("worklog", "")
       assert result != nil
     end
   end

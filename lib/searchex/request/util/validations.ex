@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Util.Validations do
+defmodule Searchex.Request.Util.Validations do
 
   import Shake.Frame
   alias  Searchex.Config.CfgValidations

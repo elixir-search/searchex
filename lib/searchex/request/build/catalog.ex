@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog do
+defmodule Searchex.Request.Build.Catalog do
 
   @moduledoc false
 
@@ -7,9 +7,9 @@ defmodule Searchex.Command.Build.Catalog do
             bucketscans:   []                                        ,
             docs:          []
 
-  alias Searchex.Command.Build.Catalog
-  alias Searchex.Command.Build.Catalog.Doc
-  alias Searchex.Command.Build.Catalog.Bucketscan
+  alias Searchex.Request.Build.Catalog
+  alias Searchex.Request.Build.Catalog.Doc
+  alias Searchex.Request.Build.Catalog.Bucketscan
 
   def create_from_frame(frame) do
     %Catalog{}
@@ -29,7 +29,7 @@ defmodule Searchex.Command.Build.Catalog do
   end
 
   defp gen_docs(catalog, params) do
-    docs = Searchex.Command.Build.Catalog.Doc.generate_from_catalog(catalog, params)
+    docs = Searchex.Request.Build.Catalog.Doc.generate_from_catalog(catalog, params)
     %Catalog{catalog | docs: docs}
   end
 

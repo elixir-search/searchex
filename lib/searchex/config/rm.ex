@@ -21,8 +21,8 @@ defmodule Searchex.Config.Rm do
   end
 
   defp clean_up(cfg_snip) do
-    alias Searchex.Command.Util.Helpers
-    frame = Searchex.Command.Params.exec(cfg_snip)
+    alias Searchex.Request.Util.Helpers
+    frame = Searchex.Request.Params.exec(cfg_snip)
     System.cmd("rm", ["-f", Helpers.cache_file(frame)])
     System.cmd("rm", ["-f", Helpers.cfg_file(frame)])
     {:ok}

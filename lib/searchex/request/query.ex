@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Query do
+defmodule Searchex.Request.Query do
 
   @moduledoc false
 
@@ -10,7 +10,7 @@ defmodule Searchex.Command.Query do
     call(%Frame{cfg_snip: cfg_snip, query: query}, [])
   end
 
-  step Searchex.Command.Index
+  step Searchex.Request.Index
   step :do_query
   step :gen_results
 
@@ -44,7 +44,7 @@ defmodule Searchex.Command.Query do
   # -----
 
   defp filter_docs_by_scores(catalog, scores) do
-    alias Searchex.Command.Build.Catalog.Doc
+    alias Searchex.Request.Build.Catalog.Doc
     docids   = Enum.map scores, &(elem(&1, 0))
     scoremap = Enum.into(scores, %{})
     new_docs = catalog.docs
@@ -52,7 +52,7 @@ defmodule Searchex.Command.Query do
                |> Enum.sort_by(fn(x) -> -1 * scoremap[x.docid] end)
                |> Enum.slice(0, 20)
                |> Enum.map(fn(doc) -> %Doc{doc | score: scoremap[doc.docid]} end)
-    %Searchex.Command.Build.Catalog{catalog | docs: new_docs}
+    %Searchex.Request.Build.Catalog{catalog | docs: new_docs}
   end
 
   defp exec_query({index, query_list}, frame) do

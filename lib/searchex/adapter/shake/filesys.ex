@@ -7,7 +7,7 @@ defmodule Searchex.Adapter.Shake.Filesys do
   step :expand_file_roots
 
   def validate_file_root_presence(frame, _opts) do
-    alias Searchex.Command.Util.Helpers
+    alias Searchex.Request.Util.Helpers
     case length(frame.params.adapter.file_roots) do
       0 -> halt(frame, "No file_roots")
       _ -> frame
@@ -16,7 +16,7 @@ defmodule Searchex.Adapter.Shake.Filesys do
 
   # halt if one or more of the file roots is missing
   def validate_file_roots(frame, _opts) do
-    alias Searchex.Command.Util.Helpers
+    alias Searchex.Request.Util.Helpers
     badpaths = frame.params.adapter.file_roots
                |> Enum.map(fn(path) -> {Path.expand(path, Helpers.repo_dir(frame)), path} end)
                |> Enum.map(fn({full_path, path}) -> {File.exists?(full_path), path} end)
@@ -30,7 +30,7 @@ defmodule Searchex.Adapter.Shake.Filesys do
   end
 
   def expand_file_roots(frame, _opts) do
-    alias Searchex.Command.Util.Helpers
+    alias Searchex.Request.Util.Helpers
     new_roots  = Helpers.expanded_file_roots(frame)
     new_params = put_in(frame.params, [Access.key(:adapter, nil), :file_roots], new_roots)
     %Frame{frame | params: new_params}

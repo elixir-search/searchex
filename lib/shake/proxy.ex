@@ -9,7 +9,7 @@ defmodule Shake.Proxy do
   #      :command:
   #        :results: "MyIndex"
   #
-  #  Where "MyIndex" is mapped to `Searchex.Command.MyIndex`.
+  #  Where "MyIndex" is mapped to `Searchex.Request.MyIndex`.
 
   def call(frame, []), do: halt(frame, "PROXY EXIT")
   def call(frame, module) do
@@ -20,12 +20,12 @@ defmodule Shake.Proxy do
 
   defp defaults do
     %{
-      :results => Searchex.Command.Results ,
-      :query   => Searchex.Command.Query   ,
-      :index   => Searchex.Command.Index   ,
-      :catalog => Searchex.Command.Catalog ,
-      :params  => Searchex.Command.Params  ,
-      :docsrc  => Searchex.Command.Docsrc
+      :results => Searchex.Request.Results ,
+      :query   => Searchex.Request.Query   ,
+      :index   => Searchex.Request.Index   ,
+      :catalog => Searchex.Request.Catalog ,
+      :params  => Searchex.Request.Params  ,
+      :docsrc  => Searchex.Request.Docsrc
     }
   end
 

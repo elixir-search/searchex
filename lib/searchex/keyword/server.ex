@@ -35,7 +35,7 @@ defmodule Searchex.Keyword.Server do
     stem_terms               = Enum.map(terms, &(StemEx.stem(&1)))
     doc_matches              = gen_doc_matches(pt_name, stem_terms)
     matches_per_term_and_doc = gen_matches_per_term_and_doc(doc_matches)
-    Searchex.Command.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
+    Searchex.Request.Search.Bm25.doc_scores(terms, doc_matches, matches_per_term_and_doc)
     |> Enum.map(fn(el) -> {elem(el, 0), Float.round(elem(el, 1) * 1.0, 3)} end)
   end
   def do_query({pt_name, terms}) when is_list(terms)   , do: do_query(pt_name, terms)

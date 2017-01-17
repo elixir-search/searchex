@@ -1,7 +1,7 @@
-defmodule Searchex.Command.BuildTest do
+defmodule Searchex.Request.BuildTest do
   use ExUnit.Case
 
-  import Searchex.Command.Build
+  import Searchex.Request.Build
 
   describe "min build" do
     test "runs min build" do

@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.Params do
+defmodule Searchex.Request.Build.Catalog.Params do
 
   @moduledoc false
 
@@ -10,7 +10,7 @@ defmodule Searchex.Command.Build.Catalog.Params do
             cli_format:   %{}                       ,
             command:      %{}
 
-  alias Searchex.Command.Build.Catalog.Params
+  alias Searchex.Request.Build.Catalog.Params
 
   def create_from_cfg(config) do
     Map.merge(%Params{}, config)

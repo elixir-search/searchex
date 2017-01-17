@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Build.Catalog.Bucketscan do
+defmodule Searchex.Request.Build.Catalog.Bucketscan do
   @moduledoc false
 
   defstruct rawdata:          ""    ,
@@ -6,7 +6,7 @@ defmodule Searchex.Command.Build.Catalog.Bucketscan do
             docsep_positions: []    ,
             docsep_locations: []
 
-  alias Searchex.Command.Build.Catalog.Bucketscan
+  alias Searchex.Request.Build.Catalog.Bucketscan
 
   def generate_bucketscan(filename, frame) do
     %Bucketscan{bucket_id: filename}

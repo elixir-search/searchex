@@ -1,4 +1,4 @@
-defmodule Searchex.Command.Show do
+defmodule Searchex.Request.Show do
 
   @moduledoc false
 
@@ -10,7 +10,7 @@ defmodule Searchex.Command.Show do
     call(%Frame{cfg_snip: cfg_snip, tgt_id: tgt_id}, [])
   end
 
-  step Searchex.Command.Results
+  step Searchex.Request.Results
   step :integer_tgt_id?
   step :valid_tgt_id?
   step :tgt_doc

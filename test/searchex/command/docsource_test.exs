@@ -1,7 +1,7 @@
-defmodule Searchex.Command.DocsrcTest do
+defmodule Searchex.Request.DocsrcTest do
   use ExUnit.Case
 
-  alias Searchex.Command.Docsrc
+  alias Searchex.Request.Docsrc
 
   describe "error condition" do
     test "missing cfg" do
