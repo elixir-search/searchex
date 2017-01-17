@@ -1,8 +1,8 @@
-# Adapter Middleware Design
+# Request Middleware Design
 
 ## Overview
 
-The adapter middleware connects Searchex to a document source.
+The command middleware handles Searchex commands.
 
 With an adapter, we can index documents from the filesystem, from a database or
 some other source.
@@ -28,7 +28,7 @@ Within the bucket, there can be one or more docs.
 
 ## Value of the EventLog
 
-### EventID as Cursor Key
+### EventID as Cache Key
 
 Right now in the Query Processing middleware we're using content digest as a
 cache key.
@@ -36,7 +36,7 @@ cache key.
 Generating the digest can be slow.  Not sure how you'd generate a digest of a
 database...
 
-Proposal: Use EventID instead of Digest for CursorKey
+Proposal: Use EventID instead of Digest for CacheKey
 
 ### Streaming Foundation
 

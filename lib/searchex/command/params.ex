@@ -24,8 +24,6 @@ defmodule Searchex.Command.Params do
   step :generate_params
   step :validate_matching_cfg_names
   step Shake.Proxy, :docsrc
-#  step Shake.Proxy.Nomatch, "BING BONG"
-#  step Searchex.Command.Docsrc
   step :generate_digest
 
   def generate_cfg_name(frame, _opts) do

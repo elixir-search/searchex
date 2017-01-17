@@ -3,6 +3,14 @@ defmodule Shake.Proxy do
 
   @moduledoc false
 
+  #  With this module, you can invoke custom middleware
+  #  from the config file.
+  #
+  #      :command:
+  #        :results: "MyIndex"
+  #
+  #  Where "MyIndex" is mapped to `Searchex.Command.MyIndex`.
+
   def call(frame, []), do: halt(frame, "PROXY EXIT")
   def call(frame, module) do
     summon(frame, module)
@@ -14,7 +22,7 @@ defmodule Shake.Proxy do
     %{
       :results => Searchex.Command.Results ,
       :query   => Searchex.Command.Query   ,
-      :index   => Searchex.Command.Query   ,
+      :index   => Searchex.Command.Index   ,
       :catalog => Searchex.Command.Catalog ,
       :params  => Searchex.Command.Params  ,
       :docsrc  => Searchex.Command.Docsrc
