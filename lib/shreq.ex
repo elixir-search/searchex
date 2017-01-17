@@ -1,4 +1,4 @@
-defmodule Shake do
+defmodule Reqm do
   @moduledoc """
   A Plug-like middleware optimized for search.
 
