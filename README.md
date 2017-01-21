@@ -111,11 +111,11 @@ This can take a minute or two.  After that, queries will run sub-second.
 - [x] Config management 
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
-- [x] Indexing Middleware
+- [x] Request Middleware
 - [x] LRU Cache
-- [x] Basic CLI
+- [x] CLI Interface
 - [x] Fetchable document repos
-- [ ] Adapter Middleware (filesys, ecto)
+- [ ] Adapters (filesys, ecto)
 - [ ] Incremental add/remove/update
 - [ ] Server mode
 - [ ] Phoenix/Firestorm integration
@@ -126,11 +126,10 @@ This can take a minute or two.  After that, queries will run sub-second.
 - [ ] Typeahead support
 - [ ] Alerting
 - [ ] Multi-collection search
-- [ ] Configuration GUI
+- [ ] Web Interface (Admin, User, P2P)
 - [ ] Toolchain Integration (ExDoc, Hex, GitHub Issues)
 - [ ] Searchable Tutorials (Elixir Blogs, Slide Decks, Videos)
 - [ ] Output formatting plugins (Vim, Emacs, etc.)
-- [ ] P2P Streaming
 - [ ] Internationalization
 - [ ] Dockerization
 - [ ] Bayesian/ML Classifiers

@@ -20,12 +20,12 @@ defmodule Searchex.Request.Util.Helpers do
     Searchex.base_dir <> "/" <> frame.cfg_name <> ".yml"
   end
 
-  def expanded_file_roots(frame) do
-    Enum.map frame.params.adapter.file_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
+  def expanded_filesys_roots(frame) do
+    Enum.map frame.params.adapter.filesys_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
   end
 
   def doc_size(frame) do
-    roots = expanded_file_roots(frame)
+    roots = expanded_filesys_roots(frame)
     Util.Ext.File.du_s(roots, frame.params.adapter)
   end
 

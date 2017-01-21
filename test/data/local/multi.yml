@@ -4,12 +4,12 @@
 :cache_dir:  "/tmp/searchex"
 :adapter:
   :type:     "Filesys"
-  :file_roots:
+  :filesys_roots:
     - docs/singledoc
     - docs/tweets
     - docs/datelines
-  :file_types: ["txt", "md", "wlog"]
-  :file_maxnum: 50
-  :file_maxkb:  100
+  :filesys_types: ["txt", "md", "wlog"]
+  :filesys_maxnum: 50
+  :filesys_maxkb:  100
 :display_fields: "startbyte doclength body"
 

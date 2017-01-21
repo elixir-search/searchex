@@ -44,7 +44,7 @@ defmodule Searchex.Config.New do
       file_types:      quotify(types)              , # file types
       docroot:         Path.expand("~")            ,
       max_numfiles:    500                         ,
-      bucket_maxkb:     500                         ,
+      bucket_maxkb:    500                         ,
       docsep:          "NNNN"                      ,
       display_fields:  "startbyte doclength body"  ,
     ]

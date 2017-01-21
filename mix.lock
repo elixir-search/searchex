@@ -13,6 +13,6 @@
   "ibrowse": {:hex, :ibrowse, "4.2.2", "b32b5bafcc77b7277eff030ed32e1acc3f610c64e9f6aea19822abcadf681b4b", [:rebar3], []},
   "lru_cache": {:hex, :lru_cache, "0.1.1", "5bd850535a69a07c702099a3f09d1fc0d982f347735d4d733de2cdd97e4dd91b", [:mix], []},
   "stem_ex": {:hex, :stem_ex, "0.0.2", "e304f883563bc54671bca2774ca235677046e0f803976e72b6653cc7173307ba", [:mix], []},
-  "table_rex": {:hex, :table_rex, "0.8.3", "1c68dfc6886d6f118f5047b0449d6402ae0ac5709064789e578c2f4659f4064b", [:mix], []},
+  "table_rex": {:hex, :table_rex, "0.10.0", "d981954370c00645c32ff7719c105db90ba6a9aa3e951c4d68eaeae3e0bfd40f", [:mix], []},
   "yamerl": {:hex, :yamerl, "0.3.3", "df48fe3e6aeaca05ec6c4b35418aa7c77258d0d1c32d578a2e12a14751c10d42", [:rebar3], []},
   "yaml_elixir": {:hex, :yaml_elixir, "1.3.0", "5b945c235f0bc9d49c60927834576952c9e106afbc1dfa76ffcf615d7615e35f", [:mix], [{:yamerl, "~> 0.3.2", [hex: :yamerl, optional: false]}]}}

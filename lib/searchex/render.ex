@@ -140,7 +140,7 @@ defmodule Searchex.Render do
         numdocs:    frame.catalog.numdocs                      ,
         doc_size:   Util.Ext.Integer.format(doc_size  )        ,
         cache_size: Util.Ext.Integer.format(cache_size)        ,
-        file_roots: Util.Ext.Path.shrink_paths(frame.params.adapter.file_roots)
+        file_roots: Util.Ext.Path.shrink_paths(frame.params.adapter.filesys_roots)
       ]
     end
   end

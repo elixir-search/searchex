@@ -3,4 +3,4 @@
 :cache_dir:  "/tmp/searchex"
 :adapter:
   :type:       "Filesys"
-  :file_roots: ["docs/tweets"]
+  :filesys_roots: ["docs/tweets"]

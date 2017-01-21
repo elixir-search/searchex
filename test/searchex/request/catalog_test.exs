@@ -13,7 +13,7 @@ defmodule Searchex.Request.CatalogTest do
   describe "multi collection" do
     test "doc count" do
       frame = Catalog.exec("multi")
-      assert frame.catalog.numdocs == 21
+      assert frame.catalog.numdocs == 22
     end
   end
 

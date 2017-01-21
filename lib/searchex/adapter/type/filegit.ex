@@ -1,4 +1,4 @@
- defmodule Searchex.Adapter.Type.Filesys do
+ defmodule Searchex.Adapter.Type.Filegit do
 
    alias Shreq.Frame
    alias Util.TimeStamp
@@ -8,14 +8,14 @@
 
   def default_settings do
     %{
-      type:         "Filesys"                 ,
+      type:         "Filegit"                 ,
       module:       __MODULE__                ,
-      filesys_roots:   []                        ,
-      filesys_types:   ~w(txt md js exs ex)      ,
-      filesys_maxnum:  100                       ,
-      filesys_maxkb:   200                       ,
-      filesys_depth:   2                         ,
-      filesys_skips:   ~w(^\\..+ ^\_ deps docs)
+      filegit_dirs:    []                        ,
+      filegit_types:   ~w(txt md js exs ex)      ,
+      filegit_maxnum:  100                       ,
+      filegit_maxkb:   200                       ,
+      filegit_depth:   2                         ,
+      filegit_skips:   ~w(^\\..+ ^\_ deps docs)
       }
   end
 
@@ -36,7 +36,7 @@
   end
 
   def rawdata(filename, frame) do
-    maxkb = frame.params.adapter.filesys_maxkb
+    maxkb = frame.params.adapter.file_maxkb
     File.stream!(filename, [], maxkb * 1024) |> Enum.at(0)
   end
 
@@ -48,7 +48,7 @@
 
   defp file_list(frame) do
     alias Searchex.Request.Util.Helpers
-    absolute_roots = Helpers.expanded_filesys_roots(frame)
+    absolute_roots = Helpers.expanded_file_roots(frame)
     Util.Ext.File.ls_r absolute_roots, frame.params.adapter
   end
 end

@@ -1,8 +1,8 @@
-# Adapter Middleware Design
+# Adapter Design
 
 ## Overview
 
-The adapter middleware connects Searchex to a document source.
+The adapter connects Searchex to a document source.
 
 With an adapter, we can index documents from the filesystem, from a database or
 some other source.
@@ -19,7 +19,7 @@ Source of Truth
 An event log entry has a key (EventID) and a value (the commands).
 Commands can be only: create, update, delete
 
-EventID is a sequential ID assigned by the Adapter(?).
+EventID is a sequential ID assigned by the Adapter.
 BucketID is a unique ID - a foreign-key.
 
 Within the bucket, there can be one or more docs.
@@ -62,6 +62,7 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 | Ecto          | Type/RecordID        |
 | Amqp/Rabbitmq | Channel/MsgID        |
 | Archive       | ArchiveName/FileName |
+| RSS/Atom      |                      |
 | Couchdb       |                      |
 | Kafka         |                      |
 | Ejabberd      |                      |
@@ -115,33 +116,6 @@ usable for small datasets.
 - One adapter per collection
 - Adapter process key like {:adapter, :collection_name}
 
-### Nested Sources
-
-database -> encrypted tar file -> json file -> document
-
-How to handle?  Some ideas:
-
-1. specify nesting in config file
-
-    adapter:
-      type: Archive
-      adapter: 
-        type: Filesys
-        file_types: ["json"]
-
-2. auto-detected 'mime types'
-
-encode the asset type in the tuple?
-
-    {:create, :archive, "/home/mydir/archive.tar.gz"}
-    {:update, :ecto, "/users?id=2342"}
-
-3. mime-type return in init call
-
-maybe use something like a type-system ?
-
-    Searchex.Adapter.Filesys.init(params)  # -> {:mime-type, :ecto}
-
 ## Processing Direction
 
 Sometimes processing is initiated by Searchex, sometimes by the Source.
@@ -165,9 +139,8 @@ For example:
 ## Long Term
 
 Misc
-- Adapters can be chained
-- Searchex itself is an adapter -> P2P document streaming
-- Docsrcs can be nested
+- Searchex itself is a docsrc -> P2P document streaming
+- Recursive archive extraction
 
     Database <- Archive <- Document
 
@@ -185,7 +158,7 @@ Q: How to make a file system look like an event log?
 A: Put documents under Git control.
 
 Q: Does this mean that the Indexes will need to support snapshots?
-A: Maybe.  Probably.
+A: Yes
 
 ## Actions
 
@@ -210,10 +183,12 @@ A: Maybe.  Probably.
 -- validations
 -- pull on callback after database transaction
 
+- twitter adapter
+-- validations
+-- auto-update
+
 ### Other Changes
 
-- rename 'filescan' to 'bucketscan'
-- use EventID instead of digest
-- use process tree for catalog
 - incremental doc add/remove
-- start the proocess registry at startup
+- use process tree or KV-store for catalog
+- start the process registry at startup
