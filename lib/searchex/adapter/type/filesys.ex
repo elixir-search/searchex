@@ -4,6 +4,7 @@
    alias Util.TimeStamp
 
   def init(_args) do
+    Util.Ext.IO.tins("INIT DOG", color: "RED")
   end
 
   def default_settings do

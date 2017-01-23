@@ -8,14 +8,16 @@
 
   def default_settings do
     %{
-      type:         "Filegit"                 ,
-      module:       __MODULE__                ,
-      filegit_dirs:    []                        ,
-      filegit_types:   ~w(txt md js exs ex)      ,
-      filegit_maxnum:  100                       ,
-      filegit_maxkb:   200                       ,
-      filegit_depth:   2                         ,
-      filegit_skips:   ~w(^\\..+ ^\_ deps docs)
+      type:               "Filegit"                 ,
+      module:             __MODULE__                ,
+      filegit_dirs:       []                        ,
+      filegit_types:      ~w(txt md js exs ex)      ,
+      filegit_maxnum:     100                       ,
+      filegit_maxkb:      200                       ,
+      filegit_depth:      2                         ,
+      filegit_skips:      ~w(^\\..+ ^\_ deps docs)  ,
+      filegit_autoinit:   false                     ,
+      filegit_autocommit: false
       }
   end
 
@@ -48,7 +50,7 @@
 
   defp file_list(frame) do
     alias Searchex.Request.Util.Helpers
-    absolute_roots = Helpers.expanded_file_roots(frame)
+    absolute_roots = Helpers.expanded_filesys_roots(frame)
     Util.Ext.File.ls_r absolute_roots, frame.params.adapter
   end
 end
