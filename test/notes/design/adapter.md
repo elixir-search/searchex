@@ -68,6 +68,8 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
 | Ejabberd      |                      |
 | MongooseIM    |                      |
 | Slack         |                      |
+| IRC           |                      |
+| Gittir        |                      |
 | Twitter       |                      |
 | Facebook      |                      |
 | Searchex      | (P2P)                |

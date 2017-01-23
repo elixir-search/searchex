@@ -4,7 +4,7 @@
    alias Util.TimeStamp
 
   def init(_args) do
-    Util.Ext.IO.tins("INIT DOG", color: "RED")
+    Util.Ext.IO.tins("INIT FILESYS", color: "RED")
   end
 
   def default_settings do
