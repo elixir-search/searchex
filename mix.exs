@@ -38,8 +38,8 @@ defmodule Searchex.Mixfile do
       {:table_rex  , "~> 0.8"                },  # table formatter
       {:stem_ex    , "~> 0.0.2"              },  # word-stem generator
       {:lru_cache  , "~> 0.1.0"              },  # ETS-based LRU cache
-      {:git_cli    , "~> 0.2"                },  # Git CLI
-      {:dialyxir   , "~> 0.4.0", only: :dev  },  #
+      {:exactor    , "~> 2.2.3"              },  # OTP wrappers
+      {:dialyxir   , "~> 0.4.0", only: :dev  },  # type checker
       {:ex_guard   , "~> 1.1.1", only: :dev  },  # test runner
       {:ex_doc     , "~> 0.14" , only: :dev  },  # doc generator
       {:credo      , "~> 0.4"  , only: :dev  }   # code-style checker
