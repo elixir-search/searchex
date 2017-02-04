@@ -28,7 +28,8 @@ defmodule Searchex.Mixfile do
  
   def application do
     [
-      applications: [:mix, :yaml_elixir, :logger, :table_rex, :eex, :lru_cache]
+      applications: [:mix, :yaml_elixir, :logger, :table_rex, :eex, :lru_cache],
+      mod: {Searchex.App, []}
     ]
   end
 
