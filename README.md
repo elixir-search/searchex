@@ -9,7 +9,7 @@ A full-text search engine written in pure Elixir.
 
 Three goals: 1) a simple CLI, 2) a scalable API, and 3) shareable document repos.
 
-BEAM, OTP, and GenStage give us the best possible foundation on which to build. 
+BEAM, OTP, and GenStage give us the best possible foundation on which to build.
 
 ## About Searchex
 
@@ -38,9 +38,9 @@ See the [Roadmap](#roadmap) for development plans.
 
 A Searchex `DOCUMENT` has two key elements:
 
-1. document `META-DATA`, like `title`, `author_name`, `publication_date` 
+1. document `META-DATA`, like `title`, `author_name`, `publication_date`
 
-2. the `FULL-TEXT` of the document 
+2. the `FULL-TEXT` of the document
 
 Searchex organizes documents into separate `COLLECTIONS`.  Each collection has
 two main elements:
@@ -79,7 +79,7 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> 0.0.4"}]
+  [{:searchex, "~> x.x.x"}]  # where "x.x.x" equals version in mix.exs 
 end
 ```
 Then run `mix deps.get`
@@ -91,7 +91,7 @@ View API documentation at https://hexdocs.pm/searchex
 After the `searchex` escript is installed...
 
 1) Fetch a Searchex repository
- 
+
     > searchex fetch elixir-search/sample
 
 2) Run
@@ -108,7 +108,7 @@ This can take a minute or two.  After that, queries will run sub-second.
 
 ## Roadmap
 
-- [x] Config management 
+- [x] Config management
 - [x] Porter stemming algorithm
 - [x] BM25 query algorithm
 - [x] Request Middleware
@@ -137,7 +137,7 @@ This can take a minute or two.  After that, queries will run sub-second.
 ## Links
 
 - Searchex Website: <http://searchex.org>
-- GitHub Source: <https://github.com/elixir-search/searchex> 
+- GitHub Source: <https://github.com/elixir-search/searchex>
 - Sample Repository: <https://github.com/elixir-search/sample>
 - StemEx: <https://github.com/elixir-search/stem_ex>
 - Hex Package: <https://hex.pm/packages/searchex>

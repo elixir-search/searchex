@@ -2,8 +2,8 @@ defmodule Searchex.Request.Docsrc do
 
   @moduledoc false
 
-  use Shreq.Module
-  alias Shreq.Frame
+  use Reqm.Module
+  alias Reqm.Frame
 
   @doc """
   The API for the module - takes a config name and returns

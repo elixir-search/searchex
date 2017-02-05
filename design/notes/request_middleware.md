@@ -17,9 +17,9 @@ It is possible to create custom request modules and reconfigure the pipeline.
 
 **Middleware Proxy**
 
-Use `Shreq.Proxy` for configurable module invocation:
+Use `Reqm.Proxy` for configurable module invocation:
 
-    step Shreq.Proxy, :index
+    step Reqm.Proxy, :index
     step :myfunc
 
 

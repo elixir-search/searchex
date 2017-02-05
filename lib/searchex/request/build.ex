@@ -2,7 +2,7 @@ defmodule Searchex.Request.Build do
 
   @moduledoc false
 
-  use Shreq.Module
+  use Reqm.Module
 
   def exec(cfg_snip) do
     call(%Frame{cfg_snip: cfg_snip}, [])

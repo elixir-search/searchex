@@ -1,11 +1,11 @@
-defmodule Shreq.Validate do
+defmodule Reqm.Validate do
 
   @moduledoc false
 
   defmacro __using__(_opts) do
     quote do
 
-      import Shreq.Frame
+      import Reqm.Frame
 
       def validate(frame, opts) do
         case Keyword.split(opts, [:with]) do
@@ -28,8 +28,8 @@ defmodule Shreq.Validate do
           newframe = newfunc.(acc, opts)
           if newframe.halt_msg != halt_msg do
             case halt_msg do
-              "" -> %Shreq.Frame{newframe | halt_msg: [newframe.halt_msg]}
-              _  -> %Shreq.Frame{newframe | halt_msg: halt_msg ++ [newframe.halt_msg]}
+              "" -> %Reqm.Frame{newframe | halt_msg: [newframe.halt_msg]}
+              _  -> %Reqm.Frame{newframe | halt_msg: halt_msg ++ [newframe.halt_msg]}
             end
           else
             newframe

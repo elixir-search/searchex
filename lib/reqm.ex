@@ -1,7 +1,7 @@
-defmodule Shreq do
+defmodule Reqm do
   @moduledoc """
-  Shreq (SearcH REQuest) middlware is a Plug-like framework 
-  optimized for handling search requests.
+  Reqm (REQuest Middleware) middlware is a Plug-like framework
+  optimized for search requests.
 
   Full-text search is build on layers of dependencies:
 
@@ -13,36 +13,36 @@ defmodule Shreq do
   At every step of the build chain, you want parameter validation and caching
   so you don't have to re-generate everything from scratch.
 
-  Custom middleware modules can be added to handle different languages or 
-  custom indexing requirements.  Shreq middleware is flexible and composable.
+  Custom middleware modules can be added to handle different languages or
+  custom indexing requirements.  Reqm middleware is flexible and composable.
 
-  That's the idea of Shreq.
+  That's the idea of Reqm.
 
   ## Inspired by Plug
 
-  The architecture of Shreq is inspired by Plug.  Here are some differences between
-  Shreq and Plug...
+  The architecture of Reqm is inspired by Plug.  Here are some differences
+  between Reqm and Plug...
 
   ### Terminology
 
-  | Plug         | Shreq        |
+  | Plug         | Reqm        |
   |--------------|--------------|
-  | Plug.Builder | Shreq.Module |
-  | Plug.Conn    | Shreq.Frame  |
+  | Plug.Builder | Reqm.Module |
+  | Plug.Conn    | Reqm.Frame  |
   | plug         | step         |
   | pipeline     | job          |
   | conn         | frame        |
   | call         | call         |
 
-  ### The Shreq Frame
+  ### The Reqm Frame
 
-  Plug is centered around a the Conn struct.  Shreq uses the Frame struct.
+  Plug is centered around a the Conn struct.  Reqm uses the Frame struct.
 
-  See the documentation for `Shreq.Frame` for more info.
+  See the documentation for `Reqm.Frame` for more info.
 
   ### Search Focus
 
-  Shreq omits Plug's HTTP-oriented helpers, and adds search-specific helpers:
+  Reqm omits Plug's HTTP-oriented helpers, and adds search-specific helpers:
 
   - validate - a method to perform data validations
   - digest - to create content digests
@@ -71,8 +71,8 @@ defmodule Shreq do
   length) and the various fields that are extracted in the catalog process.
 
   2) The Index is organized in a three-level tree.  1) all the stemmed words in
-  the collection for each word, 2) a list of each document that contains the word
-  for each document, 3) a list of positions that the document occurred.
+  the collection for each word, 2) a list of each document that contains the
+  word for each document, 3) a list of positions that the document occurred.
 
   For a document database of 1GB, the catalog would typically be 100MB, and the
   index typically 1GB.
@@ -95,9 +95,9 @@ defmodule Shreq do
   | Cached | LRU Cache | LRU Registry(TBD) |
   | Backup | DETS      | DETS(?)           |
 
-  Right now we have a nice LRU-Cache based on ETS and DETS.  Going forward
-  we will need a LRU-Registry based on ETS and the Process Registry in Elixir 1.4.
-  
+  Right now we have a nice LRU-Cache based on ETS and DETS.  Going forward we
+  will need a LRU-Registry based on ETS and the Process Registry in Elixir 1.4.
+
   ## Work in Progress
 
   We're using an iterative design process.  `Build > Use > Learn > Repeat`  The
@@ -107,5 +107,5 @@ defmodule Shreq do
   @type opts :: binary | tuple | atom | integer | float | [opts] | %{opts => opts}
 
   @callback init(opts) :: opts
-  @callback call(Shreq.Job.t, opts) :: Shreq.Job.t
+  @callback call(Reqm.Job.t, opts) :: Reqm.Job.t
 end

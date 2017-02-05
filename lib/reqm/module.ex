@@ -1,4 +1,4 @@
-defmodule Shreq.Module do
+defmodule Reqm.Module do
 
   @moduledoc false
 
@@ -6,7 +6,7 @@ defmodule Shreq.Module do
 
   defmacro __using__(opts) do
     quote do
-      @behaviour Shreq
+      @behaviour Reqm
       @step_module_opts unquote(opts)
 
       def init(opts) do
@@ -19,14 +19,14 @@ defmodule Shreq.Module do
 
       defoverridable [init: 1, call: 2]
 
-      use Shreq.Validate
+      use Reqm.Validate
 
-      alias  Shreq.Frame
-      import Shreq.Frame
-      import Shreq.Module, only: [step: 1, step: 2]
+      alias  Reqm.Frame
+      import Reqm.Frame
+      import Reqm.Module, only: [step: 1, step: 2]
 
       Module.register_attribute(__MODULE__, :steps, accumulate: true)
-      @before_compile Shreq.Module
+      @before_compile Reqm.Module
     end
   end
 
@@ -34,7 +34,7 @@ defmodule Shreq.Module do
     steps       = Module.get_attribute(env.module, :steps)
     module_opts = Module.get_attribute(env.module, :step_module_opts)
 
-    {frame, body} = Shreq.Module.compile(env, steps, module_opts)
+    {frame, body} = Reqm.Module.compile(env, steps, module_opts)
 
     quote do
       defp step_module_call(unquote(frame), _), do: unquote(body)
@@ -81,17 +81,17 @@ defmodule Shreq.Module do
     call = quote_step_call(step_type, step, opts)
 
     error_message = case step_type do
-      :module   -> "expected #{inspect step}.call/2 to return a Shreq.Frame"
-      :function -> "expected #{step}/2 to return a Shreq.Frame"
+      :module   -> "expected #{inspect step}.call/2 to return a Reqm.Frame"
+      :function -> "expected #{step}/2 to return a Reqm.Frame"
     end <> ", all steps must receive a frame and return a frame"
 
     {fun, meta, [arg, [do: clauses]]} =
       quote do
         case unquote(compile_guards(call, guards)) do
-          %Shreq.Frame{halted: true} = frame ->
+          %Reqm.Frame{halted: true} = frame ->
             unquote(log_halt(step_type, step, env, module_opts))
             frame
-          %Shreq.Frame{} = frame ->
+          %Reqm.Frame{} = frame ->
             unquote(acc)
           _ ->
             raise unquote(error_message)
@@ -142,7 +142,7 @@ defmodule Shreq.Module do
 
       quote do
         require Logger
-        # Matching, to make Dialyzer happy on code executing Shreq.Builder.compile/3
+        # Matching, to make Dialyzer happy on code executing Reqm.Builder.compile/3
         _ = Logger.unquote(level)(unquote(message))
       end
     else

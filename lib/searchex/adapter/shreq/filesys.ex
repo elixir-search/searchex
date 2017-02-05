@@ -1,6 +1,6 @@
-defmodule Searchex.Adapter.Shreq.Filesys do
+defmodule Searchex.Adapter.Reqm.Filesys do
 
-  use Shreq.Module
+  use Reqm.Module
 
   step :validate_file_root_presence
   step :validate_file_roots

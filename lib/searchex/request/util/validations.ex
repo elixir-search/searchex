@@ -1,6 +1,6 @@
 defmodule Searchex.Request.Util.Validations do
 
-  import Shreq.Frame
+  import Reqm.Frame
   alias  Searchex.Config.CfgValidations
 
   @moduledoc false

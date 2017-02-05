@@ -3,7 +3,7 @@ defmodule Searchex.Request.Params do
   @moduledoc false
 
   alias Searchex.Request.Util.Validations
-  use Shreq.Module
+  use Reqm.Module
 
   @doc """
   The API for the module - takes a config name and returns
@@ -23,7 +23,7 @@ defmodule Searchex.Request.Params do
   step :generate_cfg_name
   step :generate_params
   step :validate_matching_cfg_names
-  step Shreq.Proxy, :docsrc
+  step Reqm.Proxy, :docsrc
   step :generate_digest
 
   def generate_cfg_name(frame, _opts) do

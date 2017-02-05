@@ -2,7 +2,7 @@ defmodule Searchex.Request.Info do
 
   @moduledoc false
 
-  use Shreq.Module
+  use Reqm.Module
 
   @doc "Module API"
   def exec(cfg_snip) do

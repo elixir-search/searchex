@@ -2,8 +2,8 @@ defmodule Searchex.Request.Results do
 
   @moduledoc false
 
-  use Shreq.Module
-  alias Shreq.Frame
+  use Reqm.Module
+  alias Reqm.Frame
 
   @doc "Module API"
   def exec(cfg_snip) do

@@ -2,7 +2,7 @@ defmodule Searchex.Request.Index do
 
   @moduledoc false
 
-  use Shreq.Module
+  use Reqm.Module
   alias Searchex.Request.Build.Index
 
   @doc """

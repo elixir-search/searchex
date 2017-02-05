@@ -1,5 +1,5 @@
-defmodule Shreq.Proxy.Nomatch do
-  use Shreq.Module
+defmodule Reqm.Proxy.Nomatch do
+  use Reqm.Module
 
   @moduledoc false
 

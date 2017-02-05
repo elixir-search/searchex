@@ -7,7 +7,7 @@ defmodule Searchex.Mixfile do
     [
       app:     :searchex,
       version: @version,
-      elixir:  "~> 1.4.0", 
+      elixir:  "~> 1.4.0",
       escript: [main_module: Searchex.Cli],
       build_embedded:  Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -25,7 +25,7 @@ defmodule Searchex.Mixfile do
       ]
     ]
   end
- 
+
   def application do
     [
       applications: [:mix, :yaml_elixir, :logger, :table_rex, :eex, :lru_cache],
@@ -35,14 +35,16 @@ defmodule Searchex.Mixfile do
 
   defp deps do
     [
-      {:yaml_elixir, "~> 1.1"                },  # yaml parser
-      {:table_rex  , "~> 0.8"                },  # table formatter
-      {:stem_ex    , "~> 0.0.2"              },  # word-stem generator
-      {:lru_cache  , "~> 0.1.0"              },  # ETS-based LRU cache
-      {:exactor    , "~> 2.2.3"              },  # OTP wrappers
-      {:ex_guard   , "~> 1.1.1", only: :dev  },  # test runner
-      {:ex_doc     , "~> 0.14" , only: :dev  },  # doc generator
-      {:credo      , "~> 0.4"  , only: :dev  }   # code-style checker
+      # {:yaml_elixir, "~> 1.1"               },  # yaml parser
+      {:yaml_elixir, github: "andyl/yaml-elixir" },  # yaml parser
+      {:table_rex  , "~> 0.8"               },  # table formatter
+      {:stem_ex    , "~> 0.0.2"             },  # word-stem generator
+      {:lru_cache  , "~> 0.1.0"             },  # ETS-based LRU cache
+      {:exactor    , "~> 2.2.3"             },  # OTP wrappers
+      {:credo      , "~> 0.4"  , only: :dev },  # code-style checker
+      # {:ex_guard   , "~> 1.1.1", only: :dev }   # test runner
+      {:ex_guard   , github: "andyl/ex_guard" }   # test runner
+      # {:ex_doc     , "~> 0.14.1", only: :dev }  # doc generator
     ]
   end
 

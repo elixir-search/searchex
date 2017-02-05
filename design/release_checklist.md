@@ -24,6 +24,4 @@
 
 [2] Update README
 - roadmap
-- install version
 - demo link
-

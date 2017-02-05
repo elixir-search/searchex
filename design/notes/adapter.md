@@ -97,7 +97,7 @@ stream-oriented infrastructures. (Kafka, Social-Media Scanning, etc.)
   - validate(frame) -> :ok | {:error, [messages]}
   - init(frame)
 
-The adapter is called from various steps in the indexing middleware:
+The adapter is called from various steps in the request middleware:
 
 | Function | Caller Step |
 |----------|-------------|
@@ -107,9 +107,9 @@ The adapter is called from various steps in the indexing middleware:
 | events   | catalog     |
 | rawdata  | catalog     |
 
-If an incremental event log can not be generated, use a :digest cursor.  This
-will force the catalog and all upstream steps to be rebuilt from scratch.  Only
-usable for small datasets.
+If an event log can not be generated, use a :digest cursor.  This will force the
+catalog and all upstream steps to be rebuilt from scratch.  Only usable for
+small datasets.
 
 ### OTP
 
@@ -127,13 +127,13 @@ Sometimes processing is initiated by Searchex, sometimes by the Source.
 For example:
 
 **Filesys** - updates come SEARCHEX, initiated by user action
-- query processed by the command middleware 
+- query processed by the command middleware
 - command middleware invokes `Searchex.Adapter.Type.pull`
 - Searchex incremental-updates the index
 - query results are generated
 
 **Filewatch** - updates come from a FS_WATCHER, initated by filesystem changes
-- FS_WATCHER event triggers `Searchex.Adapter.Type.pull` 
+- FS_WATCHER event triggers `Searchex.Adapter.Type.pull`
 - Searchex invokes `Searchex.Adapter.Type.pull`
 - Searchex incremental-updates the index
 - when queries come, assume that the indexes are all up to date
@@ -168,7 +168,7 @@ A: Yes
 
 - filesys adapter
 -- test validations
--- directory checksum: `find <path> -maxdepth N -type d -ls | md4sum`
+-- directory checksum: `find <path> -maxdepth N -type d -ls | md5sum`
 -- complete rebuild on change
 
 - filegit adapter
@@ -179,7 +179,7 @@ A: Yes
 - filewatch adapter
 -- validations
 -- git controlled directories
--- file watcher - copy from 
+-- file watcher - copy from
 
 - ecto adapter
 -- validations

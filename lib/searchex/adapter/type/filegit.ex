@@ -1,6 +1,6 @@
  defmodule Searchex.Adapter.Type.Filegit do
 
-   alias Shreq.Frame
+   alias Reqm.Frame
    alias Util.TimeStamp
 
   def init(_args) do
@@ -43,7 +43,7 @@
   end
 
   def shake(frame, opts) do
-    Searchex.Adapter.Shreq.Filesys.call(frame, opts)
+    Searchex.Adapter.Reqm.Filesys.call(frame, opts)
   end
 
   # -----

@@ -1,6 +1,6 @@
-defmodule Shreq.Frame do
+defmodule Reqm.Frame do
   @moduledoc """
-  Defines a struct that is passed up and down the Shreq build chain.
+  Defines a struct that is passed up and down the Reqm build chain.
 
       defstruct cfg_snip: "",
                 cfg_name: "",
@@ -18,7 +18,7 @@ defmodule Shreq.Frame do
                 assigns:  %{}
   """
 
-  alias Shreq.Frame
+  alias Reqm.Frame
 
   @type cfg_snip :: String.t
   @type cfg_name :: String.t
@@ -68,7 +68,7 @@ defmodule Shreq.Frame do
             assigns:  %{}
 
   @doc """
-  Halts the Shreq job by preventing downstream steps
+  Halts the Reqm job by preventing downstream steps
   from being invoked.  Optional `halt_msg` can be a 
   String or list of Strings.
   """
