@@ -82,7 +82,8 @@ Add `searchex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:searchex, "~> x.x.x"}]  # where "x.x.x" equals version in mix.exs 
+  # replace "x.x.x" with latest hex version
+  [{:searchex, "~> x.x.x"}]  
 end
 ```
 Then run `mix deps.get`

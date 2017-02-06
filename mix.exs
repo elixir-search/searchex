@@ -35,14 +35,14 @@ defmodule Searchex.Mixfile do
 
   defp deps do
     [
-      {:ex_doc                               , only: :dev }, # doc generator
-      {:credo      , "~> 0.4"                , only: :dev }, # style checker
-      {:ex_guard   , github: "andyl/ex_guard", only: :dev }, # test runner
       {:yaml_elixir, github: "andyl/yaml-elixir" },  # yaml parser
-      {:table_rex  , "~> 0.8"   },  # table formatter
-      {:stem_ex    , "~> 0.0.2" },  # word-stem generator
-      {:lru_cache  , "~> 0.1.0" },  # ETS-based LRU cache
-      {:exactor    , "~> 2.2.3" },  # OTP wrappers
+      {:table_rex  , "~> 0.10"  },              # table formatter
+      {:stem_ex    , "~> 0.0.2" },              # word-stem generator
+      {:lru_cache  , "~> 0.1.0" },              # ETS-based LRU cache
+      {:exactor    , "~> 2.2.3" },              # OTP wrappers
+      {:ex_doc     , "~> 0.14"  , only: :dev }, # doc generator
+      {:credo      , "~> 0.6"   , only: :dev }, # style checker
+      {:ex_guard   , "~> 1.2.0" , only: :dev }, # test runner
     ]
   end
 
