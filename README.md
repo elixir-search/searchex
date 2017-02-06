@@ -4,6 +4,7 @@
 [![hex.pm](http://img.shields.io/hexpm/v/searchex.svg?style=flat)](https://hex.pm/packages/searchex)
 [![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat)](https://hexdocs.pm/searchex/)
 [![gitter](https://badges.gitter.im/elixir-search/searchex.svg)](https://gitter.im/elixir-search/searchex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/elixir-search/searchex.svg)](https://beta.hexfaktor.org/github/elixir-search/searchex)
 
 A full-text search engine written in pure Elixir.  
 
@@ -76,6 +77,8 @@ Make sure `~/.mix/escripts` is on your path!
 Elixir developers can embed Searchex into their applications.
 
 Add `searchex` to your list of dependencies in `mix.exs`:
+
+[![hex.pm](http://img.shields.io/hexpm/v/searchex.svg?style=flat)](https://hex.pm/packages/searchex)
 
 ```elixir
 def deps do
