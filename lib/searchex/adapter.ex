@@ -3,9 +3,9 @@ defmodule Searchex.Adapter do
   def validate(frame, _opts) do
     import Reqm.Frame
     cond do
-      adapter_missing?(frame)        ->
+      adapter_missing?(frame)           ->
         halt(frame, "No adapter specified for config (#{frame.cfg_name})")
-      adapter_type_missing?(frame)   ->
+      adapter_type_missing?(frame)      ->
         halt(frame, "Adapter type not specified (#{frame.cfg_name})")
       adapter_type_unrecognized?(frame) ->
         type = adapter_type(frame)

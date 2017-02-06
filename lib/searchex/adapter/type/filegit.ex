@@ -42,7 +42,7 @@
     File.stream!(filename, [], maxkb * 1024) |> Enum.at(0)
   end
 
-  def shake(frame, opts) do
+  def reqm(frame, opts) do
     Searchex.Adapter.Reqm.Filesys.call(frame, opts)
   end
 

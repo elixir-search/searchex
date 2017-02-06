@@ -9,8 +9,8 @@
 
   def default_settings do
     %{
-      type:         "Filesys"                 ,
-      module:       __MODULE__                ,
+      type:            "Filesys"                 ,
+      module:          __MODULE__                ,
       filesys_roots:   []                        ,
       filesys_types:   ~w(txt md js exs ex)      ,
       filesys_maxnum:  100                       ,
@@ -20,6 +20,11 @@
       }
   end
 
+  # TODO: potentially convert to a 'find' based method to generate a term
+  # eg `find <path> -maxdepth N -type d -ls | md5sum`
+  # Things to consider:
+  # 1) speed of invoking `find` vs using Elixir methods
+  # 2) multi-platform issues...
   def cursor(%Frame{cfg_name: cfg_name} = frame) do
     term   = Util.Adapter.event_ids(frame, :create)
              |> Enum.map(fn(file) -> TimeStamp.filepath_timestamp(file) end)
@@ -41,7 +46,9 @@
     File.stream!(filename, [], maxkb * 1024) |> Enum.at(0)
   end
 
-  def shake(frame, opts) do
+  # this can call out to a reqm function or module
+  # here we call out to a module
+  def reqm_call(frame, opts) do
     Searchex.Adapter.Reqm.Filesys.call(frame, opts)
   end
 

@@ -14,8 +14,8 @@ defmodule Searchex.Request.Docsrc do
   end
 
   step :basic_adapter_validation
-  step :type_specific_adapter_params
-  step :type_specific_adapter_shake
+  step :adapter_params_setup
+  step :adapter_reqm_call
   step :start_adapter
   step :generate_digest
 
@@ -23,14 +23,21 @@ defmodule Searchex.Request.Docsrc do
     Searchex.Adapter.validate(frame, opts)
   end
 
-  def type_specific_adapter_params(%Frame{params: params} = frame, _opts) do
-    adapter_mod      = Searchex.Adapter.adapter_module(frame)
-    adapter_settings = Map.merge(adapter_mod.default_settings(), params.adapter)
-    put_in(frame, [Access.key(:params, nil), Access.key(:adapter, nil)], adapter_settings)
+  # 1) construct the adapter module atom from the "adapter.type" string
+  # 2) merge the adapter params with defaults
+  def adapter_params_setup(%Frame{params: params} = frame, _opts) do
+    with adapter_module   <- Searchex.Adapter.adapter_module(frame),
+         default_settings <- adapter_module.default_settings(),
+         adapter_settings <- Map.merge(default_settings, params.adapter),
+         param_key        <- Access.key(:params, nil),
+         access_key       <- Access.key(:adapter, nil),
+         do: put_in(frame, [param_key, access_key], adapter_settings)
   end
 
-  def type_specific_adapter_shake(frame, opts) do
-    frame.params.adapter.module.shake(frame, opts)
+  # call reqm middleware for the adapter
+  # the reqm step can 1) perform validations and/or 2) update the frame
+  def adapter_reqm_call(frame, opts) do
+    frame.params.adapter.module.reqm_call(frame, opts)
   end
 
   # TODO: finish this!

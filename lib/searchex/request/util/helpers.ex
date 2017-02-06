@@ -21,7 +21,9 @@ defmodule Searchex.Request.Util.Helpers do
   end
 
   def expanded_filesys_roots(frame) do
-    Enum.map frame.params.adapter.filesys_roots, fn(path) -> Path.expand(path, repo_dir(frame)) end
+    Enum.map frame.params.adapter.filesys_roots, fn(path) ->
+      Path.expand(path, repo_dir(frame))
+    end
   end
 
   def doc_size(frame) do
